@@ -1,10 +1,21 @@
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(ROOT))
+
 import numpy as np
 from sklearn.cluster import DBSCAN
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
 from shapely.ops import unary_union
-import src.config
+from src.config import (
+     FIRE_RAW_PATH, 
+     OZONE_PATH, NITROGEN_DIOXIDE_PATH, CARBON_MONOXIDE_PATH, PM25_PATH,
+     FIRE_EVENTS_PATH, FIRE_EVENTS_GDF_PATH, AIR_QUALITY_REPORT_PATH,
+)
+    
 
 ## preprocessing variables
 AQI_DROP_COLUMNS = ['Source', 
@@ -39,7 +50,7 @@ def compute_cluster_geometry(group):
 
 
 def get_max_AQI(row):
-    val_max = max(row['Daily AQI Value_PM2.5'], row['Daily AQI Value_O3'], row['Daily AQI Value_NO2'], row['Daily AQI Value_CO'] )
+    val_max = row[['Daily AQI Value_PM2.5', 'Daily AQI Value_O3', 'Daily AQI Value_NO2', 'Daily AQI Value_CO']].max()
     return val_max
 
 ### ------ step 1: fire preprocess ------ ###
