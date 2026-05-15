@@ -4,16 +4,43 @@ import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
 from shapely.ops import unary_union
-from src.config import (
-    FIRE_RAW_PATH, FIRE_EVENTS_PATH, FIRE_EVENTS_GDF_PATH
-)
+import src.config
 
+## preprocessing variables
+AQI_DROP_COLUMNS = ['Source', 
+                    'POC', 
+                    'Local Site Name', 
+                    'Daily Obs Count', 
+                    'Percent Complete', 
+                    'AQS Parameter Code', 
+                    'AQS Parameter Description',
+                    "Method Code",
+                    "Method Description",
+                    "County FIPS Code",
+                    "State FIPS Code",
+                    "CBSA Code",
+                    'CBSA Name', 
+                    'CBSA Code', 
+                    ]
+
+AQI_MERGE_COLUMNS = ['Date', 
+                    'Site ID', 
+                    'County', 
+                    'State',
+                    'Site Longitude',
+                    'Site Latitude'
+                    ]
 
 def compute_cluster_geometry(group):
     polys = [Point(r.longitude, r.latitude).buffer(0.002) for r in group.itertuples()]
     union = unary_union(polys)
     # dilate to fill gaps between satellite pixels, then erode to restore shape
     return union.buffer(0.006).buffer(-0.004)
+
+
+def get_max_AQI(row):
+    val_max = max(row['Daily AQI Value_PM2.5'], row['Daily AQI Value_O3'], row['Daily AQI Value_NO2'], row['Daily AQI Value_CO'] )
+    return val_max
 
 ### ------ step 1: fire preprocess ------ ###
 
@@ -94,3 +121,33 @@ fire_events = fire_events.merge(gdf[['event_id', 'perimeter_km', 'area_km2']], o
 fire_events.to_csv(FIRE_EVENTS_PATH)
 
 
+## step 2: Air quality report aggregation
+
+# step 2.1 read all files
+df_o3= pd.read_csv(OZONE_PATH)
+df_o3 = df_o3.drop(columns=AQI_DROP_COLUMNS, errors='ignore')
+
+df_pm25 = pd.read_csv(PM25_PATH)
+df_pm25 = df_pm25.drop(columns=AQI_DROP_COLUMNS, errors='ignore')
+
+df_no2 = pd.read_csv(NITROGEN_DIOXIDE_PATH)
+df_no2 = df_no2.drop(columns=AQI_DROP_COLUMNS, errors='ignore')
+
+
+df_co = pd.read_csv(CARBON_MONOXIDE_PATH)
+df_co = df_co.drop(columns=AQI_DROP_COLUMNS, errors='ignore')
+
+
+# step 2.2 : merge data
+df_all = df_pm25.merge(df_o3, on=AQI_MERGE_COLUMNS, how='outer', suffixes=['_PM2.5', '_O3']
+                        ).merge(df_no2, on=AQI_MERGE_COLUMNS, how='outer'
+                        ).merge(df_co, on=AQI_MERGE_COLUMNS, how='outer', suffixes=['_NO2', '_CO']
+                        )
+
+# step 2.3 : compute and filter on missing values
+df_all['n_missing_values'] = df_all.apply(lambda row: row.isnull().sum(), axis=1)
+df_filtered = df_all.loc[df_all['n_missing_values'] <= 6].reset_index() # keep rows where at least 2 metrics
+
+# step 2.4 : compute global AQI value based on max AQI_pollutant value
+df_filtered['max_AQI'] = df_filtered.apply(lambda row: get_max_AQI(row), axis =1 )
+df_filtered.to_csv(AIR_QUALITY_REPORT_PATH)
