@@ -3,10 +3,14 @@ Fire and Smoke Air Quality Assessment
 
 ## Project Overview
 
-An interactive geospatial platform focused on a single wildfire event (Southern California), combining satellite fire detection data with ground-level air quality readings. Users explore fire hotspots on a map, click monitoring stations, and view detailed pollutant reports showing how a fire degrades air quality across a region.
+An interactive geospatial platform focused on a single wildfire event (Southern California), combining satellite fire detection data with ground-level air quality readings. 
+The project goal is to understand how wildfire smoke degrades air quality — specifically: how far smoke travels (spatial) and how long AQ
+takes to recover (temporal).
 
-**Target event:** 2025, Los Angeles County
+**Target event:** Palisades Fire in January of 2025, Los Angeles County
 **Why:** Dense AQ monitoring network, major fire events
+
+Note: LA as a major city, has a worse AQI than other areas. To really evaluate impact, should either pick another region or take this into account
 
 
 
@@ -16,6 +20,11 @@ An interactive geospatial platform focused on a single wildfire event (Southern 
 https://aqs.epa.gov/aqsweb/airdata/download_files.html
 
 by year/county --> select all sites in CA
+
+
+Each CSV file contains the AQI for that specific pollutant only. The AQI scale has different breakpoints and formulas for each pollutant, so the same "raw" conditions produce different AQI numbers depending on which pollutant you're calculating it for. For example, on the same day at the same monitor:
+
+
 
 - Fires
 https://firms.modaps.eosdis.nasa.gov/download/list.php
@@ -33,3 +42,6 @@ https://firms.modaps.eosdis.nasa.gov/download/list.php
 
 
 sources: https://www.earthdata.nasa.gov/data/tools/firms/active-fire-data-attributes-modis-viirs
+
+
+https://document.airnow.gov/technical-assistance-document-for-the-reporting-of-daily-air-quailty.pdf
