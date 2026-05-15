@@ -157,8 +157,16 @@ df_all = df_pm25.merge(df_o3, on=AQI_MERGE_COLUMNS, how='outer', suffixes=['_PM2
 
 # step 2.3 : compute and filter on missing values
 df_all['n_missing_values'] = df_all.apply(lambda row: row.isnull().sum(), axis=1)
-df_filtered = df_all.loc[df_all['n_missing_values'] <= 6].reset_index() # keep rows where at least 2 metrics
+df_aqi = df_all.loc[df_all['n_missing_values'] <= 6].reset_index() # keep rows where at least 2 metrics
 
 # step 2.4 : compute global AQI value based on max AQI_pollutant value
-df_filtered['max_AQI'] = df_filtered.apply(lambda row: get_max_AQI(row), axis =1 )
-df_filtered.to_csv(AIR_QUALITY_REPORT_PATH)
+df_aqi['max_AQI'] = df_aqi.apply(lambda row: get_max_AQI(row), axis =1 )
+
+df_aqi['Units_PM2.5'] = 'ug/m3 LC'
+df_aqi['Units_O3'] = 'ppm'
+df_aqi['Units_NO2'] = 'ppb'
+df_aqi['Units_CO'] = 'ppm'
+
+df_aqi = df_aqi.fillna('N/A')
+
+df_aqi.to_csv(AIR_QUALITY_REPORT_PATH)
