@@ -13,7 +13,7 @@ from shapely.ops import unary_union
 from src.config import (
      FIRE_RAW_PATH, 
      OZONE_PATH, NITROGEN_DIOXIDE_PATH, CARBON_MONOXIDE_PATH, PM25_PATH,
-     FIRE_EVENTS_PATH, FIRE_EVENTS_GDF_PATH, AIR_QUALITY_REPORT_PATH,
+     FIRE_EVENTS_PATH, AIR_QUALITY_REPORT_PATH,
 )
     
 
@@ -124,10 +124,8 @@ gdf_proj = gdf.to_crs('EPSG:3310')
 gdf['perimeter_km'] = gdf_proj.geometry.length / 1000
 gdf['area_km2']= gdf_proj.geometry.area / 1e6
 
-gdf.to_file(FIRE_EVENTS_GDF_PATH, driver="GeoJSON")
-
 # merge everything
-fire_events = fire_events.merge(gdf[['event_id', 'perimeter_km', 'area_km2']], on='event_id')
+fire_events = fire_events.merge(gdf[['event_id', 'perimeter_km', 'area_km2', 'geometry']], on='event_id')
 
 fire_events.to_csv(FIRE_EVENTS_PATH)
 
