@@ -20,7 +20,6 @@ from src.config import (
 ## preprocessing variables
 AQI_DROP_COLUMNS = ['Source', 
                     'POC', 
-                    'Local Site Name', 
                     'Daily Obs Count', 
                     'Percent Complete', 
                     'AQS Parameter Code', 
@@ -36,6 +35,7 @@ AQI_DROP_COLUMNS = ['Source',
 
 AQI_MERGE_COLUMNS = ['Date', 
                     'Site ID', 
+                    'Local Site Name', 
                     'County', 
                     'State',
                     'Site Longitude',
@@ -155,7 +155,7 @@ df_all = df_pm25.merge(df_o3, on=AQI_MERGE_COLUMNS, how='outer', suffixes=['_PM2
 
 # step 2.3 : compute and filter on missing values
 df_all['n_missing_values'] = df_all.apply(lambda row: row.isnull().sum(), axis=1)
-df_aqi = df_all.loc[df_all['n_missing_values'] <= 6].reset_index() # keep rows where at least 2 metrics
+df_aqi = df_all.loc[df_all['n_missing_values'] <= 9].reset_index() # keep rows where at least 2 metrics
 
 # step 2.4 : compute global AQI value based on max AQI_pollutant value
 df_aqi['max_AQI'] = df_aqi.apply(lambda row: get_max_AQI(row), axis =1 )
@@ -166,5 +166,6 @@ df_aqi['Units_NO2'] = 'ppb'
 df_aqi['Units_CO'] = 'ppm'
 
 df_aqi = df_aqi.fillna('N/A')
+df_aqi['Date'] = pd.to_datetime(df_aqi['Date'])
 
 df_aqi.to_csv(AIR_QUALITY_REPORT_PATH)
