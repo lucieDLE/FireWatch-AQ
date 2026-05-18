@@ -53,26 +53,37 @@ def get_max_AQI(row):
     val_max = row[['Daily AQI Value_PM2.5', 'Daily AQI Value_O3', 'Daily AQI Value_NO2', 'Daily AQI Value_CO']].max()
     return val_max
 
+def assign_time_subgroup(group, max_gap_days=4):
+    dates = pd.to_datetime(group['acq_date']).sort_values()
+    gap = dates.diff().dt.days.fillna(0)
+    return (gap > max_gap_days).cumsum().rename('time_subgroup')
+
+def is_fire(row):
+    # based on https://appliedsciences.nasa.gov/sites/default/files/2023-03/D1P5_FireDetection_Final.pdf
+    # see slide 9-10 for classification
+    bool_fire = ((row['daynight'] == 'D') & (row['diff'] > 25) ) | ((row['daynight'] == 'N') & (row['diff'] > 10) )
+    return int(bool_fire)
+
 ### ------ step 1: fire preprocess ------ ###
 
 df_fire = pd.read_csv(FIRE_RAW_PATH)
 
-# 1.a remove non-vegetation fire + low confidence datapoints
+# 1.a remove non-vegetation fire + low confidence datapoints + compute fire boolean
 df_fire_cleaned = df_fire.loc[ df_fire['type']==0]
 df_fire_cleaned = df_fire_cleaned.loc[ df_fire['confidence'] != 'l']
 
+df_fire_cleaned['diff'] = df_fire_cleaned['brightness'] - df_fire_cleaned['bright_t31']
+df_fire_cleaned['isFire'] = df_fire_cleaned.apply(lambda row: is_fire(row), axis=1)
+
+df_fire_cleaned.to_csv(FIRE_PIXEL_PATH)
+df_fire_cleaned = df_fire_cleaned.loc[df_fire_cleaned['isFire'] == 1]
 
 # 1.b  cluster data into spatial location and time --> gather into events
-
 # Pass 1 — spatial clustering on full year (eps ~5km)
 spatial = DBSCAN(eps=0.05, min_samples=3).fit(df_fire_cleaned[['latitude', 'longitude']])
 df_fire_cleaned['spatial_cluster'] = spatial.labels_
 
 # Pass 2 — within each spatial cluster, split by gaps > 5 days
-def assign_time_subgroup(group, max_gap_days=4):
-    dates = pd.to_datetime(group['acq_date']).sort_values()
-    gap = dates.diff().dt.days.fillna(0)
-    return (gap > max_gap_days).cumsum().rename('time_subgroup')
 
 df_fire_cleaned['time_subgroup'] = (
     df_fire_cleaned[df_fire_cleaned['spatial_cluster'] >= 0]
