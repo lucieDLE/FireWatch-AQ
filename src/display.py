@@ -44,6 +44,16 @@ AQI_CMAP = [
 ]
 
 
+AQI_BANDS_COLOR = [
+    (0,   50,  'rgba(0, 228, 0, 0.25)'),      # Good
+    (51,  100, 'rgba(255, 255, 0, 0.30)'),    # Moderate
+    (101, 150, 'rgba(255, 126, 0, 0.25)'),    # Unhealthy for Sensitive
+    (151, 200, 'rgba(255, 0, 0, 0.25)'),      # Unhealthy
+    (201, 300, 'rgba(143, 63, 151, 0.25)'),   # Very Unhealthy
+    (301, 400, 'rgba(143, 63, 151, 0.25)'),   # Hazardous
+
+]
+
 AQI_HOVER_TEMPLATE = (
     '<b>Air Quality Report at %{customdata[15]}</b><br>'
     '─────────────────<br>'
