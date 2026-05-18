@@ -29,6 +29,8 @@ Each CSV file contains the AQI for that specific pollutant only. The AQI scale h
 - Fires
 https://firms.modaps.eosdis.nasa.gov/download/list.php
 
+https://appliedsciences.nasa.gov/sites/default/files/2023-03/D1P5_FireDetection_Final.pdf
+slide 9-10 for pixel classification
 
 
 | Column Name  | Value   | Meaning |
