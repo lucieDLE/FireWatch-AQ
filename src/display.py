@@ -76,3 +76,16 @@ AQI_REPORT_COLS = [
     'Daily Max 8-hour CO Concentration', 'Units_CO', 'Daily AQI Value_CO',
     'Site ID', 'Local Site Name'
 ]
+
+FIRE_REPORT_COLS = [
+    'acq_date', 'perimeter_km', 'area_km2', 'max_frp'
+]
+
+FIRE_HOVER_TEMPLATE = (
+    '<b> FIRE STATS on %{customdata[0]}</b><br>'
+    '─────────────────<br>'
+    '<b>Perimeter: %{customdata[1]} km</b><br>'
+    '<b>Estimated burnt area :</b> %{customdata[2]} km2<br>'
+    '<b>Max FRP :</b> %{customdata[3]} MW<br>'
+    '<extra></extra>'
+)
