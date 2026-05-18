@@ -5,8 +5,6 @@ ROOT = Path(__file__).parent.parent
 AREA_LON = (-125.0, -113.0)
 AREA_LAT = (32.0, 43.0)
 
-CENTER_LAT = sum(AREA_LAT) / 2
-CENTER_LON = sum(AREA_LON) / 2
 
 # Raw data
 FIRE_RAW_PATH = ROOT / 'data/raw/fire_archive_J1V-C2_749152.csv'
@@ -29,3 +27,6 @@ BASELINE_END     = '2025-08-16'
 
 FIRE_LAT= (36.6, 37.2)
 FIRE_LON = (-119.2, -118.9)
+
+CENTER_LAT = sum(FIRE_LAT) / 2
+CENTER_LON = sum(FIRE_LON) / 2
