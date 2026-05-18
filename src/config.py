@@ -19,6 +19,7 @@ CARBON_MONOXIDE_PATH = ROOT / 'data/raw/ad_viz_plotval_data-CO.csv'
 
 # Processed data (output of preprocess.py)
 FIRE_EVENTS_PATH           = ROOT / 'data/processed/fire_event_2025.csv'
+FIRE_PIXEL_PATH            = ROOT / 'data/processed/fire_archive_pixels_2025_cleaned.csv'
 AIR_QUALITY_REPORT_PATH    = ROOT / 'data/processed/input_report_2025.csv'
 
 EVENT_START      = '2025-08-24'
@@ -26,3 +27,5 @@ EVENT_END        = '2025-09-18'
 BASELINE_START   = '2025-08-10'
 BASELINE_END     = '2025-08-16'
 
+FIRE_LAT= (36.6, 37.2)
+FIRE_LON = (-119.2, -118.9)
