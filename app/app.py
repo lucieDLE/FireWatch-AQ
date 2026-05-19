@@ -157,6 +157,42 @@ def make_fire_perimeter_plot(gdf):
 
 
 # ============================================================================
+# DATA LOADING
+# ============================================================================
+
+df_aqi = pd.read_csv(AIR_QUALITY_REPORT_PATH)
+df_fire = pd.read_csv(FIRE_PIXEL_PATH)
+
+site_1 = WATCH_SITES['Garnet - Site 1']
+site_2 = WATCH_SITES['Garnet - Site 2'] 
+
+
+df_fire_event = df_fire.loc[ (df_fire['acq_date'] > EVENT_START) & (df_fire['acq_date'] < EVENT_END) ]
+
+df_aqi_event = df_aqi.loc[ (df_aqi['Date'] > EVENT_START) & (df_aqi['Date'] < EVENT_END) ]
+df_aqi_event = df_aqi_event.fillna('N/A')
+
+df_event_site_1 = df_aqi_event.loc[df_aqi_event['Site ID'].isin(site_1)].copy()
+df_event_site_2 = df_aqi_event.loc[df_aqi_event['Site ID'].isin(site_2)].copy()
+
+unique_dates = sorted(df_aqi_event['Date'].unique())
+
+df_fire_event = df_fire_event.loc[ (df_fire_event['latitude'] > FIRE_LAT[0]) & (df_fire_event['latitude'] < FIRE_LAT[1]) ]
+df_fire_event = df_fire_event.loc[ (df_fire_event['longitude'] > FIRE_LON[0]) & (df_fire_event['longitude'] < FIRE_LON[1]) ]
+
+gdf = create_fire_gdf_stats(df_fire_event)
+
+# user selected or frame 
+SELECTED_DAY = '2025-09-08'
+
+gdf_fire_day = gdf.loc[gdf['acq_date'] == SELECTED_DAY]
+geojson_fire_dict = json.loads(gdf_fire_day.to_json())
+
+df_day_site_1 = df_event_site_1[df_event_site_1['Date'] == SELECTED_DAY]
+df_day_site_2 = df_event_site_2[df_event_site_2['Date'] == SELECTED_DAY]
+
+
+# ============================================================================
 #   
 # ============================================================================
 
