@@ -11,6 +11,7 @@ import json
 from shapely.geometry import Point
 from shapely.ops import unary_union
 import plotly.graph_objects as go
+import plotly.express as px
 import dash
 from dash import html, dcc
 import dash_bootstrap_components as dbc
@@ -113,13 +114,15 @@ def make_site_ellipse(df_day, color_line, color_fill, name, padding=0.15):
         showlegend=True,
     )
 
-def make_aq_time_series(df, sites, site_name):
-
+def make_aq_time_series(df, sites, site_name, colors):
     fig = go.Figure()
-    for site_id in sites:
+    for idx, site_id in enumerate(sites):
         df_site = df.loc[df['Site ID'] == site_id] # Long Beach
-        fig.add_trace(go.Scatter(x=df_site['Date'], y=df_site['max_AQI'], name=df_site.iloc[0]['Local Site Name']))
-
+        fig.add_trace(go.Scatter(x=df_site['Date'], 
+                                y=df_site['max_AQI'], 
+                                name=df_site.iloc[0]['Local Site Name'], 
+                                line_color = colors[idx], 
+                                ))
 
     for y0, y1, color in AQI_BANDS_COLOR:
         fig.add_hrect(y0=y0, y1=y1, fillcolor=color, line_width=0, layer='below')
@@ -154,8 +157,8 @@ def make_fire_perimeter_plot(gdf):
         lon=perim_lons,
         mode='lines',
         fill='toself',
-        fillcolor='rgba(255, 100, 0, 0.15)',
-        line=dict(width=1.5, color='rgba(255, 100, 0, 0.85)'),
+        fillcolor="rgba(253,141,60,0.2)",
+        line=dict(width=1.5, color=COLORS_MAP['FIRE'][1]),
         name='Fire perimeter',
         customdata=cd_vals,
         hovertemplate=FIRE_HOVER_TEMPLATE,
@@ -164,8 +167,16 @@ def make_fire_perimeter_plot(gdf):
 def make_burning_area_plot(gdf):
 
     fig =  go.Figure([
-                        go.Scatter( x=gdf['acq_date'], y=gdf['area_km2'], name = 'Burning Area (km2)'),
-                        go.Scatter( x=gdf['acq_date'], y=gdf['perimeter_km'], name= 'Fire Perimeter (km)'),
+                        go.Scatter( x=gdf['acq_date'], 
+                                    y=gdf['area_km2'], 
+                                    name = 'Burning Area (km2)',
+                                    line_color = COLORS_MAP['FIRE'][0], 
+                                    ),
+                        go.Scatter( x=gdf['acq_date'], 
+                                    y=gdf['perimeter_km'], 
+                                    name= 'Fire Perimeter (km)',
+                                    line_color = COLORS_MAP['FIRE'][1],
+                                    ),
                     ])
 
     fig.update_layout(
@@ -222,14 +233,14 @@ df_day_site_2 = df_event_site_2[df_event_site_2['Date'] == SELECTED_DAY]
 
 
 # timeseries plots
-ts_site_1= make_aq_time_series(df_event_site_1, site_1, 'Fresno Area')
-ts_site_2 = make_aq_time_series(df_event_site_2, site_2, 'Sierra National Forest - EAST')
+ts_site_1= make_aq_time_series(df_event_site_1, site_1, 'Fresno Area', colors=COLORS_MAP['FRESNO'])
+ts_site_2 = make_aq_time_series(df_event_site_2, site_2, 'Sierra National Forest - EAST', colors=COLORS_MAP['SIERRA'])
 burning_area = make_burning_area_plot(gdf)
 
 aq_fire_overlay = go.Figure(data=[
-                                make_site_ellipse(df_day_site_1, 'rgba(50,160,50,0.9)', 'rgba(50,160,50,0.12)',
+                                make_site_ellipse(df_day_site_1, 'rgba(33,167,8,0.9)', 'rgba(33,167,8,0.12)',
                                                 'Monitoring Site 1: Fresno', padding=0.2),
-                                make_site_ellipse(df_day_site_2, 'rgba(20,60,140,0.9)', 'rgba(20,60,140,0.08)',
+                                make_site_ellipse(df_day_site_2, 'rgba(8,115,148,0.9)', 'rgba(8,115,148,0.08)',
                                                 'Monitoring Site 2: Sierra National Forest (EAST)', padding=0.3),
                                 make_aq_hotspot_fig(df_day_site_1, 'Fresno', show_colorbar=True, show_legend=True),
                                 make_aq_hotspot_fig(df_day_site_2, 'Sierra National Forest (EAST)', show_colorbar=False, show_legend=False),
