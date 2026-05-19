@@ -162,6 +162,13 @@ def make_fire_perimeter_plot(gdf):
         hovertemplate=FIRE_HOVER_TEMPLATE,
     )
 
+def make_burning_area_plot(gdf):
+
+    return go.Figure([
+                        go.Scatter( x=gdf['acq_date'], y=gdf['area_km2'], name = 'Burning Area (km2)'),
+                        go.Scatter( x=gdf['acq_date'], y=gdf['perimeter_km'], name= 'Fire Perimeter (km)'),
+                    ])
+
 
 # ============================================================================
 # DATA LOADING
@@ -203,6 +210,54 @@ df_day_site_1 = df_event_site_1[df_event_site_1['Date'] == SELECTED_DAY]
 df_day_site_2 = df_event_site_2[df_event_site_2['Date'] == SELECTED_DAY]
 
 
+# timeseries plots
+ts_site_1= make_aq_time_series(df_event_site_1, site_1, 'Fresno Area')
+ts_site_2 = make_aq_time_series(df_event_site_2, site_2, 'Sierra National Forest - EAST')
+fire_perimeter = make_burning_area_plot(gdf)
+
+aq_fire_overlay = go.Figure(data=[
+                                make_site_ellipse(df_day_site_1, 'rgba(50,160,50,0.9)', 'rgba(50,160,50,0.12)',
+                                                'Monitoring Site 1: Fresno', padding=0.2),
+                                make_site_ellipse(df_day_site_2, 'rgba(20,60,140,0.9)', 'rgba(20,60,140,0.08)',
+                                                'Monitoring Site 2: Sierra National Forest (EAST)', padding=0.3),
+                                make_aq_hotspot_fig(df_day_site_1, 'Fresno', show_colorbar=True, show_legend=True),
+                                make_aq_hotspot_fig(df_day_site_2, 'Sierra National Forest (EAST)', show_colorbar=False, show_legend=False),
+                                make_fire_perimeter_plot(gdf_fire_day),
+                                ],)
+
+
+aq_fire_overlay.update_layout(
+                            height=500, 
+                            width= 800,
+                            title=dict(
+                                text=f'Fire Perimeter & Air Quality — {SELECTED_DAY}',
+                                font=dict(size=15), x=0.5, xanchor='center',
+                            ),
+                            mapbox=dict(
+                                style='carto-positron',
+                                layers=[dict(
+                                    sourcetype='geojson',
+                                    source=geojson_fire_dict,
+                                    type='fill',
+                                    color='rgba(255, 100, 0, 0.2)',
+                                    below='traces',
+                                )],
+                                center=dict(lat=CENTER_LAT, lon=CENTER_LON),
+                                zoom=7,
+                            ),
+                            margin=dict(l=0, r=90, t=50, b=10),
+                            legend=dict(
+                                bgcolor='rgba(255, 255, 255, 0.85)',
+                                bordercolor='rgba(180, 180, 180, 0.8)',
+                                borderwidth=1,
+                                x=0.01,
+                                y=0.99,
+                                xanchor='left',
+                                yanchor='top',
+                                font=dict(size=12),
+                                itemsizing='constant',
+                            ),
+)
 
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
