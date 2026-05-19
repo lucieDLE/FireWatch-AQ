@@ -43,15 +43,38 @@ AQI_CMAP = [
     [1.0, 'maroon']       # [301-400]
 ]
 
+COLORS_MAP = { 'SIERRA':[
+                        "rgb(100,186,170)", 
+                        "rgb(30,52,48)",
+                        "rgb(84,178,252)", 
+                        "rgb(21,122,72)", 
+                        "rgb(8,115,148)"
+                        ],
+                
+                'FRESNO':[
+                        "rgb(1,45,3)", 
+                        "rgb(33,167,8)", 
+                        "rgb(102,78,42)", 
+                        "rgb(166,195,99)", 
+                        "rgb(101,129,20)", 
+                        "rgb(214,121,11)", 
+                        "rgb(168,140,101)"
+                        ],
+
+                'FIRE':[ 
+                    "rgba(253,141,60,1.0)",
+                    "rgba(217,71,1,1.0)",    
+                ]
+            }
+
 
 AQI_BANDS_COLOR = [
-    (0,   50,  'rgba(0, 228, 0, 0.25)'),      # Good
-    (51,  100, 'rgba(255, 255, 0, 0.30)'),    # Moderate
-    (101, 150, 'rgba(255, 126, 0, 0.25)'),    # Unhealthy for Sensitive
-    (151, 200, 'rgba(255, 0, 0, 0.25)'),      # Unhealthy
-    (201, 300, 'rgba(143, 63, 151, 0.25)'),   # Very Unhealthy
-    (301, 400, 'rgba(143, 63, 151, 0.25)'),   # Hazardous
-
+    (0,   50,  'rgba(0, 228, 0, 0.15)'),      # Good
+    (51,  100, 'rgba(255, 255, 0, 0.20)'),    # Moderate
+    (101, 150, 'rgba(255, 126, 0, 0.15)'),    # Unhealthy for Sensitive
+    (151, 200, 'rgba(255, 0, 0, 0.15)'),      # Unhealthy
+    (201, 300, 'rgba(143, 63, 151, 0.15)'),   # Very Unhealthy
+    (301, 400, 'rgba(143, 63, 151, 0.15)'),   # Hazardous
 ]
 
 AQI_HOVER_TEMPLATE = (
