@@ -11,7 +11,7 @@ import geopandas as gpd
 from shapely.geometry import Point
 from shapely.ops import unary_union
 from src.config import (
-     FIRE_RAW_PATH, 
+     FIRE_RAW_PATH, FIRE_PIXEL_PATH,
      OZONE_PATH, NITROGEN_DIOXIDE_PATH, CARBON_MONOXIDE_PATH, PM25_PATH,
      FIRE_EVENTS_PATH, AIR_QUALITY_REPORT_PATH,
 )
