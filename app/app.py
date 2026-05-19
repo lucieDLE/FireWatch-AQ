@@ -272,6 +272,34 @@ aq_fire_overlay.update_layout(
 
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app.layout = html.Div(
+                    [  
+                        html.Div("Fire Watch and Air Quality Assessment", className="app-header"),
+                        dcc.Tabs([
+                            dcc.Tab(label='Tab 1', 
+                                    children=[
+                                        dbc.Row([
+                                            # left panel
+                                            dbc.Col(
+                                            html.Div([
+                                                    dbc.Col(dcc.Graph(figure=aq_fire_overlay)),
+                                                    dbc.Col(dcc.Graph(figure=burning_area))
+                                                ])
+                                            ),
+                                            
+                                            # right panel
+                                            dbc.Col(
+                                                html.Div([
+                                                    dbc.Col(dcc.Graph(figure=ts_site_2)),
+                                                    dbc.Col(dcc.Graph(figure=ts_site_1))
+                                                ])
+                                            )
+                                        ])
+                                    ]),
+                            dcc.Tab(label='Tab 2', children=[ html.Div('coming soon') ]),
+                        ])
+                    ],
+                )
 
 if __name__ == '__main__':
     app.run(debug=True)
