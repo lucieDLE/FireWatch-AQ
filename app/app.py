@@ -129,10 +129,9 @@ def make_aq_time_series(df, sites, site_name):
         title=dict(text=f'Air Quality Index at Selected Sites near: {site_name}'),
         xaxis=dict(title_text="Date"),
         yaxis=dict(title_text="Air Quality Index (AQI)"),
-        legend=dict(title_text='Monitored Sites',
-                    orientation="h",
-                    yanchor="bottom",
-                    y=-0.35,
+        legend=dict(orientation="h",
+                    yanchor="top",
+                    y=1.0,
                     xanchor="center",
                     x=0.5,
                     maxheight=0.1,
@@ -164,10 +163,22 @@ def make_fire_perimeter_plot(gdf):
 
 def make_burning_area_plot(gdf):
 
-    return go.Figure([
+    fig =  go.Figure([
                         go.Scatter( x=gdf['acq_date'], y=gdf['area_km2'], name = 'Burning Area (km2)'),
                         go.Scatter( x=gdf['acq_date'], y=gdf['perimeter_km'], name= 'Fire Perimeter (km)'),
                     ])
+
+    fig.update_layout(
+        title=dict(text=f'Estimated Burning Area and Fire Perimeter'),
+        xaxis=dict(title_text="Date"),
+        legend=dict(orientation="h",
+                    yanchor="top",
+                    y=1.0,
+                    xanchor="left",
+                    maxheight=0.1,
+                    ),
+    )
+    return fig
 
 
 # ============================================================================
@@ -213,7 +224,7 @@ df_day_site_2 = df_event_site_2[df_event_site_2['Date'] == SELECTED_DAY]
 # timeseries plots
 ts_site_1= make_aq_time_series(df_event_site_1, site_1, 'Fresno Area')
 ts_site_2 = make_aq_time_series(df_event_site_2, site_2, 'Sierra National Forest - EAST')
-fire_perimeter = make_burning_area_plot(gdf)
+burning_area = make_burning_area_plot(gdf)
 
 aq_fire_overlay = go.Figure(data=[
                                 make_site_ellipse(df_day_site_1, 'rgba(50,160,50,0.9)', 'rgba(50,160,50,0.12)',
