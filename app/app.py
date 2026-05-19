@@ -127,9 +127,16 @@ def make_aq_time_series(df, sites, site_name):
 
     fig.update_layout(
         title=dict(text=f'Air Quality Index at Selected Sites near: {site_name}'),
-        xaxis=dict(title=dict(text="Date")),
-        yaxis=dict(title=dict(text="Air Quality Index (AQI)")),
-        legend=dict(title=dict(text='Monitored Sites')),
+        xaxis=dict(title_text="Date"),
+        yaxis=dict(title_text="Air Quality Index (AQI)"),
+        legend=dict(title_text='Monitored Sites',
+                    orientation="h",
+                    yanchor="bottom",
+                    y=-0.35,
+                    xanchor="center",
+                    x=0.5,
+                    maxheight=0.1,
+                    ),
 
     )
     return fig
@@ -182,6 +189,10 @@ df_fire_event = df_fire_event.loc[ (df_fire_event['longitude'] > FIRE_LON[0]) & 
 
 gdf = create_fire_gdf_stats(df_fire_event)
 
+# ============================================================================
+#  BUILD FIGURES
+# ============================================================================
+
 # user selected or frame 
 SELECTED_DAY = '2025-09-08'
 
@@ -192,14 +203,9 @@ df_day_site_1 = df_event_site_1[df_event_site_1['Date'] == SELECTED_DAY]
 df_day_site_2 = df_event_site_2[df_event_site_2['Date'] == SELECTED_DAY]
 
 
-# ============================================================================
-#   
-# ============================================================================
-
 
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-app.layout = html.Div("Hello world")
 
 if __name__ == '__main__':
     app.run(debug=True)
