@@ -18,7 +18,7 @@ import dash_bootstrap_components as dbc
 
 from src.config import *
 from src.display import *
-
+from dash import Input, Output, callback
 # ============================================================================
 # DATA FUNCTIONS 
 # ============================================================================
@@ -307,18 +307,35 @@ def textCard(title="TITLE", text='some text'):
     )
 
 # ============================================================================
+#  DASH CALLBACKS
+# ============================================================================
+
+@callback(Output("page-wrapper", "className"), Input("switch-theme", "value"),)
+def change_theme(value):
+    return "dark" if value else ""
+
+# ============================================================================
 #  APP LAYOUT
 # ============================================================================
 
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.FONT_AWESOME])
+
+
+dark_mode_switch =  html.Span([
+        dbc.Label(className="fa fa-moon", html_for="switch"),
+        dbc.Switch(id="switch-theme", value=True, className="d-inline-block ms-1", persistence=True),
+        dbc.Label(className="fa fa-sun", html_for="switch"),
+    ])
+
 app.layout = dbc.Container( fluid=True,
-                            style={'backgroundColor': '#f4f6f9', 'minHeight': '100vh', 'padding': '2'},
-                            children=[  
-                                html.H4(
-                                    "Fire Watch and Air Quality Assessment", 
-                                    className='app-header'
-                                    ),
+                            id="page-wrapper",
+                            children=[ 
+                                html.Div([
+                                    html.H4("FireWatch — Air Quality Assessment"),
+                                    dark_mode_switch,
+                                ],className='app-header'
+                                ),
                                 dcc.Tabs([
                                     dcc.Tab(
                                         label='Tab 1',
