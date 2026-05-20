@@ -28,8 +28,8 @@ WATCH_SITES =  {
         60270002, #WMRC/NCORE
         60271023, #Bishop Tribe EMO
         60271033, #Stn.1 Big Pine Paiute site
-        60271018, #Lone Pine Paiute-Shoshone Reservation
         60271003, #Keeler
+        60271018, #Lone Pine Paiute-Shoshone Reservation
 
     ]
 }
