@@ -359,9 +359,9 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.
 
 
 dark_mode_switch =  html.Span([
-        dbc.Label(className="fa fa-moon", html_for="switch"),
-        dbc.Switch(id="switch-theme", value=True, className="d-inline-block ms-1", persistence=True),
         dbc.Label(className="fa fa-sun", html_for="switch"),
+        dbc.Switch(id="switch-theme", value=True, className="d-inline-block ms-1", persistence=True),
+        dbc.Label(className="fa fa-moon", html_for="switch"),
     ])
 
 app.layout = dbc.Container( fluid=True,
