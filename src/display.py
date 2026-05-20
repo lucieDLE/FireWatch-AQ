@@ -43,28 +43,30 @@ AQI_CMAP = [
     [1.0, 'maroon']       # [301-400]
 ]
 
-COLORS_MAP = { 'SIERRA':[
-                        "rgb(100,186,170)", 
-                        "rgb(30,52,48)",
-                        "rgb(84,178,252)", 
-                        "rgb(21,122,72)", 
-                        "rgb(8,115,148)"
-                        ],
-                
-                'FRESNO':[
-                        "rgb(1,45,3)", 
-                        "rgb(33,167,8)", 
-                        "rgb(102,78,42)", 
-                        "rgb(166,195,99)", 
-                        "rgb(101,129,20)", 
-                        "rgb(214,121,11)", 
-                        "rgb(168,140,101)"
-                        ],
+COLORS_MAP = {
+                'SIERRA': [
+                    "rgb(120,155,185)",   # steel blue
+                    "rgb(72,105,140)",    # slate blue
+                    "rgb(170,195,215)",   # pale blue
+                    "rgb(90,125,155)",    # muted blue
+                    "rgb(50,80,115)",     # deep navy
+                ],
 
-                'FIRE':[ 
-                    "rgba(253,141,60,1.0)",
-                    "rgba(217,71,1,1.0)",    
-                ]
+                'FRESNO': [
+                    "rgb(34,120,50)",     # forest green
+                    "rgb(80,170,80)",     # mid green
+                    "rgb(140,195,90)",    # light green
+                    "rgb(20,80,35)",      # deep green
+                    "rgb(100,150,60)",    # olive green
+                    "rgb(170,210,120)",   # pale green
+                    "rgb(55,130,65)",     # sage green
+                ],
+
+                # Fire perimeter traces
+                'FIRE': [
+                    "rgba(244,140,6,1.0)",   # amber — burning area
+                    "rgba(201,68,0,1.0)",    # flame — perimeter
+                ],
             }
 
 
