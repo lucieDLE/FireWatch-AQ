@@ -67,7 +67,8 @@ def make_aq_hotspot_fig(df_day, site_name, show_colorbar=True, show_legend=True)
         title=dict(text='AQI', font=dict(size=11)),
         thickness=14,
         len=0.5,
-        x=1.01,
+        x=.99,
+        xanchor='right',
         y=0.5,
         tickvals=[0, 50, 100, 150, 200, 300, 400],
     ) if show_colorbar else {}
@@ -114,7 +115,7 @@ def make_site_ellipse(df_day, color_line, color_fill, name, padding=0.15):
         showlegend=True,
     )
 
-def make_aq_time_series(df, sites, site_name, colors):
+def make_aq_time_series(df, sites, site_name, colors, legend_entrywidth=0.33):
     fig = go.Figure()
     for idx, site_id in enumerate(sites):
         df_site = df.loc[df['Site ID'] == site_id] # Long Beach
@@ -129,17 +130,24 @@ def make_aq_time_series(df, sites, site_name, colors):
 
 
     fig.update_layout(
-        title=dict(text=f'Air Quality Index at Selected Sites near: {site_name}'),
+        title=dict(
+            text=f'Air Quality Index at Selected Sites near: {site_name}',
+            yanchor='top', 
+            y=0.95,
+        ),
         xaxis=dict(title_text="Date"),
         yaxis=dict(title_text="Air Quality Index (AQI)"),
-        legend=dict(orientation="h",
-                    yanchor="top",
-                    y=1.0,
-                    xanchor="center",
-                    x=0.5,
-                    maxheight=0.1,
-                    ),
-
+        legend=dict(
+            orientation="h",
+            yanchor='bottom',
+            xanchor='left',   
+            y=1.02,
+            x=0,
+            maxheight=0.12,
+            entrywidthmode='fraction',
+            entrywidth=legend_entrywidth,
+        ),
+        margin=dict(l=10, r=10, t=100, b=10),
     )
     return fig
 
@@ -180,14 +188,15 @@ def make_burning_area_plot(gdf):
                     ])
 
     fig.update_layout(
-        title=dict(text=f'Estimated Burning Area and Fire Perimeter'),
+        title=dict(text=f'Estimated Burning Area and Fire Perimeter', yanchor='top', y=0.95,),
         xaxis=dict(title_text="Date"),
         legend=dict(orientation="h",
                     yanchor="top",
-                    y=1.0,
+                    y=1.2,
                     xanchor="left",
                     maxheight=0.1,
                     ),
+        margin=dict(l=10, r=10, t=75, b=10),
     )
     return fig
 
@@ -249,8 +258,6 @@ aq_fire_overlay = go.Figure(data=[
 
 
 aq_fire_overlay.update_layout(
-                            height=500, 
-                            width= 800,
                             title=dict(
                                 text=f'Fire Perimeter & Air Quality — {SELECTED_DAY}',
                                 font=dict(size=15), x=0.5, xanchor='center',
@@ -267,7 +274,7 @@ aq_fire_overlay.update_layout(
                                 center=dict(lat=CENTER_LAT, lon=CENTER_LON),
                                 zoom=7,
                             ),
-                            margin=dict(l=0, r=90, t=50, b=10),
+                            margin=dict(l=10, r=10, t=50, b=10),
                             legend=dict(
                                 bgcolor='rgba(255, 255, 255, 0.85)',
                                 bordercolor='rgba(180, 180, 180, 0.8)',
@@ -281,36 +288,85 @@ aq_fire_overlay.update_layout(
                             ),
 )
 
+# ============================================================================
+#  APP FUNCTIONS/ VARIABLES
+# ============================================================================
+def graphCard(figure, height='400px'):
+    return html.Div(
+        dcc.Graph(figure=figure, style={'height': height}),
+        style={
+            'backgroundColor': 'white',
+            'borderRadius': '8px',
+            'boxShadow': '0 1px 4px rgba(0,0,0,0.1)',
+            'padding': '8px',
+            'marginBottom': '14px',
+        }
+    )
+
+
+def textCard(title="TITLE", text='some text'):
+    return html.Div(
+        dbc.Card([
+            dbc.CardHeader(title),
+            dbc.CardBody(dcc.Markdown(text)),
+        ]),
+        style={'marginBottom': '14px'},
+    )
+
+TAB_STYLE = {'fontWeight': '500', 'color': '#555', 'marginBottom': '14px',
+}
+TAB_SELECTED = {'fontWeight': '700', 'color': '#2c3e50', 'borderTop': '3px solid #2c3e50', 'marginBottom': '14px',
+}
+# ============================================================================
+#  APP LAYOUT
+# ============================================================================
+
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-app.layout = html.Div(
-                    [  
-                        html.Div("Fire Watch and Air Quality Assessment", className="app-header"),
-                        dcc.Tabs([
-                            dcc.Tab(label='Tab 1', 
-                                    children=[
-                                        dbc.Row([
-                                            # left panel
-                                            dbc.Col(
-                                            html.Div([
-                                                    dbc.Col(dcc.Graph(figure=aq_fire_overlay)),
-                                                    dbc.Col(dcc.Graph(figure=burning_area))
+app.layout = dbc.Container( fluid=True,
+                            style={'backgroundColor': '#f4f6f9', 'minHeight': '100vh', 'padding': '0'},
+                            children=[  
+                                html.H4(
+                                    "Fire Watch and Air Quality Assessment", 
+                                    style = {
+                                        'backgroundColor': '#2c3e50',
+                                        'color': 'white',
+                                        'padding': '16px 24px',
+                                        'margin': 0,
+                                        'fontWeight': '600',
+                                        'letterSpacing': '0.5px',
+                                        }
+                                    ),
+                                dcc.Tabs([
+                                    dcc.Tab(
+                                        label='Tab 1',
+                                        style=TAB_STYLE, 
+                                        selected_style=TAB_SELECTED,
+                                        children=[
+                                            dbc.Row([
+                                                # left panel
+                                                dbc.Col([
+                                                    textCard("Tab Description", "description Text"),
+                                                    graphCard(aq_fire_overlay, '480px'), 
+                                                    graphCard(burning_area, '320px'),
+                                                ]),
+                                                
+                                                # right panel
+                                                dbc.Col([
+                                                    graphCard(ts_site_2, '400px'),
+                                                    graphCard(ts_site_1, '400px'),
+                                                    textCard("Tab Analysis", "analysis text"),
                                                 ])
-                                            ),
-                                            
-                                            # right panel
-                                            dbc.Col(
-                                                html.Div([
-                                                    dbc.Col(dcc.Graph(figure=ts_site_2)),
-                                                    dbc.Col(dcc.Graph(figure=ts_site_1))
-                                                ])
-                                            )
-                                        ])
-                                    ]),
-                            dcc.Tab(label='Tab 2', children=[ html.Div('coming soon') ]),
-                        ])
-                    ],
-                )
+                                            ])
+                                        ]),
+                                    dcc.Tab(
+                                        label='Tab 2', 
+                                        style=TAB_STYLE, 
+                                        selected_style=TAB_SELECTED,
+                                        children=[ html.Div('coming soon') ]),
+                                    ])
+                                ],
+                            )
 
 if __name__ == '__main__':
     app.run(debug=True)
