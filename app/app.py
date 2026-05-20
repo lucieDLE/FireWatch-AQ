@@ -200,6 +200,50 @@ def make_burning_area_plot(gdf):
     )
     return fig
 
+def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict, mapbox_style='carto-positron'):
+    fig = go.Figure(data=[
+            make_site_ellipse(df_day_site_1, 'rgba(34,120,50,0.9)', 'rgba(34,120,50,0.10)',
+                            'Monitoring Site 1: Fresno', padding=0.2),
+            make_site_ellipse(df_day_site_2, 'rgba(72,105,140,0.9)', 'rgba(72,105,140,0.08)',
+                            'Monitoring Site 2: Sierra National Forest (EAST)', padding=0.3),
+            make_aq_hotspot_fig(df_day_site_1, 'Fresno', show_colorbar=True, show_legend=True),
+            make_aq_hotspot_fig(df_day_site_2, 'Sierra National Forest (EAST)', show_colorbar=False, show_legend=False),
+            make_fire_perimeter_plot(gdf_fire_day),
+            ],)
+
+
+    fig.update_layout(
+            title=dict(
+                text=f'Fire Perimeter & Air Quality — {SELECTED_DAY}',
+                font=dict(size=15), x=0.5, xanchor='center',
+            ),
+            mapbox=dict(
+                style=mapbox_style,
+                layers=[dict(
+                    sourcetype='geojson',
+                    source=geojson_fire_dict,
+                    type='fill',
+                    color='rgba(255, 100, 0, 0.2)',
+                    below='traces',
+                )],
+                center=dict(lat=CENTER_LAT, lon=CENTER_LON),
+                zoom=7,
+            ),
+            margin=dict(l=10, r=10, t=50, b=10),
+            legend=dict(
+                bgcolor='rgba(255, 255, 255, 0.85)',
+                bordercolor='rgba(180, 180, 180, 0.8)',
+                borderwidth=1,
+                x=0.01,
+                y=0.99,
+                xanchor='left',
+                yanchor='top',
+                font=dict(size=12),
+                itemsizing='constant',
+            ),
+        )
+    return fig
+
 
 # ============================================================================
 # DATA LOADING
@@ -245,55 +289,15 @@ df_day_site_2 = df_event_site_2[df_event_site_2['Date'] == SELECTED_DAY]
 ts_site_1= make_aq_time_series(df_event_site_1, site_1, 'Fresno Area', colors=COLORS_MAP['FRESNO'])
 ts_site_2 = make_aq_time_series(df_event_site_2, site_2, 'Sierra National Forest - EAST', colors=COLORS_MAP['SIERRA'])
 burning_area = make_burning_area_plot(gdf)
+aq_fire_overlay = make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict,)
 
-aq_fire_overlay = go.Figure(data=[
-                                make_site_ellipse(df_day_site_1, 'rgba(34,120,50,0.9)', 'rgba(34,120,50,0.10)',
-                                                'Monitoring Site 1: Fresno', padding=0.2),
-                                make_site_ellipse(df_day_site_2, 'rgba(72,105,140,0.9)', 'rgba(72,105,140,0.08)',
-                                                'Monitoring Site 2: Sierra National Forest (EAST)', padding=0.3),
-                                make_aq_hotspot_fig(df_day_site_1, 'Fresno', show_colorbar=True, show_legend=True),
-                                make_aq_hotspot_fig(df_day_site_2, 'Sierra National Forest (EAST)', show_colorbar=False, show_legend=False),
-                                make_fire_perimeter_plot(gdf_fire_day),
-                                ],)
-
-
-aq_fire_overlay.update_layout(
-                            title=dict(
-                                text=f'Fire Perimeter & Air Quality — {SELECTED_DAY}',
-                                font=dict(size=15), x=0.5, xanchor='center',
-                            ),
-                            mapbox=dict(
-                                style='carto-positron',
-                                layers=[dict(
-                                    sourcetype='geojson',
-                                    source=geojson_fire_dict,
-                                    type='fill',
-                                    color='rgba(255, 100, 0, 0.2)',
-                                    below='traces',
-                                )],
-                                center=dict(lat=CENTER_LAT, lon=CENTER_LON),
-                                zoom=7,
-                            ),
-                            margin=dict(l=10, r=10, t=50, b=10),
-                            legend=dict(
-                                bgcolor='rgba(255, 255, 255, 0.85)',
-                                bordercolor='rgba(180, 180, 180, 0.8)',
-                                borderwidth=1,
-                                x=0.01,
-                                y=0.99,
-                                xanchor='left',
-                                yanchor='top',
-                                font=dict(size=12),
-                                itemsizing='constant',
-                            ),
-)
 
 # ============================================================================
 #  APP FUNCTIONS/ VARIABLES
 # ============================================================================
-def graphCard(figure, height='400px'):
+def graphCard(fig_id, figure, height='400px'):
     return html.Div(
-        dcc.Graph(figure=figure, style={'height': height}),
+        dcc.Graph(id=fig_id, figure=figure, style={'height': height}),
         className="chart-card"
     )
 
@@ -310,9 +314,41 @@ def textCard(title="TITLE", text='some text'):
 #  DASH CALLBACKS
 # ============================================================================
 
-@callback(Output("page-wrapper", "className"), Input("switch-theme", "value"),)
+def apply_theme(fig, dark_mode):
+    """Apply template + legend colors — called after figure is built."""
+    fig.update_layout(
+        template='plotly_dark' if dark_mode else 'plotly_white',
+        legend=dict(
+            bgcolor='rgba(30,14,5,0.85)'    if dark_mode else 'rgba(255,255,255,0.85)',
+            bordercolor='rgba(100,50,20,0.8)' if dark_mode else 'rgba(180,180,180,0.8)',
+            font=dict(color='#ffd6b0' if dark_mode else '#3d0c00'),
+        ),
+    )
+    return fig
+
+@callback(Output("page-wrapper", "className"), Input("switch-theme", "value"))
 def change_theme(value):
     return "dark" if value else ""
+
+@callback(
+    Output("overlay-map-graph",  "figure"),
+    Output("ts-site1-graph",     "figure"),
+    Output("ts-site2-graph",     "figure"),
+    Output("burning-graph",      "figure"),
+    Input("switch-theme", "value"),
+)
+def update_figure_theme(dark_mode):
+    mapbox_style = 'carto-darkmatter' if dark_mode else 'carto-positron'
+
+    fig_map     = make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict, mapbox_style=mapbox_style)
+    fig_site1   = make_aq_time_series(df_event_site_1, site_1, 'Fresno Area', colors=COLORS_MAP['FRESNO'])
+    fig_site2   = make_aq_time_series(df_event_site_2, site_2, 'Sierra National Forest - EAST', colors=COLORS_MAP['SIERRA'])
+    fig_burning = make_burning_area_plot(gdf)
+
+    for fig in [fig_map, fig_site1, fig_site2, fig_burning]:
+        apply_theme(fig, dark_mode)
+
+    return fig_map, fig_site1, fig_site2, fig_burning
 
 # ============================================================================
 #  APP LAYOUT
@@ -344,14 +380,14 @@ app.layout = dbc.Container( fluid=True,
                                                 # left panel
                                                 dbc.Col([
                                                     textCard("Tab Description", "description Text"),
-                                                    graphCard(aq_fire_overlay, '480px'), 
-                                                    graphCard(burning_area, '320px'),
+                                                    graphCard(fig_id="overlay-map-graph", figure=aq_fire_overlay, height='480px'), 
+                                                    graphCard(fig_id="burning-graph", figure=burning_area, height='320px'),
                                                 ]),
                                                 
                                                 # right panel
                                                 dbc.Col([
-                                                    graphCard(ts_site_2, '400px'),
-                                                    graphCard(ts_site_1, '400px'),
+                                                    graphCard(fig_id="ts-site1-graph", figure=ts_site_1, height='400px'),
+                                                    graphCard(fig_id="ts-site2-graph", figure=ts_site_2, height='400px'),
                                                     textCard("Tab Analysis", "analysis text"),
                                                 ])
                                             ])
