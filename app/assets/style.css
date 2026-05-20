@@ -3,50 +3,51 @@
    Toggle by adding class "dark" to #page-wrapper
    ============================================================ */
 
-/* TODO: find better color palette */
-
 /* ── Light theme variables (default) ─────────────────────── */
 :root {
-    --bg-page:          #f5ede8;
-    --bg-header:        #3d0c00;
-    --bg-tab:           #fde8d8;
-    --bg-tab-selected:  #fff4ee;
-    --bg-card:          #fffaf7;
-    --bg-card-header:   #c94400;
-    --bg-card-body:     #fff4ee;
+    --bg-page:          #fae2c6;
+    --bg-header:        #db671a;
+    --bg-tab-selected:  #fae2c6;
+    --bg-tab:           #f9c38c;
+    --bg-card:          white;
+    --bg-card-header:   #f66c1c;
+    --bg-card-body:     #f9c38c;
 
-    --text-header:      #ffd6b0;
-    --text-tab:         #7a2e00;
-    --text-tab-selected:#3d0c00;
+    --text-header:      #fff4ee;
+    --text-tab:         #621708;
+    --text-tab-selected:#621708;
     --text-card-header: #fff4ee;
-    --text-card-body:   #3d0c00;
-    --text-main:        #3d0c00;
+    --text-card-body:   #220901;
+    --text-main:        #220901;
 
-    --accent:           #c94400;
-    --border-color:     #e8cfc4;
+    --accent:           #F48C06;
+    --border-color:     #db671a;
     --shadow:           rgba(100, 30, 0, 0.12);
+    --Dash-Fill-Inverse-Strong: #fff4ee;
 }
 
 /* ── Dark theme variable overrides ───────────────────────── */
 .dark {
-    --bg-page:          #120800;
-    --bg-header:        #0d0500;
-    --bg-tab:           #1a0900;
-    --bg-tab-selected:  #2a1208;
-    --bg-card:          #1e0e05;
-    --bg-card-header:   #7a2500;
-    --bg-card-body:     #1e0e05;
+    --bg-page:          #1a0900;
+    --bg-header:        #360c04;
+    --bg-tab:           #111111;
+    --bg-tab-selected:  #1a0900;
+    --bg-card:          #111111;
+    --bg-card-header:   #621708;
+    --bg-card-body:     #360c04;
 
-    --text-header:      #ffd6b0;
-    --text-tab:         #f48c06;
-    --text-tab-selected:#ffd6b0;
-    --text-card-header: #ffd6b0;
-    --text-card-body:   #f0c9a0;
-    --text-main:        #f0c9a0;
+    --text-header:      #F48C06;
+    --text-tab:         #F48C06;
+    --text-tab-selected:#F48C06;
+    --text-card-header: #f9c38c;
+    --text-card-body:   white;
+    --text-main:        white;
 
-    --accent:           #f48c06;
-    --border-color:     #3d1a0a;
+    --accent:           #621708;
+    --border-color:     #360c04;
     --shadow:           rgba(0, 0, 0, 0.4);
+
+    --Dash-Fill-Inverse-Strong: #621708;
 }
 
 /* ── Base ─────────────────────────────────────────────────── */
@@ -79,7 +80,13 @@ body {
     font-weight: 500;
     color: var(--text-tab);
     background-color: var(--bg-tab);
-    border-bottom: none;
+    border: none;
+}
+/* ── Tab content padding ──────────────────────────────────── */
+.tab-content {
+    padding: 16px;
+    background-color: var(--bg-page);
+    
 }
 
 .tab--selected {
@@ -123,8 +130,4 @@ body {
     padding: 12px 14px;
 }
 
-    /* ── Tab content padding ──────────────────────────────────── */
-.tab-content {
-    padding: 16px;
-    background-color: #f5ede8;
-}
+
