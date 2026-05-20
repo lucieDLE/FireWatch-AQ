@@ -1,0 +1,72 @@
+
+body {
+    background-color: #f5ede8;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+.app-header {
+    background-color: #3d0c00;
+    color: #ffd6b0;
+    padding: 14px 24px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+}
+
+/* ── Tabs ─────────────────────────────────────────────────── */
+.tab {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #7a2e00;
+    padding: 12px 18px;
+    background-color: #fde8d8;
+    border-bottom: none;
+}
+
+.tab--selected {
+    color: #3d0c00;
+    font-weight: 700;
+    border-top: 3px solid #c94400 !important;
+    background-color: #fff4ee;
+}
+
+/* ── Cards ────────────────────────────────────────────────── */
+.chart-card {
+    background-color: #fffaf7;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(100, 30, 0, 0.12);
+    padding: 8px;
+    margin-bottom: 16px;
+}
+
+.card {
+    margin-bottom: 16px;
+    border: 1px solid #e8cfc4;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: #c94400;
+    color: #fff4ee;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 7px 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.card-body {
+    background-color: #fff4ee;
+    font-size: 0.82rem;
+    padding: 12px 14px;
+    color: #3d0c00;
+}
+
+/* ── Tab content padding ──────────────────────────────────── */
+.tab-content {
+    padding: 16px;
+    background-color: #f5ede8;
+}

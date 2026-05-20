@@ -131,7 +131,7 @@ def make_aq_time_series(df, sites, site_name, colors, legend_entrywidth=0.33):
 
     fig.update_layout(
         title=dict(
-            text=f'Air Quality Index at Selected Sites near: {site_name}',
+            text=f'AQI at selected sites near: {site_name}',
             yanchor='top', 
             y=0.95,
         ),
@@ -247,9 +247,9 @@ ts_site_2 = make_aq_time_series(df_event_site_2, site_2, 'Sierra National Forest
 burning_area = make_burning_area_plot(gdf)
 
 aq_fire_overlay = go.Figure(data=[
-                                make_site_ellipse(df_day_site_1, 'rgba(33,167,8,0.9)', 'rgba(33,167,8,0.12)',
+                                make_site_ellipse(df_day_site_1, 'rgba(34,120,50,0.9)', 'rgba(34,120,50,0.10)',
                                                 'Monitoring Site 1: Fresno', padding=0.2),
-                                make_site_ellipse(df_day_site_2, 'rgba(8,115,148,0.9)', 'rgba(8,115,148,0.08)',
+                                make_site_ellipse(df_day_site_2, 'rgba(72,105,140,0.9)', 'rgba(72,105,140,0.08)',
                                                 'Monitoring Site 2: Sierra National Forest (EAST)', padding=0.3),
                                 make_aq_hotspot_fig(df_day_site_1, 'Fresno', show_colorbar=True, show_legend=True),
                                 make_aq_hotspot_fig(df_day_site_2, 'Sierra National Forest (EAST)', show_colorbar=False, show_legend=False),
@@ -294,13 +294,7 @@ aq_fire_overlay.update_layout(
 def graphCard(figure, height='400px'):
     return html.Div(
         dcc.Graph(figure=figure, style={'height': height}),
-        style={
-            'backgroundColor': 'white',
-            'borderRadius': '8px',
-            'boxShadow': '0 1px 4px rgba(0,0,0,0.1)',
-            'padding': '8px',
-            'marginBottom': '14px',
-        }
+        className="chart-card"
     )
 
 
@@ -310,13 +304,8 @@ def textCard(title="TITLE", text='some text'):
             dbc.CardHeader(title),
             dbc.CardBody(dcc.Markdown(text)),
         ]),
-        style={'marginBottom': '14px'},
     )
 
-TAB_STYLE = {'fontWeight': '500', 'color': '#555', 'marginBottom': '14px',
-}
-TAB_SELECTED = {'fontWeight': '700', 'color': '#2c3e50', 'borderTop': '3px solid #2c3e50', 'marginBottom': '14px',
-}
 # ============================================================================
 #  APP LAYOUT
 # ============================================================================
@@ -324,24 +313,15 @@ TAB_SELECTED = {'fontWeight': '700', 'color': '#2c3e50', 'borderTop': '3px solid
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.layout = dbc.Container( fluid=True,
-                            style={'backgroundColor': '#f4f6f9', 'minHeight': '100vh', 'padding': '0'},
+                            style={'backgroundColor': '#f4f6f9', 'minHeight': '100vh', 'padding': '2'},
                             children=[  
                                 html.H4(
                                     "Fire Watch and Air Quality Assessment", 
-                                    style = {
-                                        'backgroundColor': '#2c3e50',
-                                        'color': 'white',
-                                        'padding': '16px 24px',
-                                        'margin': 0,
-                                        'fontWeight': '600',
-                                        'letterSpacing': '0.5px',
-                                        }
+                                    className='app-header'
                                     ),
                                 dcc.Tabs([
                                     dcc.Tab(
                                         label='Tab 1',
-                                        style=TAB_STYLE, 
-                                        selected_style=TAB_SELECTED,
                                         children=[
                                             dbc.Row([
                                                 # left panel
@@ -361,8 +341,6 @@ app.layout = dbc.Container( fluid=True,
                                         ]),
                                     dcc.Tab(
                                         label='Tab 2', 
-                                        style=TAB_STYLE, 
-                                        selected_style=TAB_SELECTED,
                                         children=[ html.Div('coming soon') ]),
                                     ])
                                 ],
