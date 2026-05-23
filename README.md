@@ -1,49 +1,75 @@
-# FireWatch-AQ
-Fire and Smoke Air Quality Assessment
+# 🔥 FireWatch-AQ — Fire & Smoke Air Quality Assessment
 
-## Project Overview
+An interactive geospatial platform that examines how wildfire smoke degrades air quality, combining satellite fire detection data with ground-level air quality readings around a single wildfire event in Southern California.
 
-An interactive geospatial platform focused on a single wildfire event (Southern California), combining satellite fire detection data with ground-level air quality readings. 
-The project goal is to understand how wildfire smoke degrades air quality — specifically: how far smoke travels (spatial) and how long AQ
-takes to recover (temporal).
+The project addresses two core questions:
+- **Spatial:** How far does wildfire smoke travel from the ignition zone?
+- **Temporal:** How long does it take for air quality to recover after a fire?
 
-**Target event:** Palisades Fire in January of 2025, Los Angeles County
-**Why:** Dense AQ monitoring network, major fire events
+**Target events:** Major Southern California fire sites — including Gifford, Madre, and Garnet — selected for their dense air quality monitoring network and the severity of recent fire activity.
 
-Note: LA as a major city, has a worse AQI than other areas. To really evaluate impact, should either pick another region or take this into account
+---
 
+## Data Sources
 
+### A. Air Quality (EPA AQS)
 
-## Data Sources 
+Both air quality datasets are sourced from the [U.S. Environmental Protection Agency (EPA) Air Quality System (AQS)](https://aqs.epa.gov/aqsweb/airdata/FileFormats.html), which aggregates measurements from ground-based monitoring stations across the United States and its territories.
 
-- Air quality and metrics:
-https://aqs.epa.gov/aqsweb/airdata/download_files.html
+#### A.1 — Annual Summary Data
 
-by year/county --> select all sites in CA
+**File:** `annual_conc_by_monitor_2025.csv`  
+**Source:** [EPA AQS Download Portal](https://aqs.epa.gov/aqsweb/airdata/download_files.html)
 
+Each physical monitor appears in multiple rows because (a) the same measurement is evaluated against several historical regulatory standards, and (b) the same raw hourly data is aggregated at different time windows (1-hour, 3-hour, 24-hour). After filtering to the current active regulatory standard per pollutant, the working dataset reduces to **3,743 monitor records across 6 pollutants**:
 
-Each CSV file contains the AQI for that specific pollutant only. The AQI scale has different breakpoints and formulas for each pollutant, so the same "raw" conditions produce different AQI numbers depending on which pollutant you're calculating it for. For example, on the same day at the same monitor:
+| Pollutant | Standard retained | Sample duration |
+|-----------|-------------------|-----------------|
+| Ozone | Ozone 8-hour 2015 | 8-HR RUN AVG BEGIN HOUR |
+| PM2.5 | PM25 24-hour 2024 | 24-HR BLK AVG |
+| PM10 | PM10 24-hour 2006 | 24-HR BLK AVG |
+| NO2 | NO2 1-hour 2010 | 1 HOUR |
+| SO2 | SO2 1-hour 2010 | 1 HOUR |
+| CO | CO 8-hour 1971 | 8-HR RUN AVG END HOUR |
 
+#### A.2 — Daily Data
 
+**Source:** [EPA Outdoor Air Quality Data — Download Daily Data](https://www.epa.gov/outdoor-air-quality-data/download-daily-data)
 
-- Fires
-https://firms.modaps.eosdis.nasa.gov/download/list.php
+Daily records are downloaded by year and county, selecting all California monitoring sites for 2025. All files are then aggregated into a single CSV where each monitor has a value (potentially empty) for each pollutant. A **Max AQI** column is computed as the maximum AQI observed across all pollutants for a given day and location.
 
-https://appliedsciences.nasa.gov/sites/default/files/2023-03/D1P5_FireDetection_Final.pdf
-slide 9-10 for pixel classification
+> To Download the data: select California, one pollutant, and all sites.
 
+---
 
-| Column Name  | Value   | Meaning |
-|--------------|---------|--------------|
-| `brightness` | 295.12 | Temperature in Kelvin. |
-| `bright_t31` | 276.88 | Temperature in Kelvin. This measures the "background" temperature of the land surface. The difference between `brightness` and `bright_t31` is actually what the algorithm uses to detect fires  |
-| `confidence` | `n`, `l`, `h` | low, nominal, and high. Detection reliability n and h are good.|
-| `frp` | 0.65 | Fire radiative power in megawatts |
-| `daynight` | `D` or `N` | Daytime or Nighttime. Nighttime detections are often more reliable since no solar reflection |
-| `type` | 0, 2 or 3 | Inferred hot spot type: 0-> vegetation fire, 1-> volcano, 2-> other static land source, ->3 offshore. Filter only on 0. |
+### B. Fire Detections (NASA FIRMS / VIIRS)
 
+Fire detections are sourced from [NASA's FIRMS (Fire Information for Resource Management System)](https://firms.modaps.eosdis.nasa.gov/download/), using the **VIIRS instrument aboard the NOAA-20 (N20) satellite** at 375 m spatial resolution. The dataset spans approximately one year of observations from late 2024 through early 2026, with a primary focus on 2025.
 
-sources: https://www.earthdata.nasa.gov/data/tools/firms/active-fire-data-attributes-modis-viirs
+> Downloading requires registering your email on the [FIRMS download portal](https://firms.modaps.eosdis.nasa.gov/download/). A full description of all data columns is available in the [FIRMS Active Fire Data Attributes reference](https://www.earthdata.nasa.gov/data/tools/firms/active-fire-data-attributes-modis-viirs).
 
+#### Derived Columns
 
-https://document.airnow.gov/technical-assistance-document-for-the-reporting-of-daily-air-quailty.pdf
+Two fields are computed prior to analysis:
+
+| Column | Description |
+|--------|-------------|
+| `diff` | `brightness − bright_t31`: the difference between the VIIRS I4 mid-infrared band (~3.74 µm) and the I5 longwave infrared band (~11.45 µm). This isolates the thermal anomaly caused by active combustion — i.e., a thermal contrast index. |
+| `isFire` | Binary fire confirmation flag, derived from `diff` using day/night-specific thresholds (see below). |
+
+#### `isFire` Threshold Logic
+
+The `isFire` flag is computed following the methodology described in [NASA's fire detection training materials (slides 9–10)](https://appliedsciences.nasa.gov/sites/default/files/2023-03/D1P5_FireDetection_Final.pdf). Daytime detections require a higher threshold (25 K vs. 10 K at night) because solar heating raises background surface temperatures, compressing the thermal contrast signal.
+
+```
+isFire = (daynight == 'D' AND diff > 25) OR (daynight == 'N' AND diff > 10)
+```
+
+#### Data Cleaning Steps
+
+The raw dataset is filtered through the following steps in order:
+
+1. **Confidence filter** — retain only `High` and `Nominal` confidence detections.
+2. **Fire type filter** — retain vegetation fires only (`type == 0`).
+3. **Thermal contrast filter** — retain only detections where `isFire == 1`, removing false positives that passed the confidence and type filters but lack sufficient thermal anomaly.
+4. **FRP filter** — retain only detections with `frp >= 5 MW`. The FRP distribution is heavily right-skewed with a large concentration of detections below 5 MW, which correspond to marginal or near-noise fire signals.
