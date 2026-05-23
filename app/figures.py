@@ -1,11 +1,37 @@
 import pandas as pd 
 import plotly.graph_objects  as go
 from plotly.subplots import make_subplots
+import plotly.express as px
+# made from :
+# from https://colorbrewer2.org/
 
-line_colors = ['rgba(250,140,85,1.0)', 'rgba(250,140,85,1.0)', 'rgba(227,74,51,1.0)', 'rgba(179,0,0,1.0)', 'rgba(100,0,0,1.0)']
+line_colors = [
+    'rgba(250,140,85,1.0)',
+    'rgba(250,140,85,1.0)',
+    'rgba(250,100,70,1.0)',
+    'rgba(227,74,51,1.0)',
+    'rgba(179,0,0,1.0)',
+    'rgba(100,0,0,1.0)'
+    ]
 
-colors_full = ['rgba(254,240,217,0.8)', 'rgba(253,204,138,0.8)', 'rgba(252,141,89,0.8)', 'rgba(227,74,51,0.8)', 'rgba(179,0,0,0.8)', ]
-colors_light = ['rgba(254,240,217,0.4)', 'rgba(253,204,138,0.4)', 'rgba(252,141,89,0.4)', 'rgba(227,74,51,0.4)', 'rgba(179,0,0,0.4)', ]
+colors_full = [
+    'rgba(254,240,217,0.8)',
+    'rgba(253,204,138,0.8)',
+    'rgba(253,187,132,0.8)',
+    'rgba(252,141,89,0.8)',
+    'rgba(227,74,51,0.8)',
+    'rgba(179,0,0,0.8)', 
+    ]
+
+
+colors_light = [
+    'rgba(254,240,217,0.4)',
+    'rgba(253,204,138,0.4)'
+    'rgba(253,187,132,0.4)',
+    'rgba(252,141,89,0.4)',
+    'rgba(227,74,51,0.4)',
+    'rgba(179,0,0,0.4)', 
+    ]
 
 names = ["Very Small", "Small", "Medium", "Large", "Extreme"]
 legend = [
@@ -185,4 +211,145 @@ def make_scan_track_distribution(df):
     fig.update_yaxes(title_text='Number of pixels')
     fig.update_xaxes(title_text='pixel size')
 
+    return fig
+
+
+def make_pollutant_distribution(df):
+
+    fig = go.Figure()
+    fig = px.histogram(df, x="State Name",color='Parameter Name',color_discrete_sequence=colors_full[::-1],height=400)
+
+    fig.update_layout(
+        template='plotly_dark',
+        barmode='stack', 
+        xaxis={'categoryorder':'total descending'},
+        title_text='Pollutant Distribution across states ',
+    )
+    fig.update_xaxes(tickangle=45)
+    return fig
+
+
+def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA', 'TX', 'AZ']):
+
+    df_no_exceed = df_county.loc[df_county['primary_exceedance'] == 0]
+    df_exceed = df_county.loc[df_county['primary_exceedance'] >0]
+
+    sizeref = 2. * df_county['primary_exceedance'].max() / (22 ** 2)
+    sizeref_2 = 2. * df_no_exceed['observation'].max() / (22 ** 2)
+
+    fig = go.Figure()
+    # --- State fills (drawn first so scatter points appear on top) ---
+    fig.add_trace(go.Choropleth(
+        name='Worst states',
+        locationmode='USA-states',
+        locations=list_worst,
+        z=[1, 1, 1],
+        colorscale=[[0, 'rgba(120,70,150,0.)'], [1, 'rgba(120,70,150,0.)']],
+        showlegend=False,
+        showscale=False,
+        marker_line_color=line_colors[-1],
+        marker_line_width=2,
+    ))
+
+    fig.add_trace(go.Choropleth(
+        name='Cleanest states',
+        locationmode='USA-states',
+        locations=list_best,
+        z=[1, 1, 1],
+        colorscale=[[0, 'rgba(44,162,95,0.)'], [1, 'rgba(44,162,95,0.)']],
+        showscale=False,
+        showlegend=False,
+        marker_line_color=line_colors[1],
+        marker_line_width=2,
+    ))
+
+
+    # --- County-level scatter points ---
+    fig.add_trace(go.Scattergeo(
+        name='Exceedance recorded',
+        locationmode='USA-states',
+        lon=df_exceed['longitude'],
+        lat=df_exceed['latitude'],
+        customdata=df_exceed[['County Name', 'State Name', 'primary_exceedance', 'observation']].values,
+        hovertemplate=(
+            '<b>%{customdata[0]}</b>, %{customdata[1]}<br>'
+            'Exceedances recorded: %{customdata[2]:.0f}<br>'
+            'Total observations: %{customdata[3]:,.0f}'
+            '<extra></extra>'
+        ),
+        marker=dict(
+            size=df_exceed['primary_exceedance'] / sizeref,
+            line_color=line_colors[-1],
+            line_width=.5,
+            sizemode='area',
+            color=colors_full[-1],
+            opacity=1.0,
+        ),
+    ))
+
+    fig.add_trace(go.Scattergeo(
+        name='No exceedance',
+        locationmode='USA-states',
+        lon=df_no_exceed['longitude'],
+        lat=df_no_exceed['latitude'],
+        customdata=df_no_exceed[['County Name', 'State Name', 'primary_exceedance', 'observation']].values,
+        hovertemplate=(
+            '<b>%{customdata[0]}</b>, %{customdata[1]}<br>'
+            'Exceedances recorded: 0<br>'
+            'Total observations: %{customdata[3]:,.0f}'
+            '<extra></extra>'
+        ),
+        marker=dict(
+            size=df_no_exceed['observation'] / sizeref_2,
+            line_color=line_colors[0],
+            line_width=.8,
+            sizemode='area',
+            color=colors_full[0],
+            opacity=.8,
+        ),
+    ))
+
+    # # --- Custom square legend entries for state fills ---
+    fig.add_trace(go.Scatter(
+        x=[None], y=[None],
+        mode='markers',
+        name='Worst states (CA, TX, AZ)',
+        marker=dict(symbol='square', size=12, color="rgba(120,70,150,0.)", line=dict(color=line_colors[-1], width=1.5)),
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=[None], y=[None],
+        mode='markers',
+        name='Best states (WA, ID, MS)',
+        marker=dict(symbol='square', size=12, color="rgba(120,70,150,0.)", line=dict(color=line_colors[1], width=1.5)),
+    ))
+
+
+    fig.update_layout(
+        # template = 'plotly_dark',
+        template = 'ggplot2',
+
+        title=dict(
+            text='County-level Pollutant Exceedances<br>(Click legend to toggle traces)',
+            x=0.5,
+            xanchor='center',
+        ),
+        showlegend=True,
+        legend=dict(
+            borderwidth=0,
+            x=.75,
+            y=.5,
+            xanchor='right',
+        ),
+        geo=dict(
+            scope='usa',
+            subunitcolor='rgb(100,100,100)',
+            domain=dict(x=[0, 1], y=[0, 1]),
+        ),
+        margin=dict(l=0, r=0, t=40, b=0),
+        xaxis=dict(visible=False),
+        yaxis=dict(visible=False),
+        plot_bgcolor='rgba(0,0,0,0)',
+    )
+    fig.update_xaxes()
     return fig
