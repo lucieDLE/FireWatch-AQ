@@ -234,6 +234,9 @@ def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA',
     df_no_exceed = df_county.loc[df_county['primary_exceedance'] == 0]
     df_exceed = df_county.loc[df_county['primary_exceedance'] >0]
 
+    df_no_exceed = df_no_exceed.loc[df_no_exceed['observation'] > 1000]
+    df_exceed = df_exceed.loc[df_exceed['primary_exceedance'] > 5]
+
     sizeref = 2. * df_county['primary_exceedance'].max() / (22 ** 2)
     sizeref_2 = 2. * df_no_exceed['observation'].max() / (22 ** 2)
 
@@ -247,8 +250,8 @@ def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA',
         colorscale=[[0, 'rgba(120,70,150,0.)'], [1, 'rgba(120,70,150,0.)']],
         showlegend=False,
         showscale=False,
-        marker_line_color=line_colors[-1],
-        marker_line_width=2,
+        marker_line_color=colors_full[-2],
+        marker_line_width=1.5,
     ))
 
     fig.add_trace(go.Choropleth(
@@ -259,8 +262,8 @@ def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA',
         colorscale=[[0, 'rgba(44,162,95,0.)'], [1, 'rgba(44,162,95,0.)']],
         showscale=False,
         showlegend=False,
-        marker_line_color=line_colors[1],
-        marker_line_width=2,
+        marker_line_color="#006d2c",
+        marker_line_width=1.5,
     ))
 
 
@@ -279,10 +282,10 @@ def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA',
         ),
         marker=dict(
             size=df_exceed['primary_exceedance'] / sizeref,
-            line_color=line_colors[-1],
-            line_width=.5,
+            line_color=line_colors[-3],
+            line_width=.8,
             sizemode='area',
-            color=colors_full[-1],
+            color=colors_full[-3],
             opacity=1.0,
         ),
     ))
@@ -301,10 +304,10 @@ def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA',
         ),
         marker=dict(
             size=df_no_exceed['observation'] / sizeref_2,
-            line_color=line_colors[0],
-            line_width=.8,
+            line_color='#006d2c',
+            line_width=.5,
             sizemode='area',
-            color=colors_full[0],
+            color="#a8ddb5",
             opacity=.8,
         ),
     ))
@@ -326,8 +329,8 @@ def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA',
 
 
     fig.update_layout(
-        # template = 'plotly_dark',
-        template = 'ggplot2',
+        template = 'plotly_dark',
+        # template = 'ggplot2',
 
         title=dict(
             text='County-level Pollutant Exceedances<br>(Click legend to toggle traces)',
