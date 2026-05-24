@@ -5,7 +5,24 @@ import plotly.express as px
 # made from :
 # from https://colorbrewer2.org/
 
-line_colors = [
+green_colors = [
+"#c7e9c0",
+"#a1d99b",
+"#74c476",
+"#41ab5d",
+"#238b45",
+"#005a32",
+    ]
+line_greens = [
+"#a1d99b",
+"#74c476",
+"#41ab5d",
+"#238b45",
+"#005a32",
+"#00441b"
+    ]
+
+line_reds = [
     'rgba(250,140,85,1.0)',
     'rgba(250,140,85,1.0)',
     'rgba(250,100,70,1.0)',
@@ -14,7 +31,7 @@ line_colors = [
     'rgba(100,0,0,1.0)'
     ]
 
-colors_full = [
+red_colors = [
     'rgba(254,240,217,0.8)',
     'rgba(253,204,138,0.8)',
     'rgba(253,187,132,0.8)',
@@ -23,15 +40,6 @@ colors_full = [
     'rgba(179,0,0,0.8)', 
     ]
 
-
-colors_light = [
-    'rgba(254,240,217,0.4)',
-    'rgba(253,204,138,0.4)'
-    'rgba(253,187,132,0.4)',
-    'rgba(252,141,89,0.4)',
-    'rgba(227,74,51,0.4)',
-    'rgba(179,0,0,0.4)', 
-    ]
 
 names = ["Very Small", "Small", "Medium", "Large", "Extreme"]
 legend = [
@@ -60,9 +68,8 @@ def make_fire_category_repartition(df, df_cleaned):
             name='Raw',
             legendgroup='Raw',
             showlegend=(idx == 0),
-            fillcolor=colors_light[idx],
-            line=dict(color=line_colors[idx]),
-
+            fillcolor=green_colors[idx+1],
+            line=dict(color=line_greens[idx+1]),
             marker_size=3, line_width=1,
             jitter=1.0, whiskerwidth=0.2,
         ), row=1, col=idx + 1)
@@ -74,9 +81,8 @@ def make_fire_category_repartition(df, df_cleaned):
                 name='Cleaned',
                 legendgroup='Cleaned',
                 showlegend=(idx == 1),
-                fillcolor=colors_full[idx],
-                line=dict(color=line_colors[idx]),
-
+                fillcolor=red_colors[idx+1],
+                line=dict(color=line_reds[idx+1]),
                 marker_size=3, line_width=1,
                 jitter=1.0, whiskerwidth=0.2,
             ), row=1, col=idx + 1,)
@@ -90,7 +96,7 @@ def make_fire_category_repartition(df, df_cleaned):
         fig.add_trace(go.Scatter(
             x=[None], y=[None],
             mode='markers',
-            marker=dict(size=12, color=colors_full[idx], symbol='square', line_width=1, line_color=line_colors[idx]),
+            marker=dict(size=12, color=green_colors[idx+1], symbol='square', line_width=1, line_color=line_greens[idx+1]),
             name=legend_category,
     ))
     fig.update_layout(
@@ -112,8 +118,8 @@ def make_fire_data_entry_analysis(df):
 
     # Panel 1 — Day/Night
     for label, mask, color in [
-        ('True Fire (isFire=1)',      df['isFire'] == 1, colors_full[3]),
-        ('Misclassified (isFire=0)',  df['isFire'] == 0, colors_full[1]),
+        ('True Fire (isFire=1)',      df['isFire'] == 1, red_colors[-1]),
+        ('Misclassified (isFire=0)',  df['isFire'] == 0, red_colors[2]),
     ]:
         fig.add_trace(go.Histogram(
             x=df.loc[mask, 'daynight'], name=label,
@@ -123,10 +129,10 @@ def make_fire_data_entry_analysis(df):
 
     # Panel 2 — Types (numeric x so bars land at 0/1/2/3)
     for type_val, label, color in [
-        (0, '0: Vegetation Fire', colors_full[3]),
-        (1, '1: Volcano',         colors_full[1]),
-        (2, '2: Static',          colors_full[1]),
-        (3, '3: Offshore',        colors_full[1]),
+        (0, '0: Vegetation Fire', red_colors[-1]),
+        (1, '1: Volcano',         red_colors[2]),
+        (2, '2: Static',          red_colors[2]),
+        (3, '3: Offshore',        red_colors[2]),
     ]:
         subset = df.loc[df['type'] == type_val, 'type']
         if len(subset) > 0:
@@ -138,9 +144,9 @@ def make_fire_data_entry_analysis(df):
 
     # Panel 3 — Confidence
     for conf_val, label, color in [
-        ('l', 'l: low confidence',     colors_full[1]),
-        ('n', 'n: nominal confidence', colors_full[3]),
-        ('h', 'h: high confidence',    colors_full[3]),
+        ('l', 'l: low confidence',     red_colors[2]),
+        ('n', 'n: nominal confidence', red_colors[-1]),
+        ('h', 'h: high confidence',    red_colors[-1]),
     ]:
         fig.add_trace(go.Histogram(
             x=df.loc[df['confidence'] == conf_val, 'confidence'], name=label,
@@ -149,7 +155,7 @@ def make_fire_data_entry_analysis(df):
         ), row=1, col=3)
 
     # Global top legend — Kept vs Removed
-    for label, color in [('Kept in dataset', colors_full[3]), ('Removed from dataset', colors_full[1])]:
+    for label, color in [('Kept in dataset', red_colors[-1]), ('Removed from dataset', red_colors[2])]:
         fig.add_trace(go.Scatter(
             x=[None], y=[None], mode='markers',
             marker=dict(symbol='square', size=10, color=color),
@@ -196,18 +202,17 @@ def make_fire_data_entry_analysis(df):
 
 def make_scan_track_distribution(df):
     fig = go.Figure([
-        go.Histogram(x=df["scan"], name='scan', marker_color=colors_full[2], opacity=0.8),
-        go.Histogram(x=df["track"], name='track', marker_color=colors_full[3], opacity=0.8),
+        go.Histogram(x=df["scan"], name='scan', marker_color=red_colors[2], opacity=.8),
+        go.Histogram(x=df["track"], name='track', marker_color=red_colors[-1], opacity=.8),
         ],)
 
-    fig.add_vline(x=0.6, line_width=3, line_dash="dash", line_color=line_colors[3], annotation_text='threshold')
+    fig.add_vline(x=0.6, line_width=3, line_dash="dash", line_color=line_reds[-1], annotation_text='threshold')
     fig.update_layout(
         template='plotly_dark',
         title_text='Scan and Track distribution',
         bargap=0.3, # gap between bars of adjacent location coordinates
         bargroupgap=0, # gap between bars of the same location coordinates
-
-)
+    )
     fig.update_yaxes(title_text='Number of pixels')
     fig.update_xaxes(title_text='pixel size')
 
@@ -217,7 +222,7 @@ def make_scan_track_distribution(df):
 def make_pollutant_distribution(df):
 
     fig = go.Figure()
-    fig = px.histogram(df, x="State Name",color='Parameter Name',color_discrete_sequence=colors_full[::-1],height=400)
+    fig = px.histogram(df, x="State Name",color='Parameter Name',color_discrete_sequence=red_colors[::-1],height=400)
 
     fig.update_layout(
         template='plotly_dark',
@@ -250,7 +255,7 @@ def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA',
         colorscale=[[0, 'rgba(120,70,150,0.)'], [1, 'rgba(120,70,150,0.)']],
         showlegend=False,
         showscale=False,
-        marker_line_color=colors_full[-2],
+        marker_line_color=red_colors[-2],
         marker_line_width=1.5,
     ))
 
@@ -262,7 +267,7 @@ def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA',
         colorscale=[[0, 'rgba(44,162,95,0.)'], [1, 'rgba(44,162,95,0.)']],
         showscale=False,
         showlegend=False,
-        marker_line_color="#006d2c",
+        marker_line_color=green_colors[-2],
         marker_line_width=1.5,
     ))
 
@@ -282,10 +287,10 @@ def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA',
         ),
         marker=dict(
             size=df_exceed['primary_exceedance'] / sizeref,
-            line_color=line_colors[-3],
+            line_color=line_reds[-3],
             line_width=.8,
             sizemode='area',
-            color=colors_full[-3],
+            color=red_colors[-3],
             opacity=1.0,
         ),
     ))
@@ -304,10 +309,10 @@ def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA',
         ),
         marker=dict(
             size=df_no_exceed['observation'] / sizeref_2,
-            line_color='#006d2c',
+            line_color=line_greens[-2],
             line_width=.5,
             sizemode='area',
-            color="#a8ddb5",
+            color=green_colors[2],
             opacity=.8,
         ),
     ))
@@ -317,14 +322,14 @@ def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA',
         x=[None], y=[None],
         mode='markers',
         name='Worst states (CA, TX, AZ)',
-        marker=dict(symbol='square', size=12, color="rgba(120,70,150,0.)", line=dict(color=line_colors[-1], width=1.5)),
+        marker=dict(symbol='square', size=12, color="rgba(120,70,150,0.)", line=dict(color=line_reds[-2], width=1.5)),
     ))
 
     fig.add_trace(go.Scatter(
         x=[None], y=[None],
         mode='markers',
         name='Best states (WA, ID, MS)',
-        marker=dict(symbol='square', size=12, color="rgba(120,70,150,0.)", line=dict(color=line_colors[1], width=1.5)),
+        marker=dict(symbol='square', size=12, color="rgba(120,70,150,0.)", line=dict(color=line_greens[-2], width=1.5)),
     ))
 
 
