@@ -1,4 +1,4 @@
-# 🔥 FireWatch-AQ — Fire & Smoke Air Quality Assessment
+# FireWatch-AQ: Fire & Smoke Air Quality Assessment
 
 An interactive geospatial platform that examines how wildfire smoke degrades air quality, combining satellite fire detection data with ground-level air quality readings around a single wildfire event in Southern California.
 
