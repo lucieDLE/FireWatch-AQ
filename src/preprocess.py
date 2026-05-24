@@ -239,6 +239,7 @@ def main(args):
         df_fire['diff'] = df_fire['brightness'] - df_fire['bright_t31']
         df_fire['isFire'] = df_fire.apply(lambda row: is_fire(row), axis=1)
         df_fire['fire_cat'] = df_fire['frp'].apply(lambda x: categorize_frp(x))
+        df_fire.to_csv(FIRE_RAW_PATH)
 
         df_cleaned = clean_fire_data(df_fire)
         # df_cleaned.to_csv(FIRE_PIXEL_PATH)
