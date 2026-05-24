@@ -30,3 +30,13 @@ FIRE_LON = (-119.2, -118.9)
 
 CENTER_LAT = sum(FIRE_LAT) / 2
 CENTER_LON = sum(FIRE_LON) / 2
+
+
+POLLUTANT_THRESHOLDS = {
+    "Ozone": 0.070,
+    "PM 2.5": 35 ,
+    "PM 10.5":150,
+    "NO2": 100,
+    "SO2": 75,
+    "CO": 9,
+}
