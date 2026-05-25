@@ -421,3 +421,62 @@ def compute_max_boxplot(df_stats, states_list):
     )
     fig.update_xaxes(showticklabels=False)
     return fig
+
+def make_aqi_timeserie(df_q):
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=df_q['Date'], y=df_q['Q1_smooth'],
+        mode='lines', name='10th pct',
+        line=dict(color=green_colors[2], width=0),  # invisible border
+        showlegend=False,
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=df_q['Date'], y=df_q['Q3_smooth'],
+        mode='lines', name='10th-90th range',
+        fill='tonexty',
+        fillcolor=green_colors[2].replace('0.8', '0.4'),
+        opacity=0.2,
+        line=dict(color=green_colors[0], width=0),  # invisible border
+    ))
+
+    fig.add_trace(go.Scatter(
+            x=df_q['Date'], 
+            y=df_q['Q2_smooth'],
+            mode='lines',
+            name='50th percentile',
+            line_color=line_greens[2],
+            ))
+
+    fig.add_trace(go.Scatter(
+            x=df_q['Date'], 
+            y=df_q['Q99_smooth'],
+            mode='lines',
+            name='99th percentile',
+            line_color=line_reds[2],
+            ))
+
+
+    fig.add_hline(y=101,
+        line_width=2, line_dash="dash", 
+        line_color=line_reds[-2],
+        opacity=0.8,
+        annotation_text=f'UnHealthy for sensitive groups',  
+        annotation_position="top left",)
+
+
+    fig.add_hline(y=151,
+        line_width=2, line_dash="dash", 
+        line_color=line_reds[-2],
+        opacity=0.8,
+        annotation_text=f'UnHealthy for all groups',  
+        annotation_position="top left",)
+
+    fig.update_layout(
+            template='plotly_dark',
+            title_text='AQI Variability across all sites of California ',
+            legend=dict(yanchor='top',xanchor='right', bgcolor='rgba(0,0,0,0.0)', x=0.99, 
+            ),
+        )
+    return fig
