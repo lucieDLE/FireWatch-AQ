@@ -242,7 +242,7 @@ def main(args):
         df_fire.to_csv(FIRE_RAW_PATH)
 
         df_cleaned = clean_fire_data(df_fire)
-        # df_cleaned.to_csv(FIRE_PIXEL_PATH)
+        df_cleaned.to_csv(FIRE_PIXEL_PATH)
         print("=" * 20)
 
     if not args.skip_fire:
@@ -253,7 +253,7 @@ def main(args):
         
         # merge everything
         df_events = df_events.merge(gdf_geometry[['event_id', 'perimeter_km', 'area_km2', 'geometry']], on='event_id')
-        # df_events.to_csv(FIRE_EVENTS_PATH)
+        df_events.to_csv(FIRE_EVENTS_PATH)
         print("=" * 20)
 
     ## step 2: Air quality report aggregation
@@ -261,7 +261,7 @@ def main(args):
         print("Aggregating Air Quality Metrics\n")
 
         df_aqi = combine_aqi_metrics()
-        # df_aqi.to_csv(AIR_QUALITY_REPORT_PATH)
+        df_aqi.to_csv(AIR_QUALITY_REPORT_PATH)
         print("=" * 20)
     print("=" * 60)
     print("Process Ended.")
