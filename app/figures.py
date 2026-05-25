@@ -361,3 +361,62 @@ def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA',
     )
     fig.update_xaxes()
     return fig
+
+
+def compute_max_boxplot(df_stats, states_list):
+
+    custom_colors = green_colors[0:3] + red_colors[0:3]
+    custom_lines  = line_greens[0:3] + line_reds[0:3]
+
+    fig = make_subplots(
+        rows=1, cols=len(pollutants_list),
+        column_widths=[0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+        subplot_titles=pollutants_list,)
+
+    for col_idx, pollutant in enumerate(pollutants_list):
+        for idx, state_name in enumerate(states_list):
+            df_ca_pm = df_stats.loc[(df_stats['State Name'] == state_name) & (df_stats['Parameter Name'] == pollutant)]
+            
+            df_maxes = df_ca_pm[['1st Max Value', '2nd Max Value', '3rd Max Value', '4th Max Value']]
+            np_maxes = df_maxes.to_numpy().reshape(-1)
+            if len(np_maxes) > 5:
+
+                fig.add_trace(go.Box(y=np_maxes,
+                    name=state_name,
+                    showlegend=(col_idx == 0),
+                    fillcolor=custom_colors[idx],
+                    line=dict(color=custom_lines[idx]),
+                    marker_size=3, line_width=1,
+                    whiskerwidth=0.5,
+                ), row=1, col=col_idx + 1)
+            else:
+
+                fig.add_trace(go.Box(y=np_maxes,
+                    name=state_name,
+                    boxpoints='all',
+                    showlegend=(col_idx == 0),
+                    fillcolor='rgba(255,255,255,0)', ## force opacity to 0 to remove the box
+                    line=dict(color='rgba(255,255,255,0)'),
+                    marker_size=3, line_width=1,
+                    marker=dict(color=custom_lines[idx]),
+
+                ), row=1, col=col_idx + 1)
+
+        fig.add_hline(y=POLLUTANT_THRESHOLDS[pollutant][0],
+            line_width=2, line_dash="dash", 
+            line_color=red_colors[-1],
+            showlegend=(col_idx == 0), 
+            opacity=0.8,
+            name='guideline threshold',
+            annotation_text=f'{POLLUTANT_THRESHOLDS[pollutant][0]} {POLLUTANT_THRESHOLDS[pollutant][1]}',  
+            annotation_position="top left",
+            row=1, col=col_idx + 1)
+
+
+    fig.update_layout(
+        template='plotly_dark',
+        # template='ggplot2',
+        title_text='Pollutant distribution by state',
+    )
+    fig.update_xaxes(showticklabels=False)
+    return fig
