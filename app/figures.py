@@ -229,6 +229,7 @@ def make_pollutant_distribution(df):
         barmode='stack', 
         xaxis={'categoryorder':'total descending'},
         title_text='Pollutant Distribution across states ',
+        legend=dict(yanchor='top',xanchor='right'),
     )
     fig.update_xaxes(tickangle=45)
     return fig
