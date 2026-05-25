@@ -12,7 +12,7 @@ from shapely.geometry import Point
 from shapely.ops import unary_union
 from src.config import (
      FIRE_RAW_PATH, FIRE_PIXEL_PATH,
-     OZONE_PATH, NITROGEN_DIOXIDE_PATH, CARBON_MONOXIDE_PATH, PM25_PATH,
+     OZONE_PATH, NITROGEN_DIOXIDE_PATH, PM10_PATH, PM25_PATH,
      FIRE_EVENTS_PATH, AIR_QUALITY_REPORT_PATH,
 )
     
@@ -50,7 +50,7 @@ def compute_cluster_geometry(group):
 
 
 def get_max_AQI(row):
-    val_max = row[['Daily AQI Value_PM2.5', 'Daily AQI Value_O3', 'Daily AQI Value_NO2', 'Daily AQI Value_CO']].max()
+    val_max = row[['Daily AQI Value_PM2.5', 'Daily AQI Value_O3', 'Daily AQI Value_NO2', 'Daily AQI Value_PM10']].max()
     return val_max
 
 def assign_time_subgroup(group, max_gap_days=4):
@@ -198,14 +198,14 @@ def combine_aqi_metrics():
     df_no2 = df_no2.drop(columns=AQI_DROP_COLUMNS, errors='ignore')
 
 
-    df_co = pd.read_csv(CARBON_MONOXIDE_PATH)
+    df_co = pd.read_csv(PM10_PATH)
     df_co = df_co.drop(columns=AQI_DROP_COLUMNS, errors='ignore')
 
 
     # step 2.2 : merge data
     df_all = df_pm25.merge(df_o3, on=AQI_MERGE_COLUMNS, how='outer', suffixes=['_PM2.5', '_O3']
                             ).merge(df_no2, on=AQI_MERGE_COLUMNS, how='outer'
-                            ).merge(df_co, on=AQI_MERGE_COLUMNS, how='outer', suffixes=['_NO2', '_CO']
+                            ).merge(df_co, on=AQI_MERGE_COLUMNS, how='outer', suffixes=['_NO2', '_PM10']
                             )
 
     # step 2.3 : compute and filter on missing values
@@ -218,7 +218,7 @@ def combine_aqi_metrics():
     df_aqi['Units_PM2.5'] = 'ug/m3 LC'
     df_aqi['Units_O3'] = 'ppm'
     df_aqi['Units_NO2'] = 'ppb'
-    df_aqi['Units_CO'] = 'ppm'
+    df_aqi['Units_PM'] = 'ug/m3 SC'
 
     df_aqi = df_aqi.fillna('N/A')
     df_aqi['Date'] = pd.to_datetime(df_aqi['Date'])

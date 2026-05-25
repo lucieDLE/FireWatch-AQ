@@ -11,8 +11,9 @@ FIRE_RAW_PATH = ROOT / 'data/raw/fire_archive_J1V-C2_749152.csv'
 
 OZONE_PATH = ROOT / 'data/raw/ad_viz_plotval_data-O3.csv'
 PM25_PATH = ROOT / 'data/raw/ad_viz_plotval_data-pm25.csv'
+PM10_PATH = ROOT / 'data/raw/ad_viz_plotval_data-pm10.csv'
 NITROGEN_DIOXIDE_PATH = ROOT / 'data/raw/ad_viz_plotval_data-NO2.csv'
-CARBON_MONOXIDE_PATH = ROOT / 'data/raw/ad_viz_plotval_data-CO.csv'
+# CARBON_MONOXIDE_PATH = ROOT / 'data/raw/ad_viz_plotval_data-CO.csv'
 
 
 # Processed data (output of preprocess.py)
