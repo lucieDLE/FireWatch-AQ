@@ -33,10 +33,10 @@ CENTER_LON = sum(FIRE_LON) / 2
 
 
 POLLUTANT_THRESHOLDS = {
-    "Ozone": 0.070,
-    "PM 2.5": 35 ,
-    "PM 10.5":150,
-    "NO2": 100,
-    "SO2": 75,
-    "CO": 9,
+    "Ozone": [0.070, 'ppm'],
+    "PM2.5 - Local Conditions": [35, 'ug/m3'] ,
+    "PM10 Total 0-10um STP":[150, 'ug/m3'],
+    "Nitrogen dioxide (NO2)": [100, 'ppb'],
+    "Sulfur dioxide": [75, 'ppb'],
+    "Carbon monoxide": [9, 'ppm'],
 }
