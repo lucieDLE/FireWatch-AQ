@@ -70,34 +70,34 @@ def clean_fire_data(df, max_px_thr=0.6, min_fpr_thr=5):
     tmp_df_len = len(df_cleaned)
 
     # c. remove loq confidence vals
-    df_cleaned = df_cleaned.loc[df_cleaned['isFire'] == 1]
-    print(f"Fire filtering step: {len(df) - tmp_df_len} removed")
-    tmp_df_len = len(df_cleaned)
+    # df_cleaned = df_cleaned.loc[df_cleaned['isFire'] == 1]
+    # print(f"Fire filtering step: {len(df) - tmp_df_len} removed")
+    # tmp_df_len = len(df_cleaned)
 
     # d. frp threshold
-    df_cleaned = df_cleaned.loc[df_cleaned['frp'] > min_fpr_thr]
-    print(f"FRP filtering step: {tmp_df_len - len(df_cleaned)} removed")
-    tmp_df_len = len(df_cleaned)
+    # df_cleaned = df_cleaned.loc[df_cleaned['frp'] > min_fpr_thr]
+    # print(f"FRP filtering step: {tmp_df_len - len(df_cleaned)} removed")
+    # tmp_df_len = len(df_cleaned)
     
     # e. scan/track pixels threshold
-    df_cleaned = df_cleaned.loc[(df_cleaned['scan'] < max_px_thr) & (df_cleaned['track'] < max_px_thr)]
-    print(f"pixel size filtering step: {tmp_df_len - len(df_cleaned)} removed")
-    tmp_df_len = len(df_cleaned)
+    # df_cleaned = df_cleaned.loc[(df_cleaned['scan'] < max_px_thr) & (df_cleaned['track'] < max_px_thr)]
+    # print(f"pixel size filtering step: {tmp_df_len - len(df_cleaned)} removed")
+    # tmp_df_len = len(df_cleaned)
 
     # # f. spatial duplication
-    df_cleaned['acq_datetime'] = df_cleaned['acq_date'].astype(str).str.replace('-','')
-    df_cleaned['acq_datetime'] = df_cleaned['acq_datetime'] + df_cleaned['acq_time'].astype(str).str.zfill(4)
-    df_cleaned['acq_datetime'] = pd.to_datetime(df_cleaned['acq_datetime'], format='%Y%m%d%H%M')
+    # df_cleaned['acq_datetime'] = df_cleaned['acq_date'].astype(str).str.replace('-','')
+    # df_cleaned['acq_datetime'] = df_cleaned['acq_datetime'] + df_cleaned['acq_time'].astype(str).str.zfill(4)
+    # df_cleaned['acq_datetime'] = pd.to_datetime(df_cleaned['acq_datetime'], format='%Y%m%d%H%M')
 
-    df_cleaned['lat_r'] = df_cleaned['latitude'].round(3)   # ~111m per 0.001°
-    df_cleaned['lon_r'] = df_cleaned['longitude'].round(3)
-    df_cleaned['time_bin'] = df_cleaned['acq_datetime'].dt.floor('12h')
+    # df_cleaned['lat_r'] = df_cleaned['latitude'].round(3)   # ~111m per 0.001°
+    # df_cleaned['lon_r'] = df_cleaned['longitude'].round(3)
+    # df_cleaned['time_bin'] = df_cleaned['acq_datetime'].dt.floor('12h')
 
-    df_cleaned = df_cleaned.sort_values('frp', ascending=False)\
-        .drop_duplicates(subset=['lat_r', 'lon_r', 'time_bin'])\
-        .drop(columns=['lat_r', 'lon_r', 'time_bin'])
+    # df_cleaned = df_cleaned.sort_values('frp', ascending=False)\
+    #     .drop_duplicates(subset=['lat_r', 'lon_r', 'time_bin'])\
+    #     .drop(columns=['lat_r', 'lon_r', 'time_bin'])
 
-    print(f"spatial deduplication step: {tmp_df_len - len(df_cleaned)} removed")
+    # print(f"spatial deduplication step: {tmp_df_len - len(df_cleaned)} removed")
 
     print(f"\n \n Total rows removed {len(df) - len(df_cleaned)}")
 
