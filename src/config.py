@@ -8,6 +8,7 @@ AREA_LAT = (32.0, 43.0)
 
 # Raw data
 FIRE_RAW_PATH = ROOT / 'data/raw/fire_archive_J1V-C2_749152.csv'
+FIRE_PERIMETER = ROOT / 'data/raw/WFIGS_Interagency_Perimeters_-8730464049412665158.geojson'
 
 OZONE_PATH = ROOT / 'data/raw/ad_viz_plotval_data-O3.csv'
 PM25_PATH = ROOT / 'data/raw/ad_viz_plotval_data-pm25.csv'

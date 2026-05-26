@@ -11,7 +11,7 @@ import geopandas as gpd
 from shapely.geometry import Point
 from shapely.ops import unary_union
 from src.config import (
-     FIRE_RAW_PATH, FIRE_PIXEL_PATH,
+     FIRE_RAW_PATH, FIRE_PIXEL_PATH, FIRE_PERIMETER,
      OZONE_PATH, NITROGEN_DIOXIDE_PATH, PM10_PATH, PM25_PATH,
      FIRE_EVENTS_PATH, AIR_QUALITY_REPORT_PATH,
 )
@@ -42,21 +42,12 @@ AQI_MERGE_COLUMNS = ['Date',
                     'Site Latitude'
                     ]
 
-def compute_cluster_geometry(group):
-    polys = [Point(r.longitude, r.latitude).buffer(0.002) for r in group.itertuples()]
-    union = unary_union(polys)
-    # dilate to fill gaps between satellite pixels, then erode to restore shape
-    return union.buffer(0.006).buffer(-0.004)
 
 
 def get_max_AQI(row):
     val_max = row[['Daily AQI Value_PM2.5', 'Daily AQI Value_O3', 'Daily AQI Value_NO2', 'Daily AQI Value_PM10']].max()
     return val_max
 
-def assign_time_subgroup(group, max_gap_days=4):
-    dates = pd.to_datetime(group['acq_date']).sort_values()
-    gap = dates.diff().dt.days.fillna(0)
-    return (gap > max_gap_days).cumsum().rename('time_subgroup')
 
 def is_fire(row):
     # based on https://appliedsciences.nasa.gov/sites/default/files/2023-03/D1P5_FireDetection_Final.pdf
@@ -124,68 +115,6 @@ def categorize_frp(x):
     else: #extreme
         return 4
 
-def compute_fire_geometry(df):
-    # 1.d compute perimeter of fire and burnt area estimates
-    geoms = (
-        df[df['spatial_cluster'] >= 0]
-        .groupby('event_id')
-        .apply(compute_cluster_geometry)
-        .rename('geometry')
-        .reset_index()
-    )
-
-    gdf = gpd.GeoDataFrame(geoms, geometry='geometry', crs='EPSG:4326')
-    gdf_proj = gdf.to_crs('EPSG:3310')
-    gdf['perimeter_km'] = gdf_proj.geometry.length / 1000
-    gdf['area_km2']= gdf_proj.geometry.area / 1e6
-
-    return gdf
-
-def cluster_fire_pixel(df):
-    df = df.loc[df['isFire'] == 1]
-
-    # 1.b  cluster data into spatial location and time --> gather into events
-    # Pass 1 — spatial clustering on full year (eps ~5km)
-    spatial = DBSCAN(eps=0.05, min_samples=3).fit(df[['latitude', 'longitude']])
-    df['spatial_cluster'] = spatial.labels_
-
-    # Pass 2 — within each spatial cluster, split by gaps > 5 days
-
-    df['time_subgroup'] = (
-        df[df['spatial_cluster'] >= 0]
-        .groupby('spatial_cluster', group_keys=False)
-        .apply(assign_time_subgroup)
-    )
-
-    # Combine into a single event ID
-    df['event_id'] = (
-        df['spatial_cluster'].astype(str) + '_' +
-        df['time_subgroup'].astype(str)
-    )
-
-
-    df_cluster = (
-        # if cluster are <=0, they are just one pixel -> remove them
-        df[df['spatial_cluster'] >= 0]
-        .groupby('event_id')
-        .agg(
-            pixel_count = ('frp', 'count'),
-            latitude = ('latitude', 'mean'),
-            longitude = ('longitude', 'mean'),
-            mean_frp = ('frp', 'mean'),
-            max_frp = ('frp', 'max'),
-            first_seen = ('acq_date', 'min'),
-            last_seen = ('acq_date', 'max'),
-        )
-        .reset_index())
-
-
-    # 1.c compute durations of event
-    df_cluster['duration_days'] = ( 
-        pd.to_datetime(df_cluster['last_seen']) - pd.to_datetime(df_cluster['first_seen'])
-        ).dt.days + 1
-
-    return df, df_cluster
 
 def combine_aqi_metrics():
     df_o3= pd.read_csv(OZONE_PATH)
@@ -224,6 +153,27 @@ def combine_aqi_metrics():
     df_aqi['Date'] = pd.to_datetime(df_aqi['Date'])
     return df_aqi
 
+def add_fire_name_stats(df, gdf_perimeter):
+
+    gdf_fire = gpd.GeoDataFrame(
+        df,
+        geometry=gpd.points_from_xy(df.longitude, df.latitude),
+        crs="EPSG:4326"
+    )
+
+    joined = gpd.sjoin(
+        gdf_fire, 
+        gdf_perimeter[['poly_IncidentName', 'poly_GISAcres', 'attr_FireCause', 'attr_POOState', 'attr_POOCounty', 'geometry']],
+        how='left', 
+        predicate='within'
+    )
+
+    # Points with no match → no named perimeter
+    joined['in_named_fire'] = joined['poly_IncidentName'].notna()
+    joined = joined.loc[ joined.in_named_fire == True]
+
+    return joined
+
 def main(args):
 
     ### ------ step 1: fire preprocess ------ ###
@@ -231,7 +181,13 @@ def main(args):
     print("Starting Data Processing\n")
     print("=" * 60)
 
+    print("Loading datasets\n")
     df_fire = pd.read_csv(FIRE_RAW_PATH)
+    gdf_fire_perimeter = gpd.read_file(FIRE_PERIMETER)
+
+    gdf_fire_perimeter['discovery'] = pd.to_datetime(gdf_fire_perimeter['attr_FireDiscoveryDateTime'])
+    gdf_fire_perimeter = gdf_fire_perimeter[gdf_fire_perimeter['discovery'].dt.year.isin([2025])]
+
     if not args.skip_cleaning_fire_data:
         print("Cleaning original fire dataset\n")
 
@@ -241,20 +197,12 @@ def main(args):
         df_fire['fire_cat'] = df_fire['frp'].apply(lambda x: categorize_frp(x))
         df_fire.to_csv(FIRE_RAW_PATH)
 
-        df_cleaned = clean_fire_data(df_fire)
+        df_fire_perimeter = add_fire_name_stats(df_fire, gdf_fire_perimeter)
+
+        df_cleaned = clean_fire_data(df_fire_perimeter)
         df_cleaned.to_csv(FIRE_PIXEL_PATH)
         print("=" * 20)
 
-    if not args.skip_fire:
-        print("Creating fire events and geometry\n")
-
-        df_clustered, df_events = cluster_fire_pixel(df_cleaned)
-        gdf_geometry = compute_fire_geometry(df_clustered)
-        
-        # merge everything
-        df_events = df_events.merge(gdf_geometry[['event_id', 'perimeter_km', 'area_km2', 'geometry']], on='event_id')
-        df_events.to_csv(FIRE_EVENTS_PATH)
-        print("=" * 20)
 
     ## step 2: Air quality report aggregation
     if not args.skip_aqi:
@@ -270,7 +218,6 @@ def main(args):
 def parse_args():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--skip_cleaning_fire_data", action="store_true", help="Skip fire preprocess")
-    p.add_argument("--skip_fire", action="store_true", help="Skip fire preprocess")
     p.add_argument("--skip_aqi",   action="store_true", help="Skip aqi preprocess")
     return p.parse_args()
 
