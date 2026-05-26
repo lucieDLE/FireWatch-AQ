@@ -86,9 +86,9 @@ AQI_HOVER_TEMPLATE = (
     'Site Number: %{customdata[14]}<br><br>'
     '<b>Global AQI Value: %{customdata[1]}</b><br>'
     '<b>PM2.5:</b> %{customdata[2]} %{customdata[3]} [AQI: %{customdata[4]}]<br>'
+    '<b>PM 10:</b> %{customdata[11]} %{customdata[12]} [AQI: %{customdata[13]}]<br>'
     '<b>Ozone (O3):</b> %{customdata[5]} %{customdata[6]} [AQI: %{customdata[7]}]<br>'
     '<b>Nitrogen Dioxide (NO2):</b> %{customdata[8]} %{customdata[9]} [AQI: %{customdata[10]}]<br>'
-    '<b>Carbon Monoxide (CO):</b> %{customdata[11]} %{customdata[12]} [AQI: %{customdata[13]}]<br>'
     '<extra></extra>'
 )
 
@@ -96,9 +96,9 @@ AQI_HOVER_TEMPLATE = (
 AQI_REPORT_COLS = [
     'Date', 'max_AQI',
     'Daily Mean PM2.5 Concentration', 'Units_PM2.5', 'Daily AQI Value_PM2.5',
+    'Daily Mean PM10 Concentration', 'Units_PM10', 'Daily AQI Value_PM10',
     'Daily Max 8-hour Ozone Concentration', 'Units_O3', 'Daily AQI Value_O3',
     'Daily Max 1-hour NO2 Concentration', 'Units_NO2', 'Daily AQI Value_NO2',
-    'Daily Max 8-hour CO Concentration', 'Units_CO', 'Daily AQI Value_CO',
     'Site ID', 'Local Site Name'
 ]
 
