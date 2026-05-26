@@ -163,16 +163,27 @@ def add_fire_name_stats(df, gdf_perimeter):
 
     joined = gpd.sjoin(
         gdf_fire, 
-        gdf_perimeter[['poly_IncidentName', 'poly_GISAcres', 'attr_FireCause', 'attr_POOState', 'attr_POOCounty', 'geometry']],
+        gdf_perimeter[['poly_IncidentName', 'poly_GISAcres', 'attr_FireCause', 'attr_POOState', 'attr_POOCounty', 'geometry', 'attr_FireDiscoveryDateTime','attr_FireOutDateTime' ]],
         how='left', 
         predicate='within'
     )
 
-    # Points with no match → no named perimeter
     joined['in_named_fire'] = joined['poly_IncidentName'].notna()
     joined = joined.loc[ joined.in_named_fire == True]
 
-    return joined
+    joined['acq_date'] = pd.to_datetime(joined['acq_date'])
+    joined['attr_FireDiscoveryDateTime'] = pd.to_datetime(joined['attr_FireDiscoveryDateTime'])
+    joined['attr_FireOutDateTime'] = pd.to_datetime(joined['attr_FireOutDateTime'])
+
+    df_fire = joined[
+        (joined['acq_date'] >= joined['attr_FireDiscoveryDateTime']) &
+        (
+            joined['attr_FireOutDateTime'].isna() |          # still active
+            (joined['acq_date'] <= joined['attr_FireOutDateTime'])
+        )
+    ]
+
+    return df_fire
 
 def main(args):
 
