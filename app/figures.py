@@ -423,7 +423,7 @@ def compute_max_boxplot(df_stats, states_list):
     fig.update_xaxes(showticklabels=False)
     return fig
 
-def make_aqi_timeserie(df_q):
+def make_aqi_timeserie(df_q, df_biggest_fire):
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(
@@ -458,26 +458,45 @@ def make_aqi_timeserie(df_q):
             line_color=line_reds[2],
             ))
 
+    fig.add_trace(go.Scatter(
+        x=df_biggest_fire['date'],
+        y=df_biggest_fire['acres'],
+        mode='markers+text',
+        name='Major fires',
+        marker=dict(
+            symbol='star',
+            size=16,
+            color=red_colors[2],
+            line=dict(color=line_reds[2], width=1),
+        ),
+        text=stars['poly_IncidentName'],
+        textposition='top center',
+        textfont=dict(size=10, color='white'),
+        customdata=stars[['poly_IncidentName', 'acres']],
+        hovertemplate='<b>%{customdata[0]}</b><br>Date: %{x|%Y-%m-%d}<br>Acres: %{customdata[1]:,.0f}<extra></extra>',
+    ), secondary_y=True)
 
-    fig.add_hline(y=101,
-        line_width=2, line_dash="dash", 
-        line_color=line_reds[-2],
-        opacity=0.8,
-        annotation_text=f'UnHealthy for sensitive groups',  
-        annotation_position="top left",)
-
-
-    fig.add_hline(y=151,
-        line_width=2, line_dash="dash", 
-        line_color=line_reds[-2],
-        opacity=0.8,
-        annotation_text=f'UnHealthy for all groups',  
-        annotation_position="top left",)
-
-    fig.update_layout(
-            template='plotly_dark',
-            title_text='AQI Variability across all sites of California ',
-            legend=dict(yanchor='top',xanchor='right', bgcolor='rgba(0,0,0,0.0)', x=0.99, 
-            ),
+    # ── Health threshold lines ────────────────────────────────────────────────
+    for y, label in [(101, 'Unhealthy for sensitive groups'), (151, 'Unhealthy for all')]:
+        fig.add_hline(
+            y=y, secondary_y=False,
+            line=dict(dash='dash', color=line_reds[-2], width=1.5),
+            opacity=0.7,
+            annotation_text=label,
+            annotation_position='top right',
         )
+
+    # ── Layout ────────────────────────────────────────────────────────────────
+    fig.update_layout(
+        # template='ggplot2',
+        template='plotly_dark',
+        title_text='PM2.5 AQI vs Fire Activity — California 2025',
+        legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='left', x=0),
+        barmode='overlay',
+        margin=dict(t=100),
+    )
+    fig.update_yaxes(title_text='PM2.5 AQI', secondary_y=False)
+    fig.update_yaxes(title_text='Acres Burnt', secondary_y=True, showgrid=False)
+    fig.update_xaxes(title_text='Date')
+
     return fig
