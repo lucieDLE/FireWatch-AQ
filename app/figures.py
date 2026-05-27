@@ -10,6 +10,7 @@ import pandas as pd
 import plotly.graph_objects  as go
 from plotly.subplots import make_subplots
 import plotly.express as px
+import urllib.request
 
 import numpy as np
 import pandas as pd
@@ -41,11 +42,11 @@ def make_fire_category_repartition(df, df_cleaned):
     fig = make_subplots(
         rows=1, cols=5,
         column_widths=[0.2, 0.2, 0.2, 0.2, 0.2],
-        subplot_titles=names,
+        subplot_titles=FIRE_CAT_NAMES,
         shared_yaxes=False,
     )
 
-    for idx in range(len(names)):
+    for idx in range(len(FIRE_CAT_NAMES)):
         df_cat = df.loc[df.fire_cat == idx]
 
         fig.add_trace(go.Box(
@@ -672,3 +673,64 @@ def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fir
     return fig
 
 
+def make_cloropleth_fire_counties(df):
+    with urllib.request.urlopen(
+        "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/california-counties.geojson"
+    ) as f:
+        ca_geojson = json.load(f)
+
+    ca_counties = gpd.GeoDataFrame.from_features(ca_geojson["features"], crs="EPSG:4326")[
+        ["name", "geometry"]
+    ]
+
+    gdf = gpd.GeoDataFrame(
+        df,
+        geometry=gpd.points_from_xy(df.longitude, df.latitude),
+        crs="EPSG:4326",
+    )
+    gdf = gdf[['latitude', 'longitude','acq_date', 'acq_time', 'frp','isFire', 'fire_cat', 'geometry',
+       'poly_IncidentName', 'poly_GISAcres', 'attr_FireCause', 'attr_POOState',
+       'attr_POOCounty', 'attr_FireDiscoveryDateTime', 'attr_FireOutDateTime',
+       'in_named_fire']]
+    joined = gpd.sjoin(gdf, ca_counties, how="left", predicate="within")
+    county_counts = (
+        joined.groupby("name", dropna=True)["fire_cat"]
+        .sum()
+        .reset_index(name="fire_score")
+        .sort_values("fire_score", ascending=False)
+    )
+
+    fig = px.choropleth_map(
+        county_counts,
+        geojson=ca_geojson,
+        locations="name",
+        featureidkey="properties.name",
+        color="fire_score",
+        color_continuous_scale="YlOrRd",
+        map_style="dark",
+        zoom=4.5,
+        center={"lat": CENTER_LAT, "lon": CENTER_LON},
+        opacity=0.7,
+        labels={"fire_score": "Fire activity score"},
+        title="Fire activity score by county (weighted by fire category)",
+    )
+    return fig
+
+
+def make_bar_fire_event(df_biggest_fire):
+
+
+    fig = px.bar(
+        df_biggest_fire,
+        x="label", y="acres",
+        color="acres", color_discrete_sequence=red_colors[::-1],
+        labels={"label": "Fire Event", "acres": "Estimated burnt acres"},
+        title="Top 10 California Fires in 2025",
+    )
+    fig.update_layout(
+        template='plotly_dark',
+        coloraxis_showscale=False, 
+        xaxis_tickangle=-30
+        )
+
+    return fig
