@@ -1,7 +1,6 @@
 import plotly.graph_objects as go
 from dash import Input, Output, State, callback
 
-import src.config
 from figures import *
 from data import *
 

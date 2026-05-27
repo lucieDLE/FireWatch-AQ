@@ -3,17 +3,12 @@ import sys
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT_DIR))
 
-import numpy as np
+# import numpy as np
 import pandas as pd
 import geopandas as gpd
 import json
 from shapely.geometry import Point
 from shapely.ops import unary_union
-import plotly.graph_objects as go
-import plotly.express as px
-import dash
-from dash import html, dcc
-import dash_bootstrap_components as dbc
 
 from src.config import *
 from src.display import *
