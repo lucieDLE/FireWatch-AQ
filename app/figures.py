@@ -734,3 +734,77 @@ def make_bar_fire_event(df_biggest_fire):
         )
 
     return fig
+
+
+def make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire):
+    fig = make_subplots(specs=[[{'secondary_y': True}]])
+
+    # ── AQI band (left y-axis) ────────────────────────────────────────────────
+    fig.add_trace(go.Scatter(
+        x=df_aq_quantile['Date'], y=df_aq_quantile['Q1_smooth'],
+        mode='lines', name='Q1 (25th pct)',
+        line=dict(color=green_colors[2], width=0),
+        showlegend=False,
+    ), secondary_y=False)
+
+    fig.add_trace(go.Scatter(
+        x=df_aq_quantile['Date'], y=df_aq_quantile['Q3_smooth'],
+        mode='lines', name='Q1–Q3 band',
+        fill='tonexty',
+        fillcolor=green_colors[2].replace('0.8', '0.25'),
+        line=dict(color=green_colors[0], width=0),
+    ), secondary_y=False)
+
+    fig.add_trace(go.Scatter(
+        x=df_aq_quantile['Date'], y=df_aq_quantile['Q2_smooth'],
+        mode='lines', name='AQI median (50th pct)',
+        line=dict(color=line_greens[2], width=1.5),
+    ), secondary_y=False)
+
+    fig.add_trace(go.Scatter(
+        x=df_aq_quantile['Date'], y=df_aq_quantile['Q99_smooth'],
+        mode='lines', name='AQI 99th pct',
+        line=dict(color=line_reds[2], width=1.5),
+    ), secondary_y=False)
+
+    fig.add_trace(go.Scatter(
+        x=df_biggest_fire['date'],
+        y=df_biggest_fire['acres'],
+        mode='markers+text',
+        name='Major fires',
+        marker=dict(
+            symbol='star',
+            size=16,
+            color=red_colors[2],
+            line=dict(color=line_reds[2], width=1),
+        ),
+        text=df_biggest_fire['poly_IncidentName'],
+        textposition='top center',
+        textfont=dict(size=10, color='white'),
+        customdata=df_biggest_fire[['poly_IncidentName', 'acres']],
+        hovertemplate='<b>%{customdata[0]}</b><br>Date: %{x|%Y-%m-%d}<br>Acres: %{customdata[1]:,.0f}<extra></extra>',
+    ), secondary_y=True)
+
+    # ── Health threshold lines ────────────────────────────────────────────────
+    for y, label in [(101, 'Unhealthy for sensitive groups'), (151, 'Unhealthy for all')]:
+        fig.add_hline(
+            y=y, secondary_y=False,
+            line=dict(dash='dash', color=line_reds[-2], width=1.5),
+            opacity=0.7,
+            annotation_text=label,
+            annotation_position='top right',
+        )
+
+    # ── Layout ────────────────────────────────────────────────────────────────
+    fig.update_layout(
+        template='plotly_dark',
+        title_text='PM2.5 AQI vs Fire Activity — California 2025',
+        legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='left', x=0),
+        barmode='overlay',
+        margin=dict(t=100),
+    )
+    fig.update_yaxes(title_text='PM2.5 AQI', secondary_y=False)
+    fig.update_yaxes(title_text='Acres Burnt', secondary_y=True, showgrid=False)
+    fig.update_xaxes(title_text='Date')
+    
+    return fig
