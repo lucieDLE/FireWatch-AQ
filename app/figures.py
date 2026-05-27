@@ -721,6 +721,7 @@ def make_cloropleth_fire_counties(df):
         labels={"fire_score": "Fire activity score"},
         title="Fire activity score by county (weighted by fire category)",
     )
+    fig.update_layout(margin=dict(l=0, r=0, t=40, b=0))
     return fig
 
 
@@ -730,15 +731,16 @@ def make_bar_fire_event(df_biggest_fire):
     fig = px.bar(
         df_biggest_fire,
         x="label", y="acres",
-        color="acres", color_discrete_sequence=red_colors[::-1],
+        color="acres", color_continuous_scale=red_colors,
         labels={"label": "Fire Event", "acres": "Estimated burnt acres"},
         title="Top 10 California Fires in 2025",
     )
     fig.update_layout(
         template='plotly_dark',
-        coloraxis_showscale=False, 
-        xaxis_tickangle=-30
-        )
+        coloraxis_showscale=False,
+        xaxis_tickangle=-30,
+        margin=dict(l=10, r=10, t=50, b=10),
+    )
 
     return fig
 
@@ -785,7 +787,7 @@ def make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire):
             color=red_colors[2],
             line=dict(color=line_reds[2], width=1),
         ),
-        text=df_biggest_fire['poly_IncidentName'],
+        # text=df_biggest_fire['poly_IncidentName'],
         textposition='top center',
         textfont=dict(size=10, color='white'),
         customdata=df_biggest_fire[['poly_IncidentName', 'acres']],

@@ -126,7 +126,7 @@ df_biggest_fire = (df_fire[['poly_IncidentName', 'acq_date', 'poly_GISAcres', 'a
     .agg(date=('acq_date', 'min'), acres=('poly_GISAcres', 'max'), county=('attr_POOCounty', 'min'))
     .reset_index()
     .sort_values(by='acres', ascending=False)
-    .head(5)
+    .head(8)
     )
 
 df_biggest_fire['label'] = df_biggest_fire['poly_IncidentName'] + '<br>' + df_biggest_fire['county']
