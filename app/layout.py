@@ -20,13 +20,17 @@ from src.display import *
 from figures import *
 from data import *
 
+# AQR qnnual
+annual_pollutant_distribution = make_pollutant_distribution(df_aqr_annual)
+pollutant_exceedances_us_map = make_aq_us_plot(df_county_aqr_annual, list_best = ['WA', 'ID', 'MS'], list_worst=['CA', 'TX', 'AZ'])
+pollutant_distribution_us_barplot = compute_max_boxplot(df_annual_stats, state_list)
+
 
 # timeseries plots
 ts_site_1= make_aq_time_series(df_event_site_1, site_1, 'Fresno Area', colors=COLORS_MAP['FRESNO'])
 ts_site_2 = make_aq_time_series(df_event_site_2, site_2, 'Sierra National Forest - EAST', colors=COLORS_MAP['SIERRA'])
 burning_area = make_burning_area_plot(gdf)
 aq_fire_overlay = make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict,)
-
 
 
 # ============================================================================
@@ -69,9 +73,28 @@ def build_layout():
                                     ],className='app-header'
                                     ),
                                     dcc.Tabs([
-                                        dcc.Tab(
-                                            label='Air Quality Data Exploration', 
-                                            children=[ html.Div('coming soon') ]),
+                                        dcc.Tab(    
+                                            label='Air Quality Data Exploration',
+                                            children=[
+                                                # ── Top row: 2 charts side by side ──────────────────
+                                                dbc.Row([
+                                                    dbc.Col(
+                                                        graphCard("annual-pollutant-graph", annual_pollutant_distribution, height='420px'),
+                                                        width=6
+                                                    ),
+                                                    dbc.Col(
+                                                        graphCard("pollutant-exceedances-graph", pollutant_exceedances_us_map, height='420px'),
+                                                        width=6
+                                                    ),
+                                                ]),
+                                                # ── Bottom row: 1 full-width chart ──────────────────
+                                                dbc.Row([
+                                                    dbc.Col(
+                                                        graphCard("pollutant-distribution-graph", pollutant_distribution_us_barplot, height='500px'),
+                                                        width=12
+                                                    ),
+                                                ]),
+                                            ]),
 
                                         dcc.Tab(
                                             label='Fire Data Exploration', 
