@@ -116,9 +116,6 @@ df_annual_stats['q1'] = df_annual_stats['10th Percentile'] + 0.375 * (df_annual_
 # Panel 2: Fire Stats
 # ============================================================================
 
-CENTER_LAT = df_fire["latitude"].mean()
-CENTER_LON = df_fire["longitude"].mean()
-
 
 df_fire = df_fire.loc[ (df_fire['acq_date'] >= '2025-01-01') & (df_fire['acq_date'] < '2026-01-01')]
 df_biggest_fire = (df_fire[['poly_IncidentName', 'acq_date', 'poly_GISAcres', 'attr_POOCounty']]

@@ -15,13 +15,11 @@ import dash
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 
-from src.config import FIRE_PIXEL_PATH
+from src.config import FIRE_PIXEL_PATH, CENTER_LAT, CENTER_LON
 
 # ── Data ─────────────────────────────────────────────────────────────────────
 
 df = pd.read_csv(FIRE_PIXEL_PATH)
-CENTER_LAT = df["latitude"].mean()
-CENTER_LON = df["longitude"].mean()
 
 with urllib.request.urlopen(
     "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/california-counties.geojson"
