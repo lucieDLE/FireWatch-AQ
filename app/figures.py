@@ -215,7 +215,7 @@ def make_pollutant_distribution(df):
         barmode='stack', 
         xaxis={'categoryorder':'total descending'},
         title_text='Pollutant Distribution across states ',
-        legend=dict(yanchor='top',xanchor='right'),
+        legend=dict(yanchor='top', xanchor='right', title_text=''),
     )
     fig.update_xaxes(tickangle=45)
     return fig
@@ -332,16 +332,17 @@ def make_aq_us_plot(df_county, list_best = ['WA', 'ID', 'MS'], list_worst=['CA',
         showlegend=True,
         legend=dict(
             borderwidth=0,
-            x=.75,
-            y=.5,
+            x=1,
+            y=0.5,
             xanchor='right',
+            yanchor='middle',
         ),
         geo=dict(
             scope='usa',
             subunitcolor='rgb(100,100,100)',
-            domain=dict(x=[0, 1], y=[0, 1]),
+            domain=dict(x=[0, 0.78], y=[0, 1]),
         ),
-        margin=dict(l=0, r=0, t=40, b=0),
+        margin=dict(l=0, r=80, t=40, b=0),
         xaxis=dict(visible=False),
         yaxis=dict(visible=False),
         plot_bgcolor='rgba(0,0,0,0)',
@@ -406,6 +407,13 @@ def compute_max_boxplot(df_stats, states_list):
         template='plotly_dark',
         # template='ggplot2',
         title_text='Pollutant distribution by state',
+        legend=dict(
+            orientation='h',
+            yanchor='top',
+            y=-0.12,
+            xanchor='center',
+            x=0.5,
+        ),
     )
     fig.update_xaxes(showticklabels=False)
     return fig
@@ -456,10 +464,9 @@ def make_aqi_timeserie(df_q, df_biggest_fire):
             color=red_colors[2],
             line=dict(color=line_reds[2], width=1),
         ),
-        text=stars['poly_IncidentName'],
         textposition='top center',
         textfont=dict(size=10, color='white'),
-        customdata=stars[['poly_IncidentName', 'acres']],
+        customdata=df_biggest_fire[['poly_IncidentName', 'acres']],
         hovertemplate='<b>%{customdata[0]}</b><br>Date: %{x|%Y-%m-%d}<br>Acres: %{customdata[1]:,.0f}<extra></extra>',
     ), secondary_y=True)
 
