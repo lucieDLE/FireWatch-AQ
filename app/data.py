@@ -52,6 +52,67 @@ def create_fire_gdf_stats(df):
 # DATA LOADING
 # ============================================================================
 
+
+# ============================================================================
+# Panel 1: AQ Stats
+# ============================================================================
+
+df_aqr_annual = pd.read_csv(ANNUAL_CONCENTRATION_PATH)
+df_aqr_annual= df_aqr_annual.loc[ (df_aqr_annual['Pollutant Standard'].isin(POLLUTANT_STANDARD_NAMES)) & (df_aqr_annual['Sample Duration'].isin(POLLUTATANT_SAMPLE_DURATION))]
+df_aqr_annual = df_aqr_annual.loc[df_aqr_annual['State Name'] != 'Country Of Mexico']
+
+df_county_aqr_annual = df_aqr_annual[[
+                        "Observation Count", 
+                        'County Name', 
+                        "Primary Exceedance Count",
+                        "Secondary Exceedance Count",
+                        'State Name',
+                        'Longitude',
+                        'Latitude',
+                        'Parameter Name',
+                        ]]
+
+df_county_aqr_annual = df_county_aqr_annual.groupby(['County Name', 'State Name']) \
+                     .agg(
+                        primary_exceedance = ("Primary Exceedance Count", 'sum'),
+                        observation = ('Observation Count', 'sum'),
+                        state_name = ('State Name', 'min'),
+                        latitude = ('Latitude', 'mean'),
+                        longitude = ('Longitude', 'mean'),
+                        ).reset_index()
+df_county_aqr_annual['captor_exceeded_ratio'] = df_county_aqr_annual['primary_exceedance'] / df_county_aqr_annual['observation']
+
+df_state_aqr_annual = df_county_aqr_annual.groupby('state_name') \
+                     .agg(
+                        primary_exceedance = ("primary_exceedance", 'sum'),
+                        observation = ('observation', 'sum'),
+                        latitude = ('latitude', 'mean'),
+                        longitude = ('longitude', 'mean'),
+                        ).reset_index()
+
+df_state_aqr_annual['captor_exceeded_ratio'] = df_state_aqr_annual['primary_exceedance'] / df_state_aqr_annual['observation']
+
+df_cleanest_states = df_state_aqr_annual.sort_values(by=['captor_exceeded_ratio','observation'], ascending=[True, False])[:3]['state_name']
+df_worst_states = df_state_aqr_annual.sort_values(by=['primary_exceedance', 'observation'], ascending=[False, True])[:3]['state_name']
+
+state_list = df_cleanest_states.to_list() + df_worst_states.to_list()
+
+df_annual_stats = df_aqr_annual[[
+    '1st Max Value', '2nd Max Value', '3rd Max Value','4th Max Value',
+    '99th Percentile', '98th Percentile', '95th Percentile','Arithmetic Mean', 'Arithmetic Standard Dev',
+    '90th Percentile', '75th Percentile', '50th Percentile', '10th Percentile',
+    'State Name', 'Parameter Name'
+    
+    ]]
+
+df_annual_stats['q1'] = df_annual_stats['10th Percentile'] + 0.375 * (df_annual_stats['50th Percentile'] - df_annual_stats['10th Percentile'])
+
+
+# ============================================================================
+# Panel 4: Event Dive
+# ============================================================================
+
+
 df_aqi = pd.read_csv(AIR_QUALITY_REPORT_PATH)
 df_fire = pd.read_csv(FIRE_PIXEL_PATH)
 
