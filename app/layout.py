@@ -25,6 +25,9 @@ annual_pollutant_distribution = make_pollutant_distribution(df_aqr_annual)
 pollutant_exceedances_us_map = make_aq_us_plot(df_county_aqr_annual, list_best = ['WA', 'ID', 'MS'], list_worst=['CA', 'TX', 'AZ'])
 pollutant_distribution_us_barplot = compute_max_boxplot(df_annual_stats, state_list)
 
+top_counties = make_cloropleth_fire_counties(df_fire)
+top_fires = make_bar_fire_event(df_biggest_fire)
+overlay_fire_aqi = make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire)
 
 # timeseries plots
 ts_site_1= make_aq_time_series(df_event_site_1, site_1, 'Fresno Area', colors=COLORS_MAP['FRESNO'])
@@ -98,7 +101,25 @@ def build_layout():
 
                                         dcc.Tab(
                                             label='Fire Data Exploration', 
-                                            children=[ html.Div('coming soon') ]),
+                                            children=[ 
+                                                dbc.Row([
+                                                    dbc.Col(
+                                                        graphCard("top-counties-graph", top_counties, height='420px'),
+                                                        width=6
+                                                    ),
+                                                    dbc.Col(
+                                                        graphCard("top-fire-graph", top_fires, height='420px'),
+                                                        width=6
+                                                    ),
+                                                ]),
+                                                # ── Bottom row: 1 full-width chart ──────────────────
+                                                dbc.Row([
+                                                    dbc.Col(
+                                                        graphCard("overlay-fire-aqi-graph", overlay_fire_aqi, height='500px'),
+                                                        width=12
+                                                    ),
+                                                ]),
+                                            ]),
 
 
                                         dcc.Tab(
