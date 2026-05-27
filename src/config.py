@@ -4,11 +4,14 @@ ROOT = Path(__file__).parent.parent
 
 AREA_LON = (-125.0, -113.0)
 AREA_LAT = (32.0, 43.0)
+SELECTED_DAY = '2025-09-08'
 
 
 # Raw data
 FIRE_RAW_PATH = ROOT / 'data/raw/fire_archive_J1V-C2_749152.csv'
 FIRE_PERIMETER = ROOT / 'data/raw/WFIGS_Interagency_Perimeters_-8730464049412665158.geojson'
+
+ANNUAL_CONCENTRATION_PATH = ROOT / 'data/raw/annual_conc_by_monitor_2025.csv'
 
 OZONE_PATH = ROOT / 'data/raw/ad_viz_plotval_data-O3.csv'
 PM25_PATH = ROOT / 'data/raw/ad_viz_plotval_data-pm25.csv'
@@ -42,3 +45,6 @@ POLLUTANT_THRESHOLDS = {
     "Sulfur dioxide": [75, 'ppb'],
     "Carbon monoxide": [9, 'ppm'],
 }
+
+POLLUTANT_STANDARD_NAMES = ['Ozone 8-hour 2015', 'PM25 24-hour 2024', 'PM10 24-hour 2006', 'SO2 1-hour 2010','NO2 1-hour 2010', 'CO 8-hour 1971']
+POLLUTATANT_SAMPLE_DURATION = ['8-HR RUN AVG BEGIN HOUR', '24-HR BLK AVG', '1 HOUR', '8-HR RUN AVG END HOUR']
