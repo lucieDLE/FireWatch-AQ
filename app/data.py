@@ -52,12 +52,17 @@ def create_fire_gdf_stats(df):
 # DATA LOADING
 # ============================================================================
 
+df_aqi = pd.read_csv(AIR_QUALITY_REPORT_PATH)
+df_fire = pd.read_csv(FIRE_PIXEL_PATH)
+df_aqr_annual = pd.read_csv(ANNUAL_CONCENTRATION_PATH)
+
+# df_fire['acq_date'] = pd.to_datetime(df_fire['acq_date'])
+# df_aqi['Date'] = pd.to_datetime(df_aqi['Date'])
 
 # ============================================================================
 # Panel 1: AQ Stats
 # ============================================================================
 
-df_aqr_annual = pd.read_csv(ANNUAL_CONCENTRATION_PATH)
 df_aqr_annual= df_aqr_annual.loc[ (df_aqr_annual['Pollutant Standard'].isin(POLLUTANT_STANDARD_NAMES)) & (df_aqr_annual['Sample Duration'].isin(POLLUTATANT_SAMPLE_DURATION))]
 df_aqr_annual = df_aqr_annual.loc[df_aqr_annual['State Name'] != 'Country Of Mexico']
 
@@ -107,14 +112,41 @@ df_annual_stats = df_aqr_annual[[
 
 df_annual_stats['q1'] = df_annual_stats['10th Percentile'] + 0.375 * (df_annual_stats['50th Percentile'] - df_annual_stats['10th Percentile'])
 
+# ============================================================================
+# Panel 2: Fire Stats
+# ============================================================================
+
+CENTER_LAT = df_fire["latitude"].mean()
+CENTER_LON = df_fire["longitude"].mean()
+
+
+df_fire = df_fire.loc[ (df_fire['acq_date'] >= '2025-01-01') & (df_fire['acq_date'] < '2026-01-01')]
+df_biggest_fire = (df_fire[['poly_IncidentName', 'acq_date', 'poly_GISAcres', 'attr_POOCounty']]
+    .groupby('poly_IncidentName')
+    .agg(date=('acq_date', 'min'), acres=('poly_GISAcres', 'max'), county=('attr_POOCounty', 'min'))
+    .reset_index()
+    .sort_values(by='acres', ascending=False)
+    .head(5)
+    )
+
+df_biggest_fire['label'] = df_biggest_fire['poly_IncidentName'] + '<br>' + df_biggest_fire['county']
+
+df_grouped = df_aqi[['Daily AQI Value_PM2.5', 'Date']].groupby('Date')
+
+df_aq_quantile = df_grouped.quantile(0.25).rename(columns={'Daily AQI Value_PM2.5': 'Q1'}).reset_index()
+df_aq_quantile['Q2']  = df_grouped.quantile(0.50)['Daily AQI Value_PM2.5'].values
+df_aq_quantile['Q3']  = df_grouped.quantile(0.75)['Daily AQI Value_PM2.5'].values
+df_aq_quantile['Q99'] = df_grouped.quantile(0.99)['Daily AQI Value_PM2.5'].values
+
+# smooth with same window as fire
+for col in ['Q1', 'Q2', 'Q3', 'Q99']:
+    df_aq_quantile[f'{col}_smooth'] = df_aq_quantile[col].rolling(window=3, center=True).mean()
+
 
 # ============================================================================
 # Panel 4: Event Dive
 # ============================================================================
 
-
-df_aqi = pd.read_csv(AIR_QUALITY_REPORT_PATH)
-df_fire = pd.read_csv(FIRE_PIXEL_PATH)
 
 site_1 = WATCH_SITES['Garnet - Site 1']
 site_2 = WATCH_SITES['Garnet - Site 2'] 
