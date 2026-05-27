@@ -1,7 +1,25 @@
+from pathlib import Path
+import sys
+
+ROOT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT_DIR))
+
+from src.config import *
+from src.display import *
 import pandas as pd 
 import plotly.graph_objects  as go
 from plotly.subplots import make_subplots
 import plotly.express as px
+
+import numpy as np
+import pandas as pd
+import geopandas as gpd
+import json
+from shapely.geometry import Point
+from shapely.ops import unary_union
+import plotly.graph_objects as go
+import plotly.express as px
+
 # made from :
 # from https://colorbrewer2.org/
 
@@ -50,6 +68,17 @@ legend = [
     "Large: (100-500 MW)",
     "Extreme: (>500 MW)",
   ]
+
+def geoms_to_lines(gdf_wgs84):
+    """Extract polygon exterior rings as flat lat/lon lists with None breaks."""
+    lats, lons = [], []
+    for geom in gdf_wgs84.geometry:
+        polys = geom.geoms if geom.geom_type == 'MultiPolygon' else [geom]
+        for poly in polys:
+            coords = list(poly.exterior.coords)
+            lons += [c[0] for c in coords] + [None]
+            lats += [c[1] for c in coords] + [None]
+    return lats, lons
 
 
 def make_fire_category_repartition(df, df_cleaned):
@@ -370,6 +399,8 @@ def compute_max_boxplot(df_stats, states_list):
     custom_colors = green_colors[0:3] + red_colors[0:3]
     custom_lines  = line_greens[0:3] + line_reds[0:3]
 
+    pollutants_list = df_stats['Parameter Name'].unique()
+
     fig = make_subplots(
         rows=1, cols=len(pollutants_list),
         column_widths=[0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
@@ -500,3 +531,189 @@ def make_aqi_timeserie(df_q, df_biggest_fire):
     fig.update_xaxes(title_text='Date')
 
     return fig
+
+
+def make_aq_hotspot_fig(df_day, site_name, show_colorbar=True, show_legend=True):
+    df_day = df_day[df_day['max_AQI'] != 'N/A'].copy()
+    colorbar = dict(
+        title=dict(text='AQI', font=dict(size=11)),
+        thickness=14,
+        len=0.5,
+        x=.99,
+        xanchor='right',
+        y=0.5,
+        tickvals=[0, 50, 100, 150, 200, 300, 400],
+    ) if show_colorbar else {}
+    return go.Scattermapbox(
+        lat=df_day['Site Latitude'],
+        lon=df_day['Site Longitude'],
+        mode='markers',
+        name=f'Air Quality Captors',
+        marker=dict(
+            size=12,
+            color=df_day['max_AQI'],
+            colorscale=AQI_CMAP,
+            cmin=0,
+            cmax=400,
+            opacity=0.9,
+            colorbar=colorbar,
+        ),
+        customdata=df_day[AQI_REPORT_COLS],
+        hovertemplate=AQI_HOVER_TEMPLATE,
+        showlegend=show_legend,  # add legend only one time
+    )
+
+def make_site_ellipse(df_day, color_line, color_fill, name, padding=0.15):
+    lats = df_day['Site Latitude']
+    lons = df_day['Site Longitude']
+
+    center_lat, center_lon = lats.mean(), lons.mean()
+    r_lat = (lats.max() - lats.min()) / 2 + padding
+    r_lon = (lons.max() - lons.min()) / 2 + padding
+
+    theta = np.linspace(0, 2 * np.pi, 120)
+    ell_lats = (center_lat + r_lat * np.sin(theta)).tolist()
+    ell_lons = (center_lon + r_lon * np.cos(theta)).tolist()
+
+    return go.Scattermapbox(
+        lat=ell_lats,
+        lon=ell_lons,
+        mode='lines',
+        fill='toself',
+        fillcolor=color_fill,
+        line=dict(color=color_line, width=2),
+        name=name,
+        hoverinfo='skip',
+        showlegend=True,
+    )
+
+def make_aq_time_series(df, sites, site_name, colors, legend_entrywidth=0.33):
+    fig = go.Figure()
+    for idx, site_id in enumerate(sites):
+        df_site = df.loc[df['Site ID'] == site_id] # Long Beach
+        fig.add_trace(go.Scatter(x=df_site['Date'], 
+                                y=df_site['max_AQI'], 
+                                name=df_site.iloc[0]['Local Site Name'], 
+                                line_color = colors[idx], 
+                                ))
+
+    for y0, y1, color in AQI_BANDS_COLOR:
+        fig.add_hrect(y0=y0, y1=y1, fillcolor=color, line_width=0, layer='below')
+
+
+    fig.update_layout(
+        title=dict(
+            text=f'AQI at selected sites near: {site_name}',
+            yanchor='top', 
+            y=0.95,
+        ),
+        xaxis=dict(title_text="Date"),
+        yaxis=dict(title_text="Air Quality Index (AQI)"),
+        legend=dict(
+            orientation="h",
+            yanchor='bottom',
+            xanchor='left',   
+            y=1.02,
+            x=0,
+            maxheight=0.12,
+            entrywidthmode='fraction',
+            entrywidth=legend_entrywidth,
+        ),
+        margin=dict(l=10, r=10, t=100, b=10),
+    )
+    return fig
+
+def make_fire_perimeter_plot(gdf):
+    # if there is no fire
+    if gdf.empty:
+        return go.Scattermapbox(lat=[], lon=[], mode='lines', name='Fire perimeter', showlegend=True)
+
+    perim_lats, perim_lons = geoms_to_lines(gdf)
+    n_pts = len(perim_lats)
+    cd_vals = np.tile(gdf[FIRE_REPORT_COLS].round(1).values[0], (n_pts, 1))
+
+    return go.Scattermapbox(
+        lat=perim_lats,
+        lon=perim_lons,
+        mode='lines',
+        fill='toself',
+        fillcolor="rgba(253,141,60,0.2)",
+        line=dict(width=1.5, color=COLORS_MAP['FIRE'][1]),
+        name='Fire perimeter',
+        customdata=cd_vals,
+        hovertemplate=FIRE_HOVER_TEMPLATE,
+    )
+
+def make_burning_area_plot(gdf):
+
+    fig =  go.Figure([
+                        go.Scatter( x=gdf['acq_date'], 
+                                    y=gdf['area_km2'], 
+                                    name = 'Burning Area (km2)',
+                                    line_color = COLORS_MAP['FIRE'][0], 
+                                    ),
+                        go.Scatter( x=gdf['acq_date'], 
+                                    y=gdf['perimeter_km'], 
+                                    name= 'Fire Perimeter (km)',
+                                    line_color = COLORS_MAP['FIRE'][1],
+                                    ),
+                    ])
+
+    fig.update_layout(
+        title=dict(text=f'Estimated Burning Area and Fire Perimeter', yanchor='top', y=0.95,),
+        xaxis=dict(title_text="Date"),
+        legend=dict(orientation="h",
+                    yanchor="top",
+                    y=1.2,
+                    xanchor="left",
+                    maxheight=0.1,
+                    ),
+        margin=dict(l=10, r=10, t=75, b=10),
+    )
+    return fig
+
+def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict, mapbox_style='carto-positron'):
+    fig = go.Figure(data=[
+            make_site_ellipse(df_day_site_1, 'rgba(34,120,50,0.9)', 'rgba(34,120,50,0.10)',
+                            'Monitoring Site 1: Fresno', padding=0.2),
+            make_site_ellipse(df_day_site_2, 'rgba(72,105,140,0.9)', 'rgba(72,105,140,0.08)',
+                            'Monitoring Site 2: Sierra National Forest (EAST)', padding=0.3),
+            make_aq_hotspot_fig(df_day_site_1, 'Fresno', show_colorbar=True, show_legend=True),
+            make_aq_hotspot_fig(df_day_site_2, 'Sierra National Forest (EAST)', show_colorbar=False, show_legend=False),
+            make_fire_perimeter_plot(gdf_fire_day),
+            ],)
+
+
+    fig.update_layout(
+            title=dict(
+                text=f'Fire Perimeter & Air Quality — {SELECTED_DAY}',
+                font=dict(size=15), x=0.5, xanchor='center',
+            ),
+            mapbox=dict(
+                style=mapbox_style,
+                layers=[dict(
+                    sourcetype='geojson',
+                    source=geojson_fire_dict,
+                    type='fill',
+                    color='rgba(255, 100, 0, 0.2)',
+                    below='traces',
+                )],
+                center=dict(lat=CENTER_LAT, lon=CENTER_LON),
+                zoom=7,
+            ),
+            margin=dict(l=10, r=10, t=50, b=10),
+            legend=dict(
+                bgcolor='rgba(255, 255, 255, 0.85)',
+                bordercolor='rgba(180, 180, 180, 0.8)',
+                borderwidth=1,
+                x=0.01,
+                y=0.99,
+                xanchor='left',
+                yanchor='top',
+                font=dict(size=12),
+                itemsizing='constant',
+            ),
+        )
+    return fig
+
+
