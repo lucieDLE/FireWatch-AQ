@@ -208,7 +208,7 @@ def make_scan_track_distribution(df):
 def make_pollutant_distribution(df):
 
     fig = go.Figure()
-    fig = px.histogram(df, x="State Name",color='Parameter Name',color_discrete_sequence=red_colors[::-1],height=400)
+    fig = px.histogram(df, x="State Name",color='Parameter Name',color_discrete_sequence=red_colors[::-1])
 
     fig.update_layout(
         template='plotly_dark',
@@ -405,7 +405,6 @@ def compute_max_boxplot(df_stats, states_list):
 
     fig.update_layout(
         template='plotly_dark',
-        # template='ggplot2',
         title_text='Pollutant distribution by state',
         legend=dict(
             orientation='h',
@@ -414,6 +413,7 @@ def compute_max_boxplot(df_stats, states_list):
             xanchor='center',
             x=0.5,
         ),
+        margin=dict(b=80),
     )
     fig.update_xaxes(showticklabels=False)
     return fig
@@ -680,12 +680,7 @@ def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fir
     return fig
 
 
-def make_cloropleth_fire_counties(df):
-    with urllib.request.urlopen(
-        "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/california-counties.geojson"
-    ) as f:
-        ca_geojson = json.load(f)
-
+def make_cloropleth_fire_counties(df, ca_geojson):
     ca_counties = gpd.GeoDataFrame.from_features(ca_geojson["features"], crs="EPSG:4326")[
         ["name", "geometry"]
     ]

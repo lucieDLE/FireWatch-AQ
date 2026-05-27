@@ -17,7 +17,7 @@ annual_pollutant_distribution = make_pollutant_distribution(df_aqr_annual)
 pollutant_exceedances_us_map = make_aq_us_plot(df_county_aqr_annual, list_best = ['WA', 'ID', 'MS'], list_worst=['CA', 'TX', 'AZ'])
 pollutant_distribution_us_barplot = compute_max_boxplot(df_annual_stats, state_list)
 
-top_counties = make_cloropleth_fire_counties(df_fire)
+top_counties = make_cloropleth_fire_counties(df_fire, ca_geojson)
 top_fires = make_bar_fire_event(df_biggest_fire)
 overlay_fire_aqi = make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire)
 
@@ -136,7 +136,7 @@ def build_layout():
                                             children=[ html.Div('coming soon') ]),
 
                                         dcc.Tab(
-                                            label='Event Time Serie Visualization',
+                                            label='Event Time Series Visualization',
                                             children=[
                                                 dbc.Row([
                                                     # left panel

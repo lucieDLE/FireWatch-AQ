@@ -47,9 +47,16 @@ def create_fire_gdf_stats(df):
 # DATA LOADING
 # ============================================================================
 
+import urllib.request
 df_aqi = pd.read_csv(AIR_QUALITY_REPORT_PATH)
 df_fire = pd.read_csv(FIRE_PIXEL_PATH)
 df_aqr_annual = pd.read_csv(ANNUAL_CONCENTRATION_PATH)
+
+# Fetch once at startup — reused by layout and callbacks
+with urllib.request.urlopen(
+    "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/california-counties.geojson"
+) as f:
+    ca_geojson = json.load(f)
 
 # df_fire['acq_date'] = pd.to_datetime(df_fire['acq_date'])
 # df_aqi['Date'] = pd.to_datetime(df_aqi['Date'])
