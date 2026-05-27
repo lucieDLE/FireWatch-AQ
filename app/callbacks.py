@@ -1,5 +1,4 @@
-import plotly.graph_objects as go
-from dash import Input, Output, State, callback
+from dash import Input, Output, callback
 
 from figures import *
 from data import *
@@ -11,11 +10,11 @@ from data import *
 def apply_theme(fig, dark_mode):
     """Apply template + legend colors — called after figure is built."""
     fig.update_layout(
-        template='plotly_dark' if dark_mode else 'plotly_white',
+        template='plotly_dark' if dark_mode else 'ggplot2',
         legend=dict(
-            bgcolor='rgba(30,14,5,0.85)'    if dark_mode else 'rgba(255,255,255,0.85)',
-            bordercolor='rgba(100,50,20,0.8)' if dark_mode else 'rgba(180,180,180,0.8)',
-            font=dict(color='#ffd6b0' if dark_mode else '#3d0c00'),
+            bgcolor     ='rgba(30,14,5,0.85)'  if dark_mode else 'rgba(255,255,255,0.85)',
+            bordercolor ='rgba(100,50,20,0.8)' if dark_mode else 'rgba(180,180,180,0.8)',
+            font        =dict(color='#ffd6b0'  if dark_mode else '#3d0c00'),
         ),
     )
     return fig
@@ -64,4 +63,10 @@ def update_figure_theme(dark_mode):
     for fig in all_figs:
         apply_theme(fig, dark_mode)
 
-    return (*all_figs,)
+    # Map figures: template only (preserve their own legend styles)
+    for fig in [fig_us_map, fig_counties, fig_map]:
+        fig.update_layout(template='plotly_dark' if dark_mode else 'ggplot2')
+
+    return (fig_pollutant_dist, fig_us_map, fig_boxplot,
+            fig_counties, fig_top_fires, fig_fire_aqi,
+            fig_map, fig_site1, fig_site2, fig_burning)
