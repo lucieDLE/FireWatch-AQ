@@ -83,18 +83,26 @@ def build_layout():
                                                 dbc.Row([
                                                     dbc.Col(
                                                         graphCard("annual-pollutant-graph", annual_pollutant_distribution, height='420px'),
-                                                        width=6
+                                                        width=5
                                                     ),
                                                     dbc.Col(
                                                         graphCard("pollutant-exceedances-graph", pollutant_exceedances_us_map, height='420px'),
-                                                        width=6
+                                                        width=5
+                                                    ),
+                                                    dbc.Col(
+                                                        textCard("Overview", "Add your analysis here."),
+                                                        width=2
                                                     ),
                                                 ]),
                                                 # ── Bottom row: 1 full-width chart ──────────────────
                                                 dbc.Row([
                                                     dbc.Col(
                                                         graphCard("pollutant-distribution-graph", pollutant_distribution_us_barplot, height='500px'),
-                                                        width=12
+                                                        width=10
+                                                    ),
+                                                    dbc.Col(
+                                                        textCard("Key Findings", "Add your analysis here."),
+                                                        width=2
                                                     ),
                                                 ]),
                                             ]),
@@ -105,18 +113,27 @@ def build_layout():
                                                 dbc.Row([
                                                     dbc.Col(
                                                         graphCard("top-counties-graph", top_counties, height='420px'),
-                                                        width=6
+                                                        width=5
                                                     ),
                                                     dbc.Col(
                                                         graphCard("top-fire-graph", top_fires, height='420px'),
-                                                        width=6
+                                                        width=5
                                                     ),
+                                                    dbc.Col(
+                                                        textCard("Overview", "Add your analysis here."),
+                                                        width=2
+                                                    ),
+
                                                 ]),
                                                 # ── Bottom row: 1 full-width chart ──────────────────
                                                 dbc.Row([
                                                     dbc.Col(
                                                         graphCard("overlay-fire-aqi-graph", overlay_fire_aqi, height='500px'),
-                                                        width=12
+                                                        width=10
+                                                    ),
+                                                    dbc.Col(
+                                                        textCard("Key Findings", "Add your analysis here."),
+                                                        width=2
                                                     ),
                                                 ]),
                                             ]),
