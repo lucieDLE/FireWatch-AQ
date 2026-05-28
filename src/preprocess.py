@@ -161,27 +161,37 @@ def add_fire_name_stats(df, gdf_perimeter):
         crs="EPSG:4326"
     )
 
-    joined = gpd.sjoin(
-        gdf_fire, 
-        gdf_perimeter[['poly_IncidentName', 'poly_GISAcres', 'attr_FireCause', 'attr_POOState', 'attr_POOCounty', 'geometry', 'attr_FireDiscoveryDateTime','attr_FireOutDateTime' ]],
-        how='left', 
-        predicate='within'
-    )
+    joined = gpd.sjoin(gdf_fire, gdf_perimeter[['poly_IncidentName', 'poly_GISAcres',
+                                            'attr_FireCause', 'attr_POOState','attr_FireOutDateTime',
+                                            'attr_POOCounty', 'geometry', 'attr_FireDiscoveryDateTime', 
+                                            'attr_ICS209RptForTimePeriodFrom', 'attr_ContainmentDateTime']],
+                    how='left', predicate='within')
 
+    # Points with no match → no named perimeter
     joined['in_named_fire'] = joined['poly_IncidentName'].notna()
     joined = joined.loc[ joined.in_named_fire == True]
 
+    # Make sure types are compatible
     joined['acq_date'] = pd.to_datetime(joined['acq_date'])
     joined['attr_FireDiscoveryDateTime'] = pd.to_datetime(joined['attr_FireDiscoveryDateTime'])
+
+    # gather all possible end dates
+    # For example palisades event didn't have OutDateTime or Containment Date but attr_ICS209RptForTimePeriodFrom for some reason
     joined['attr_FireOutDateTime'] = pd.to_datetime(joined['attr_FireOutDateTime'])
+    joined['attr_ICS209RptForTimePeriodFrom'] = pd.to_datetime(joined['attr_ICS209RptForTimePeriodFrom'])
+    joined['attr_ContainmentDateTime'] = pd.to_datetime(joined['attr_ContainmentDateTime'])
+
+    joined['endFire'] = joined.apply(lambda row:  row[['attr_FireOutDateTime', 'attr_ICS209RptForTimePeriodFrom', 'attr_ContainmentDateTime']].dropna().min() , axis=1)
 
     df_fire = joined[
         (joined['acq_date'] >= joined['attr_FireDiscoveryDateTime']) &
         (
             joined['attr_FireOutDateTime'].isna() |          # still active
-            (joined['acq_date'] <= joined['attr_FireOutDateTime'])
+            (joined['acq_date'] <= joined['endFire'])
         )
     ]
+
+    df_fire[df_fire.columns[6:]]
 
     return df_fire
 
