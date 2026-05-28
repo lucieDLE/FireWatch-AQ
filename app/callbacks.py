@@ -40,7 +40,6 @@ def change_theme(value):
     # Tab 2 — Fire Data
     Output("top-counties-graph",          "figure"),
     Output("top-fire-graph",              "figure"),
-    Output("overlay-fire-aqi-graph",      "figure"),
     # Tab 4 — Event Dive
     Output("overlay-map-graph",           "figure"),
     Output("ts-site1-graph",              "figure"),
@@ -58,7 +57,6 @@ def update_figure_theme(dark_mode):
     # Tab 2
     fig_counties       = make_cloropleth_fire_counties(df_fire, ca_geojson)
     fig_top_fires      = make_bar_fire_event(df_biggest_fire)
-    fig_fire_aqi       = make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire)
     # Tab 4
     fig_map            = make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict, mapbox_style=mapbox_style)
     fig_site1          = make_aq_time_series(df_event_site_1, site_1, 'Fresno Area', colors=COLORS_MAP['FRESNO'])
@@ -66,7 +64,7 @@ def update_figure_theme(dark_mode):
     fig_burning        = make_burning_area_plot(gdf)
 
     all_figs = [fig_pollutant_dist, fig_us_map, fig_boxplot,
-                fig_counties, fig_top_fires, fig_fire_aqi,
+                fig_counties, fig_top_fires,
                 fig_map, fig_site1, fig_site2, fig_burning]
 
     for fig in all_figs:
@@ -77,5 +75,18 @@ def update_figure_theme(dark_mode):
         fig.update_layout(template='plotly_dark' if dark_mode else 'ggplot2')
 
     return (fig_pollutant_dist, fig_us_map, fig_boxplot,
-            fig_counties, fig_top_fires, fig_fire_aqi,
+            fig_counties, fig_top_fires,
             fig_map, fig_site1, fig_site2, fig_burning)
+
+
+@callback(
+    Output("overlay-fire-aqi-graph", "figure"),
+    Input("pollutant-dropdown",      "value"),
+    Input("switch-theme",            "value"),
+)
+def update_fire_aqi_overlay(pollutant_name, dark_mode):
+    col = POLLUTANT_COL_MAP[pollutant_name]
+    df_q = compute_aqi_quantiles(col)
+    fig = make_fire_aqi_overlay(df_q, df_biggest_fire, pollutant_name=pollutant_name)
+    apply_theme(fig, dark_mode)
+    return fig

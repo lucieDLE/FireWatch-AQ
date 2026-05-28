@@ -122,23 +122,39 @@ def build_layout():
                                                     ),
 
                                                 ]),
-                                                # ── Bottom row: 1 full-width chart ──────────────────
+                                                # ── Bottom row: pollutant selector + overlay chart ──
+                                                dbc.Row([
+                                                    #Left Col
+                                                    dbc.Col([
+                                                        graphCard("overlay-fire-aqi-graph", overlay_fire_aqi, height='500px'),
+                                                    ], width=10),
+                                                    
+                                                    # Right Col
+                                                    dbc.Col([
+                                                        dbc.Row([
+                                                            dbc.Col([
+                                                                textCard("Overview", "Select on Pollutant to visualize its impact on public Health and if it has a relationship with fire onset."),
+                                                                dcc.Dropdown(
+                                                                    id='pollutant-dropdown',
+                                                                    options=[{'label': name, 'value': name} for name in POLLUTANT_COL_MAP],
+                                                                    value='PM2.5',
+                                                                    clearable=False,
+                                                                ),
+                                                                ]),
+                                                        ], className='mb-2 mt-3 ms-2'),
+                                                    ], width=2),
+                                                ]),
                                                 dbc.Row([
                                                     dbc.Col(
-                                                        graphCard("overlay-fire-aqi-graph", overlay_fire_aqi, height='500px'),
-                                                        width=10
-                                                    ),
-                                                    dbc.Col(
                                                         textCard("Key Findings", "Add your analysis here."),
-                                                        width=2
+                                                        width=12
                                                     ),
                                                 ]),
                                             ]),
 
-
-                                        dcc.Tab(
-                                            label='California Spike Insight', 
-                                            children=[ html.Div('coming soon') ]),
+                                        # dcc.Tab(
+                                        #     label='California Spike Insight', 
+                                        #     children=[ html.Div('coming soon') ]),
 
                                         dcc.Tab(
                                             label='Event Time Series Visualization',
