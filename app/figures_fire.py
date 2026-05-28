@@ -102,7 +102,7 @@ def make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire, pollutant_name='PM2.5
     ), secondary_y=False)
 
     fig.add_trace(go.Scatter(
-        x=df_biggest_fire['date'],
+        x=df_biggest_fire['start_date'],
         y=df_biggest_fire['acres'],
         mode='markers+text',
         name='Major fires',
