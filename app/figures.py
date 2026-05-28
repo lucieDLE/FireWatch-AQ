@@ -215,7 +215,7 @@ def make_pollutant_distribution(df):
         barmode='stack', 
         xaxis={'categoryorder':'total descending'},
         title_text='Pollutant Distribution across states ',
-        legend=dict(yanchor='top', xanchor='right', title_text=''),
+        legend=dict(yanchor='top', xanchor='right', title_text='',x=0.9),
     )
     fig.update_xaxes(tickangle=45)
     return fig
@@ -413,7 +413,7 @@ def compute_max_boxplot(df_stats, states_list):
             xanchor='center',
             x=0.5,
         ),
-        margin=dict(b=80),
+        margin=dict(r=5, l=5, b=80),
     )
     fig.update_xaxes(showticklabels=False)
     return fig
