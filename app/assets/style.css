@@ -95,6 +95,16 @@
   --accent:           var(--md-secondary);
   --border-color:     var(--md-outline-variant);
   --shadow:           rgba(0, 0, 0, 0.08);
+
+  --Dash-Text-Strong:          var(--md-on-surface);
+  --Dash-Text-Disabled:           var(--md-inverse-primary);
+
+  --Dash-Fill-Interactive-Strong:  var(--md-secondary-container);
+  --Dash-Fill-Interactive-Weak:    var(--md-on-secondary-container);
+
+  --Dash-Fill-Inverse-Strong:       var(--md-surface-container-high);
+  --Dash-Fill-Inverse-Weak:       var(--md-on-secondary-container);
+
 }
 
 .dark {
@@ -119,6 +129,17 @@
   --accent:           var(--md-secondary);
   --border-color:     var(--md-outline-variant);
   --shadow: rgba(0, 0, 0, 0.35);
+
+  --Dash-Text-Strong:          var(--md-on-surface);
+  --Dash-Text-Disabled:         var(--md-inverse-primary);
+
+  --Dash-Fill-Interactive-Strong:  var(--md-secondary-container);
+  --Dash-Fill-Interactive-Weak:    var(--md-on-secondary-container);
+
+  --Dash-Fill-Inverse-Strong:       var(--md-surface-container-high);
+  --Dash-Fill-Inverse-Weak:       var(--md-on-secondary-container);
+
+
 }
 
 /* ============================================================
@@ -127,12 +148,6 @@
 body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
-}
-
-#page-wrapper {
-  min-height: 100vh;
-  background-color: var(--bg-page);
-  color: var(--text-main);
 }
 
 /* ============================================================
@@ -199,6 +214,7 @@ body {
    ============================================================ */
 .card {
   margin-bottom: 16px;
+  margin-top: 16px;
   border: 1px solid var(--border-color) !important;
   border-radius: 12px;
   overflow: hidden;
@@ -229,4 +245,29 @@ body {
 .form-check-input:checked {
   background-color: var(--bg-header);
   border-color: var(--text-tab);
-  }
+}
+
+/* ============================================================
+  Dropdown (dcc.Dropdown / react-select)
+  ============================================================ */
+
+.dash-dropdown,
+.dash-dropdown-content {
+    color: var(--Dash-Text-Strong);
+    font-size: 0.85rem;
+    font-weight: 400;
+    border-color: var(--border-color);
+}
+.slider-track {
+    background-color: var(--accent);
+    border-color: var(--border-color);
+
+}
+
+.slider-handle {
+    border-color: var(--accent);
+    background-color: var(--accent);
+}
+.dash-dropdown-search-container {
+  border-color: var(--border-color);
+}
