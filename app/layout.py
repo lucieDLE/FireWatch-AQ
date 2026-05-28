@@ -90,13 +90,16 @@ def build_layout():
                                                 dbc.Row([
                                                     dbc.Col(
                                                         graphCard("pollutant-distribution-graph", pollutant_distribution_us_barplot, height='500px'),
-                                                        width=10
-                                                    ),
-                                                    dbc.Col(
-                                                        textCard("Key Findings", "Add your analysis here."),
-                                                        width=2
+                                                        width=12
                                                     ),
                                                 ]),
+                                                dbc.Row([
+                                                    dbc.Col(
+                                                        textCard("Key Findings", "Add your analysis here."),
+                                                        width=12
+                                                    ),
+                                                ]),
+
                                             ]),
 
                                         dcc.Tab(
