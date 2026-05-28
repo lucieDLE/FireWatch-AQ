@@ -6,7 +6,11 @@ sys.path.insert(0, str(ROOT_DIR))
 import numpy as np
 import plotly.graph_objects as go
 
-from src.config import CENTER_LAT, CENTER_LON, SELECTED_DAY
+from src.config import CENTER_LAT, CENTER_LON, FIRE_LAT, FIRE_LON
+
+# Center the map on the fire bounding box
+_FIRE_CENTER_LAT = (FIRE_LAT[0] + FIRE_LAT[1]) / 2
+_FIRE_CENTER_LON = (FIRE_LON[0] + FIRE_LON[1]) / 2
 from src.display import (
     green_colors, red_colors, line_greens, line_reds,
     AQI_CMAP, AQI_BANDS_COLOR, AQI_HOVER_TEMPLATE, AQI_REPORT_COLS,
@@ -26,7 +30,7 @@ def _geoms_to_lines(gdf_wgs84):
     return lats, lons
 
 
-def _make_aq_hotspot_trace(df_day, site_name, show_colorbar=True, show_legend=True):
+def make_aq_hotspot_trace(df_day, site_name, show_colorbar=True, show_legend=True):
     df_day = df_day[df_day['max_AQI'] != 'N/A'].copy()
     colorbar = dict(
         title=dict(text='AQI', font=dict(size=11)),
@@ -76,7 +80,7 @@ def _make_site_ellipse_trace(df_day, color_line, color_fill, name, padding=0.15)
     )
 
 
-def _make_fire_perimeter_trace(gdf):
+def make_fire_perimeter_trace(gdf):
     if gdf.empty:
         return go.Scattermapbox(lat=[], lon=[], mode='lines', name='Fire perimeter', showlegend=True)
 
@@ -140,21 +144,21 @@ def make_burning_area_plot(gdf):
 
 
 def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict,
-                          mapbox_style='carto-positron'):
+                         selected_day='', mapbox_style='carto-positron'):
     fig = go.Figure(data=[
         _make_site_ellipse_trace(df_day_site_1, 'rgba(34,120,50,0.9)', 'rgba(34,120,50,0.10)',
                                  'Monitoring Site 1: Fresno', padding=0.2),
         _make_site_ellipse_trace(df_day_site_2, 'rgba(72,105,140,0.9)', 'rgba(72,105,140,0.08)',
                                  'Monitoring Site 2: Sierra National Forest (EAST)', padding=0.3),
-        _make_aq_hotspot_trace(df_day_site_1, 'Fresno', show_colorbar=True, show_legend=True),
-        _make_aq_hotspot_trace(df_day_site_2, 'Sierra National Forest (EAST)',
-                               show_colorbar=False, show_legend=False),
-        _make_fire_perimeter_trace(gdf_fire_day),
+        make_aq_hotspot_trace(df_day_site_1, 'Fresno', show_colorbar=True, show_legend=True),
+        make_aq_hotspot_trace(df_day_site_2, 'Sierra National Forest (EAST)',
+                              show_colorbar=False, show_legend=False),
+        make_fire_perimeter_trace(gdf_fire_day),
     ])
 
     fig.update_layout(
         title=dict(
-            text=f'Fire Perimeter & Air Quality — {SELECTED_DAY}',
+            text=f'Fire Perimeter & Air Quality — {selected_day}',
             font=dict(size=15), x=0.5, xanchor='center',
         ),
         mapbox=dict(
@@ -166,7 +170,7 @@ def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fir
                 color='rgba(255, 100, 0, 0.2)',
                 below='traces',
             )],
-            center=dict(lat=CENTER_LAT, lon=CENTER_LON),
+            center=dict(lat=_FIRE_CENTER_LAT, lon=_FIRE_CENTER_LON),
             zoom=7,
         ),
         margin=dict(l=10, r=10, t=50, b=10),
