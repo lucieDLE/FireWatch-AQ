@@ -220,3 +220,13 @@ body {
   font-size: 0.82rem;
   padding: 12px 14px;
 }
+
+
+/* ============================================================
+   Switch Theme button
+============================================================ */
+
+.form-check-input:checked {
+  background-color: var(--bg-header);
+  border-color: var(--text-tab);
+  }
