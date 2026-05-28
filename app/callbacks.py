@@ -1,7 +1,17 @@
+from pathlib import Path
+import sys
+ROOT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT_DIR))
+
 from dash import Input, Output, callback
 
-from figures import *
-from data import *
+from src.display import COLORS_MAP
+
+from data_transforms import *
+from figures_aq import make_pollutant_distribution, make_aq_us_plot, compute_max_boxplot
+from figures_fire import make_cloropleth_fire_counties, make_bar_fire_event, make_fire_aqi_overlay
+from figures_event import make_aq_time_series, make_burning_area_plot, make_overlay_aq_fire
+
 
 # ============================================================================
 #  DASH CALLBACKS

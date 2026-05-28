@@ -7,14 +7,16 @@ import dash
 from dash import html, dcc
 import dash_bootstrap_components as dbc
 
-from src.config import *
-from src.display import *
-from figures import *
-from data import *
+from src.display import COLORS_MAP
 
-# AQR qnnual
+from data_transforms import *
+from figures_aq import make_pollutant_distribution, make_aq_us_plot, compute_max_boxplot
+from figures_fire import make_cloropleth_fire_counties, make_bar_fire_event, make_fire_aqi_overlay
+from figures_event import make_aq_time_series, make_burning_area_plot, make_overlay_aq_fire
+
+
 annual_pollutant_distribution = make_pollutant_distribution(df_aqr_annual)
-pollutant_exceedances_us_map = make_aq_us_plot(df_county_aqr_annual, list_best = ['WA', 'ID', 'MS'], list_worst=['CA', 'TX', 'AZ'])
+pollutant_exceedances_us_map = make_aq_us_plot(df_county_aqr_annual, list_best=['WA', 'ID', 'MS'], list_worst=['CA', 'TX', 'AZ'])
 pollutant_distribution_us_barplot = compute_max_boxplot(df_annual_stats, state_list)
 
 top_counties = make_cloropleth_fire_counties(df_fire, ca_geojson)
