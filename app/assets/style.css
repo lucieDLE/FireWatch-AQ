@@ -1,133 +1,222 @@
 /* ============================================================
-   Light / Dark Fire Theme
-   Toggle by adding class "dark" to #page-wrapper
+   M3 Color Tokens — Light (default)
    ============================================================ */
-
-/* ── Light theme variables (default) ─────────────────────── */
 :root {
-    --bg-page:          #fae2c6;
-    --bg-header:        #db671a;
-    --bg-tab-selected:  #fae2c6;
-    --bg-tab:           #f9c38c;
-    --bg-card:          white;
-    --bg-card-header:   #f66c1c;
-    --bg-card-body:     #f9c38c;
+  --md-primary:                   rgb(0 7 27);
+  --md-surface-tint:              rgb(71 94 141);
+  --md-on-primary:                rgb(255 255 255);
+  --md-primary-container:         rgb(0 30 74);
+  --md-on-primary-container:      rgb(148 171 222);
+  --md-secondary:                 rgb(112 4 0);
+  --md-on-secondary:              rgb(255 255 255);
+  --md-secondary-container:       rgb(155 7 0);
+  --md-on-secondary-container:    rgb(255 226 221);
+  --md-tertiary:                  rgb(2, 2, 2);
+  --md-on-tertiary:               rgb(255 255 255);
+  --md-tertiary-container:        rgb(0 44 87);
+  --md-on-tertiary-container:     rgb(154 186 237);
 
-    --text-header:      #fff4ee;
-    --text-tab:         #621708;
-    --text-tab-selected:#621708;
-    --text-card-header: #fff4ee;
-    --text-card-body:   #220901;
-    --text-main:        #220901;
+  --md-surface:                   rgb(250 248 253);
+  --md-on-surface:                rgb(16 17 20);
+  --md-surface-variant:           rgb(225 226 236);
+  --md-on-surface-variant:        rgb(51 54 62);
+  --md-outline:                   rgb(80 82 91);
+  --md-outline-variant:           rgb(106 109 118);
 
-    --accent:           #F48C06;
-    --border-color:     #db671a;
-    --shadow:           rgba(100, 30, 0, 0.12);
-    --Dash-Fill-Inverse-Strong: #fff4ee;
+  --md-surface-dim:               rgb(199 198 202);
+  --md-surface-bright:            rgb(250 248 253);
+  --md-surface-container-lowest:  rgb(255 255 255);
+  --md-surface-container-low:     rgb(244 243 247);
+  --md-surface-container:         rgb(233 231 236);
+  --md-surface-container-high:    rgb(221 220 225);
+  --md-surface-container-highest: rgb(210 209 213);
+  
+  --md-inverse-surface:           rgb(47 48 52);
+  --md-inverse-on-surface:        rgb(242 240 244);
 }
-
-/* ── Dark theme variable overrides ───────────────────────── */
+/* ============================================================
+   M3 Color Tokens — Dark overrides
+   ============================================================ */
 .dark {
-    --bg-page:          #1a0900;
-    --bg-header:        #360c04;
-    --bg-tab:           #111111;
-    --bg-tab-selected:  #1a0900;
-    --bg-card:          #111111;
-    --bg-card-header:   #621708;
-    --bg-card-body:     #360c04;
+  --md-primary:                  rgb(175 198 252);
+  --md-surface-tint:             rgb(175 198 252);
+  --md-on-primary:               rgb(22 47 91);
+  --md-primary-container:        rgb(0 30 74);
+  --md-on-primary-container:     rgb(113 135 185);
+  --md-secondary:                rgb(255 180 167);
+  --md-on-secondary:             rgb(104 3 0);
+  --md-secondary-container:      rgb(155 7 0);
+  --md-on-secondary-container:   rgb(255 165 149);
+  /* --md-tertiary:                         rgb(252, 186, 88); */
+  --md-surface:                  rgb(18 19 22);
+  --md-on-surface:               rgb(227 226 230);
+  --md-surface-variant:          rgb(68 71 79);
+  --md-on-surface-variant:       rgb(196 198 208);
+  --md-outline:                  rgb(142 144 154);
+  --md-outline-variant:          rgb(68 71 79);
+  --md-shadow:                   rgb(0 0 0);
 
-    --text-header:      #F48C06;
-    --text-tab:         #F48C06;
-    --text-tab-selected:#F48C06;
-    --text-card-header: #f9c38c;
-    --text-card-body:   white;
-    --text-main:        white;
+  --md-surface-container-lowest: rgb(13 14 17);
+  --md-surface-container-low:    rgb(27 27 31);
+  --md-surface-container:        rgb(31 31 35);
+  --md-surface-container-high:   rgb(41 42 45);
+  --md-surface-container-highest:rgb(52 53 56);
+  --md-inverse-surface:          rgb(227 226 230);
+  --md-inverse-on-surface:       rgb(47 48 52);
+  --md-inverse-primary:          rgb(71 94 141);
 
-    --accent:           #621708;
-    --border-color:     #360c04;
-    --shadow:           rgba(0, 0, 0, 0.4);
+  --md-secondary-fixed:          rgb(255 218 212);
+  --md-on-secondary-fixed:       rgb(64 1 0);
 
-    --Dash-Fill-Inverse-Strong: #621708;
 }
 
-/* ── Base ─────────────────────────────────────────────────── */
+/* ============================================================
+   Semantic App Variables — mapped from M3 tokens
+   ============================================================ */
+:root {
+  /* Surfaces */
+  --bg-page:          var(--md-surface);
+  --bg-header:        var(--md-secondary-container);
+  --bg-tab:           var(--md-surface-container-low);
+  --bg-tab-selected:  var(--md-surface);
+  --bg-card:          var(--md-surface-container-lowest);
+  --bg-card-header:   var(--md-surface-container-high);
+  --bg-card-body:     var(--md-surface-container-lowest);
+
+  /* Text */
+  --text-header:      var(--md-on-secondary-container);
+  --text-tab:         var(--md-on-surface-variant);
+  --text-tab-selected:var(--md-on-surface);
+  --text-card-header: var(--md-on-surface);
+  --text-card-body:   var(--md-on-surface);
+  --text-main:        var(--md-on-surface);
+
+  /* Accents & borders */
+  --accent:           var(--md-secondary);
+  --border-color:     var(--md-outline-variant);
+  --shadow:           rgba(0, 0, 0, 0.08);
+}
+
+.dark {
+  /* Surfaces */
+  --bg-page:          var(--md-surface);
+  --bg-header:        var(--md-secondary-container);
+  --bg-tab:           var(--md-surface-container-low);
+  --bg-tab-selected:  var(--md-surface);
+  --bg-card:          var(--md-surface-container-lowest);
+  --bg-card-header:   var(--md-secondary-container);
+  --bg-card-body:     var(--md-surface-container-low);
+  
+  /* Text */
+  --text-header:      var(--md-on-surface);
+  --text-tab:         var(--md-on-surface-variant);
+  --text-tab-selected:var(--md-on-surface);
+  --text-card-header: var(--md-on-secondary-container);
+  --text-card-body:   var(--md-on-surface);
+  --text-main:        var(--md-on-surface);
+
+  /* Accents & borders */
+  --accent:           var(--md-secondary);
+  --border-color:     var(--md-outline-variant);
+  --shadow: rgba(0, 0, 0, 0.35);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
 }
 
 #page-wrapper {
-    min-height: 100vh;
-    background-color: var(--bg-page);
+  min-height: 100vh;
+  background-color: var(--bg-page);
+  color: var(--text-main);
 }
 
-/* ── Header ───────────────────────────────────────────────── */
+/* ============================================================
+   Header
+   ============================================================ */
 .app-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: var(--bg-header);
-    padding: 14px 24px;
-    color: var(--text-header);
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-header);
+  padding: 14px 24px;
+  color: var(--text-header);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
-/* ── Tabs ─────────────────────────────────────────────────── */
+/* ============================================================
+   Tabs
+   ============================================================ */
 .tab {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-tab);
-    background-color: var(--bg-tab);
-    border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-tab) !important;
+  background-color: var(--bg-tab) !important;
+  border: none !important;
+  border-top: 3px solid transparent !important; 
+  border-bottom: none !important;
+  /* border-bottom: 2px solid var(--border-color) !important; */
+  transition: background-color 0.2s, color 0.2s;
 }
-/* ── Tab content padding ──────────────────────────────────── */
-.tab-content {
-    padding: 16px;
-    background-color: var(--bg-page);
-    
+
+.tab:hover {
+  background-color: var(--md-surface-container) !important;
+  color: var(--text-tab-selected) !important;
 }
 
 .tab--selected {
-    color: var(--text-tab-selected);
-    font-weight: 700;
-    background-color: var(--bg-tab-selected);
-    border-top: 3px solid var(--accent) !important;
+  color: var(--text-tab-selected) !important;
+  font-weight: 700;
+  background-color: var(--bg-tab-selected) !important;
+  border-top: 3px solid var(--accent) !important;
 }
 
-/* ── Cards ────────────────────────────────────────────────── */
+.tab-content {
+  padding: 16px;
+  background-color: var(--bg-page);
+}
+
+/* ============================================================
+   Chart cards
+   ============================================================ */
 .chart-card {
-    background-color: var(--bg-card);
-    border-radius: 8px;
-    box-shadow: 0 1px 6px var(--shadow);
-    padding: 8px;
-    margin-bottom: 16px;
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 4px var(--shadow);
+  padding: 8px;
+  margin-bottom: 16px;
 }
 
-/* ── Text cards (dbc.Card) ───────────────────────────────── */
+/* ============================================================
+   Text cards (dbc.Card)
+   ============================================================ */
 .card {
-    margin-bottom: 16px;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 6px;
-    overflow: hidden;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .card-header {
-    background-color: var(--bg-card-header) !important;
-    color: var(--text-card-header) !important;
-    font-weight: 600;
-    font-size: 0.85rem;
-    padding: 7px 14px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+  background-color: var(--bg-card-header) !important;
+  color: var(--text-card-header) !important;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 7px 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .card-body {
-    background-color: var(--bg-card-body) !important;
-    color: var(--text-card-body) !important;
-    font-size: 0.82rem;
-    padding: 12px 14px;
+  background-color: var(--bg-card-body) !important;
+  color: var(--text-card-body) !important;
+  font-size: 0.82rem;
+  padding: 12px 14px;
 }
-
-

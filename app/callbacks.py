@@ -8,13 +8,12 @@ from data import *
 # ============================================================================
 
 def apply_theme(fig, dark_mode):
-    """Apply template + legend colors — called after figure is built."""
     fig.update_layout(
         template='plotly_dark' if dark_mode else 'ggplot2',
         legend=dict(
-            bgcolor     ='rgba(30,14,5,0.85)'  if dark_mode else 'rgba(255,255,255,0.85)',
-            bordercolor ='rgba(100,50,20,0.8)' if dark_mode else 'rgba(180,180,180,0.8)',
-            font        =dict(color='#ffd6b0'  if dark_mode else '#3d0c00'),
+            bgcolor     ='rgba(43,28,26,0.0)'       if dark_mode else 'rgba(255,255,255,0.0)',
+            bordercolor ='rgb(91,64,61)'              if dark_mode else 'rgb(227,190,185)',
+            font        =dict(color='rgb(220,220,220)' if dark_mode else 'rgb(39,24,22)'),
         ),
     )
     return fig
@@ -47,7 +46,7 @@ def update_figure_theme(dark_mode):
     fig_us_map         = make_aq_us_plot(df_county_aqr_annual, list_best=['WA', 'ID', 'MS'], list_worst=['CA', 'TX', 'AZ'])
     fig_boxplot        = compute_max_boxplot(df_annual_stats, state_list)
     # Tab 2
-    fig_counties       = make_cloropleth_fire_counties(df_fire)
+    fig_counties       = make_cloropleth_fire_counties(df_fire, ca_geojson)
     fig_top_fires      = make_bar_fire_event(df_biggest_fire)
     fig_fire_aqi       = make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire)
     # Tab 4
