@@ -27,7 +27,8 @@ overlay_fire_aqi = make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire)
 ts_site_1= make_aq_time_series(df_event_site_1, site_1, 'Fresno Area', colors=COLORS_MAP['FRESNO'])
 ts_site_2 = make_aq_time_series(df_event_site_2, site_2, 'Sierra National Forest - EAST', colors=COLORS_MAP['SIERRA'])
 burning_area = make_burning_area_plot(gdf)
-aq_fire_overlay = make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict,)
+aq_fire_overlay = make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict,
+                                       selected_day=SELECTED_DAY)
 
 
 # ============================================================================
@@ -163,7 +164,23 @@ def build_layout():
                                                     # left panel
                                                     dbc.Col([
                                                         textCard("Tab Description", "description Text"),
-                                                        graphCard(fig_id="overlay-map-graph", figure=aq_fire_overlay, height='480px'), 
+                                                        graphCard(fig_id="overlay-map-graph", figure=aq_fire_overlay, height='480px'),
+                                                        html.Div(
+                                                            dcc.Slider(
+                                                                id='date-slider',
+                                                                min=0,
+                                                                max=len(event_dates) - 1,
+                                                                step=1,
+                                                                value=event_dates.index(SELECTED_DAY) if SELECTED_DAY in event_dates else 0,
+                                                                marks={
+                                                                    i: {'label': event_dates[i][5:],
+                                                                        'style': {'fontSize': '11px'}}
+                                                                    for i in range(0, len(event_dates), 3)
+                                                                },
+                                                                included=False,
+                                                            ),
+                                                            className='slider-container',
+                                                        ),
                                                         graphCard(fig_id="burning-graph", figure=burning_area, height='320px'),
                                                     ]),
                                                     

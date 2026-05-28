@@ -153,30 +153,54 @@ df_aq_quantile = compute_aqi_quantiles(POLLUTANT_COL_MAP['PM2.5'])
 
 
 # ============================================================================
-# Panel 4: Event Dive
+# Panel 4: Event Dive — Garnet Fire
 # ============================================================================
 
 site_1 = WATCH_SITES['Garnet - Site 1']
 site_2 = WATCH_SITES['Garnet - Site 2']
 
-df_fire_event = df_fire.loc[(df_fire['acq_date'] > EVENT_START) & (df_fire['acq_date'] < EVENT_END)]
+# Derive event window from the Garnet fire entry in df_biggest_fire
+_garnet = df_biggest_fire[
+    df_biggest_fire['poly_IncidentName'].str.contains('GARNET', case=False, na=False)
+]
+if not _garnet.empty:
+    _row = _garnet.iloc[0]
+    EVENT_START = pd.to_datetime(_row['start_date']).strftime('%Y-%m-%d')
 
-df_aqi_event = df_aqi.loc[(df_aqi['Date'] > EVENT_START) & (df_aqi['Date'] < EVENT_END)]
-df_aqi_event = df_aqi_event.fillna('N/A')
+    # EVENT_END = last fire pixel inside the area bounds + 7 days
+    _area_pixels = df_fire.loc[
+        (df_fire['latitude']  > FIRE_LAT[0]) & (df_fire['latitude']  < FIRE_LAT[1]) &
+        (df_fire['longitude'] > FIRE_LON[0]) & (df_fire['longitude'] < FIRE_LON[1])
+    ]
+    if not _area_pixels.empty:
+        _last_pixel_date = pd.to_datetime(_area_pixels['acq_date'].max())
+        EVENT_END = (_last_pixel_date + pd.Timedelta(days=7)).strftime('%Y-%m-%d')
+    else:
+        EVENT_END = pd.to_datetime(_row['end_date']).strftime('%Y-%m-%d')
+# else: fall back to EVENT_START / EVENT_END imported from src.config
+
+df_fire_event = df_fire.loc[
+    (df_fire['acq_date'] >= EVENT_START) & (df_fire['acq_date'] <= EVENT_END)
+]
+df_fire_event = df_fire_event.loc[
+    (df_fire_event['latitude']  > FIRE_LAT[0]) & (df_fire_event['latitude']  < FIRE_LAT[1]) &
+    (df_fire_event['longitude'] > FIRE_LON[0]) & (df_fire_event['longitude'] < FIRE_LON[1])
+]
+
+df_aqi_event = df_aqi.loc[
+    (df_aqi['Date'] >= EVENT_START) & (df_aqi['Date'] <= EVENT_END)
+].fillna('N/A')
 
 df_event_site_1 = df_aqi_event.loc[df_aqi_event['Site ID'].isin(site_1)].copy()
 df_event_site_2 = df_aqi_event.loc[df_aqi_event['Site ID'].isin(site_2)].copy()
 
-unique_dates = sorted(df_aqi_event['Date'].unique())
-
-df_fire_event = df_fire_event.loc[
-    (df_fire_event['latitude'] > FIRE_LAT[0]) & (df_fire_event['latitude'] < FIRE_LAT[1])
-]
-df_fire_event = df_fire_event.loc[
-    (df_fire_event['longitude'] > FIRE_LON[0]) & (df_fire_event['longitude'] < FIRE_LON[1])
-]
+event_dates = sorted(df_aqi_event['Date'].unique())
 
 gdf = create_fire_gdf_stats(df_fire_event)
+
+# Validate SELECTED_DAY against available dates; fall back to midpoint
+if event_dates and SELECTED_DAY not in event_dates:
+    SELECTED_DAY = event_dates[len(event_dates) // 2]
 
 gdf_fire_day = gdf.loc[gdf['acq_date'] == SELECTED_DAY]
 geojson_fire_dict = json.loads(gdf_fire_day.to_json())
