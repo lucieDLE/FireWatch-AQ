@@ -116,9 +116,14 @@ df_annual_stats['q1'] = (
 df_fire = df_fire.loc[(df_fire['acq_date'] >= '2025-01-01') & (df_fire['acq_date'] < '2026-01-01')]
 
 df_biggest_fire = (
-    df_fire[['poly_IncidentName', 'acq_date', 'poly_GISAcres', 'attr_POOCounty']]
+    df_fire[['poly_IncidentName', 'poly_GISAcres', 'attr_POOCounty', 'attr_FireDiscoveryDateTime','endFire']]
     .groupby('poly_IncidentName')
-    .agg(date=('acq_date', 'min'), acres=('poly_GISAcres', 'max'), county=('attr_POOCounty', 'min'))
+    .agg(   
+        acres=('poly_GISAcres', 'max'), 
+        county=('attr_POOCounty', 'min'),
+        start_date = ('attr_FireDiscoveryDateTime', 'max'),
+        end_date = ('endFire', 'max'),
+        )
     .reset_index()
     .sort_values(by='acres', ascending=False)
     .head(8)
