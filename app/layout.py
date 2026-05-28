@@ -26,7 +26,7 @@ overlay_fire_aqi = make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire)
 # timeseries plots
 ts_site_1= make_aq_time_series(df_event_site_1, site_1, 'Fresno Area', colors=COLORS_MAP['FRESNO'])
 ts_site_2 = make_aq_time_series(df_event_site_2, site_2, 'Sierra National Forest - EAST', colors=COLORS_MAP['SIERRA'])
-burning_area = make_burning_area_plot(gdf)
+burning_area = make_burning_area_plot(gdf, event_start=EVENT_START, event_end=EVENT_END)
 aq_fire_overlay = make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict,
                                        selected_day=SELECTED_DAY)
 

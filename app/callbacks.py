@@ -59,7 +59,7 @@ def update_figure_theme(dark_mode):
     # Tab 4
     fig_site1  = make_aq_time_series(df_event_site_1, site_1, 'Fresno Area', colors=COLORS_MAP['FRESNO'])
     fig_site2  = make_aq_time_series(df_event_site_2, site_2, 'Sierra National Forest - EAST', colors=COLORS_MAP['SIERRA'])
-    fig_burning = make_burning_area_plot(gdf)
+    fig_burning = make_burning_area_plot(gdf, event_start=EVENT_START, event_end=EVENT_END)
 
     all_figs = [fig_pollutant_dist, fig_us_map, fig_boxplot,
                 fig_counties, fig_top_fires,

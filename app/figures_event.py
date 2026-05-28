@@ -118,6 +118,7 @@ def make_aq_time_series(df, sites, site_name, colors, legend_entrywidth=0.33):
         title=dict(text=f'AQI at selected sites near: {site_name}', yanchor='top', y=0.95),
         xaxis=dict(title_text='Date'),
         yaxis=dict(title_text='Air Quality Index (AQI)'),
+        hovermode='x unified',
         legend=dict(
             orientation='h', yanchor='bottom', xanchor='left', y=1.02, x=0,
             maxheight=0.12, entrywidthmode='fraction', entrywidth=legend_entrywidth,
@@ -127,16 +128,26 @@ def make_aq_time_series(df, sites, site_name, colors, legend_entrywidth=0.33):
     return fig
 
 
-def make_burning_area_plot(gdf):
+def make_burning_area_plot(gdf, event_start=None, event_end=None):
+    import pandas as pd
+    plot_df = gdf[['acq_date', 'area_km2', 'perimeter_km']].copy()
+
+    if event_end:
+        last_date = pd.to_datetime(plot_df['acq_date'].max())
+        day_after = (last_date + pd.Timedelta(days=1)).strftime('%Y-%m-%d')
+        zeros = pd.DataFrame({'acq_date': [day_after, event_end], 'area_km2': [0, 0], 'perimeter_km': [0, 0]})
+        plot_df = pd.concat([plot_df, zeros], ignore_index=True)
+
     fig = go.Figure([
-        go.Scatter(x=gdf['acq_date'], y=gdf['area_km2'],
-                   name='Burning Area (km2)', line_color=COLORS_MAP['FIRE'][0]),
-        go.Scatter(x=gdf['acq_date'], y=gdf['perimeter_km'],
+        go.Scatter(x=plot_df['acq_date'], y=plot_df['area_km2'],
+                   name='Burning Area (km²)', line_color=COLORS_MAP['FIRE'][0]),
+        go.Scatter(x=plot_df['acq_date'], y=plot_df['perimeter_km'],
                    name='Fire Perimeter (km)', line_color=COLORS_MAP['FIRE'][1]),
     ])
     fig.update_layout(
         title=dict(text='Estimated Burning Area and Fire Perimeter', yanchor='top', y=0.95),
-        xaxis=dict(title_text='Date'),
+        hovermode='x unified',
+        xaxis=dict(title_text='Date', range=[event_start, event_end] if event_start else None),
         legend=dict(orientation='h', yanchor='top', y=1.2, xanchor='left', maxheight=0.1),
         margin=dict(l=10, r=10, t=75, b=10),
     )
