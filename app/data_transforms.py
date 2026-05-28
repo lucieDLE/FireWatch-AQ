@@ -125,14 +125,26 @@ df_biggest_fire = (
 )
 df_biggest_fire['label'] = df_biggest_fire['poly_IncidentName'] + '<br>' + df_biggest_fire['county']
 
-df_grouped = df_aqi[['Daily AQI Value_PM2.5', 'Date']].groupby('Date')
-df_aq_quantile = df_grouped.quantile(0.25).rename(columns={'Daily AQI Value_PM2.5': 'Q1'}).reset_index()
-df_aq_quantile['Q2']  = df_grouped.quantile(0.50)['Daily AQI Value_PM2.5'].values
-df_aq_quantile['Q3']  = df_grouped.quantile(0.75)['Daily AQI Value_PM2.5'].values
-df_aq_quantile['Q99'] = df_grouped.quantile(0.99)['Daily AQI Value_PM2.5'].values
+POLLUTANT_COL_MAP = {
+    'PM2.5':  'Daily AQI Value_PM2.5',
+    'PM10':   'Daily AQI Value_PM10',
+    'Ozone':  'Daily AQI Value_O3',
+    'NO2':    'Daily AQI Value_NO2',
+}
 
-for col in ['Q1', 'Q2', 'Q3', 'Q99']:
-    df_aq_quantile[f'{col}_smooth'] = df_aq_quantile[col].rolling(window=3, center=True).mean()
+
+def compute_aqi_quantiles(pollutant_col):
+    grouped = df_aqi[[pollutant_col, 'Date']].groupby('Date')
+    df_q = grouped.quantile(0.25).rename(columns={pollutant_col: 'Q1'}).reset_index()
+    df_q['Q2']  = grouped.quantile(0.50)[pollutant_col].values
+    df_q['Q3']  = grouped.quantile(0.75)[pollutant_col].values
+    df_q['Q99'] = grouped.quantile(0.99)[pollutant_col].values
+    for col in ['Q1', 'Q2', 'Q3', 'Q99']:
+        df_q[f'{col}_smooth'] = df_q[col].rolling(window=3, center=True).mean()
+    return df_q
+
+
+df_aq_quantile = compute_aqi_quantiles(POLLUTANT_COL_MAP['PM2.5'])
 
 
 # ============================================================================

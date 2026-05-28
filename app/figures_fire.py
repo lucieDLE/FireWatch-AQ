@@ -71,7 +71,7 @@ def make_bar_fire_event(df_biggest_fire):
     return fig
 
 
-def make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire):
+def make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire, pollutant_name='PM2.5'):
     fig = make_subplots(specs=[[{'secondary_y': True}]])
 
     fig.add_trace(go.Scatter(
@@ -129,12 +129,12 @@ def make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire):
 
     fig.update_layout(
         template='plotly_dark',
-        title_text='PM2.5 AQI vs Fire Activity — California 2025',
+        title_text=f'{pollutant_name} AQI vs Fire Activity — California 2025',
         legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='left', x=0),
         barmode='overlay',
         margin=dict(t=100),
     )
-    fig.update_yaxes(title_text='PM2.5 AQI', secondary_y=False)
+    fig.update_yaxes(title_text=f'{pollutant_name} AQI', secondary_y=False)
     fig.update_yaxes(title_text='Acres Burnt', secondary_y=True, showgrid=False)
     fig.update_xaxes(title_text='Date')
     return fig
