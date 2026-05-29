@@ -25,7 +25,7 @@ def compute_cluster_geometry(group):
     polys = [Point(r.longitude, r.latitude).buffer(0.002) for r in group.itertuples()]
     union = unary_union(polys)
     # dilate to fill gaps between satellite pixels, then erode to restore shape
-    return union.buffer(0.006).buffer(-0.004)
+    return union.buffer(0.006)
 
 
 def create_fire_gdf_stats(df):
@@ -179,7 +179,8 @@ def get_event_data(fire_name: str) -> dict:
         df_fire_event = df_fire.loc[df_fire['poly_IncidentName'] == fire_name]
 
     event_start = row['buffer_start_day']
-    event_end = row['end_date']
+    last_pixel_date = pd.to_datetime(df_fire_event['acq_date'].max())
+    event_end = (last_pixel_date + pd.Timedelta(days=7)).strftime('%Y-%m-%d')
     fire_lat = (df_fire_event['latitude'].min(), df_fire_event['latitude'].max())
     fire_lon = (df_fire_event['longitude'].min(), df_fire_event['longitude'].max())
 
