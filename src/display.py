@@ -111,21 +111,27 @@ AQI_CMAP = [
 
 COLORS_MAP = {
                 'SIERRA': [
-                    "rgb(120,155,185)",   # steel blue
-                    "rgb(72,105,140)",    # slate blue
-                    "rgb(170,195,215)",   # pale blue
-                    "rgb(90,125,155)",    # muted blue
-                    "rgb(50,80,115)",     # deep navy
+                    "rgb(185,220,245)",   # icy pale blue
+                    "rgb(140,190,225)",   # powder blue
+                    "rgb(100,160,210)",   # cornflower blue
+                    "rgb(65,125,185)",    # medium blue
+                    "rgb(40,95,160)",     # strong blue
+                    "rgb(20,60,125)",     # deep navy
+                    "rgb(75,145,175)",    # teal blue
+                    "rgb(115,155,195)",   # steel periwinkle
+                    "rgb(50,110,150)",    # ocean blue
                 ],
 
                 'FRESNO': [
-                    "rgb(34,120,50)",     # forest green
-                    "rgb(80,170,80)",     # mid green
-                    "rgb(140,195,90)",    # light green
-                    "rgb(20,80,35)",      # deep green
-                    "rgb(100,150,60)",    # olive green
-                    "rgb(170,210,120)",   # pale green
-                    "rgb(55,130,65)",     # sage green
+                    "rgb(195,235,155)",   # pale spring green
+                    "rgb(150,210,110)",   # light fresh green
+                    "rgb(100,180,75)",    # bright mid green
+                    "rgb(60,150,50)",     # medium forest green
+                    "rgb(25,115,35)",     # rich forest green
+                    "rgb(10,75,25)",      # deep forest green
+                    "rgb(125,170,65)",    # olive green
+                    "rgb(170,215,105)",   # light olive green
+                    "rgb(55,130,85)",     # sage green
                 ],
 
                 # Fire perimeter traces
