@@ -1,19 +1,29 @@
 WATCH_SITES =  { 
     
-    'Las Palisades':[ 
-        60374009, # Long Beach
-        60374008, # Signal Beach (LBSH)
-        60371302, # Compton
-        60371103, # L.A.
-        60370113, # West L.A.
+    'SAN LUIS OBISPO/SANTA BARBARA': [
+        60798002,
+        60792020,
+        60792007,
+        60792004,
+        60793109,
+        60831009,
+        60832004,
     ],
     
-    'Eaton': [
+    'LOS ANGELES': [
         60372005, # Pasadena
+        60374009, # Long Beach
+        60374008, # Signal Beach (LBSH)
+        60371103, # L.A.
+        60370113, # West L.A.
+        60371302,
+        60371201,
+        60374010,
+        60370016,
+        60371027,
     ],
 
-
-    'Garnet - Site 1': [
+    'FRESNO': [
         60190011, #Fresno - Garland
         60190007, #Fresno-Drummond
         60190242, #Fresno-Sky Park
@@ -24,7 +34,7 @@ WATCH_SITES =  {
 
     ],
 
-    'Garnet - Site 2': [
+    'SIERRA': [
         60270002, #WMRC/NCORE
         60271023, #Bishop Tribe EMO
         60271033, #Stn.1 Big Pine Paiute site
@@ -32,6 +42,14 @@ WATCH_SITES =  {
         60271018, #Lone Pine Paiute-Shoshone Reservation
 
     ]
+}
+
+FIRE_WATCH_SITES={
+    'Gifford': [ 'SAN LUIS OBISPO/SANTA BARBARA',"LOS ANGELES" ],
+    'Madre': ['SAN LUIS OBISPO/SANTA BARBARA', "LOS ANGELES"],
+    'Garnet':['FRESNO', 'SIERRA'],
+    'SALT 14-2': ['FRESNO', 'SIERRA'],
+    'PALISADES':['LOS ANGELES', 'SAN LUIS OBISPO/SANTA BARBARA']
 }
 
 
@@ -119,12 +137,12 @@ COLORS_MAP = {
 
 
 AQI_BANDS_COLOR = [
-    (0,   50,  'rgba(0, 228, 0, 0.15)'),      # Good
-    (51,  100, 'rgba(255, 255, 0, 0.20)'),    # Moderate
-    (101, 150, 'rgba(255, 126, 0, 0.15)'),    # Unhealthy for Sensitive
-    (151, 200, 'rgba(255, 0, 0, 0.15)'),      # Unhealthy
-    (201, 300, 'rgba(143, 63, 151, 0.15)'),   # Very Unhealthy
-    (301, 400, 'rgba(143, 63, 151, 0.15)'),   # Hazardous
+    (0,   50,  'rgba(0, 228, 0, 0.30)'),      # Good
+    (51,  100, 'rgba(255, 255, 0, 0.35)'),    # Moderate
+    (101, 150, 'rgba(255, 126, 0, 0.30)'),    # Unhealthy for Sensitive
+    (151, 200, 'rgba(255, 0, 0, 0.30)'),      # Unhealthy
+    (201, 300, 'rgba(143, 63, 151, 0.30)'),   # Very Unhealthy
+    (301, 400, 'rgba(143, 63, 151, 0.30)'),   # Hazardous
 ]
 
 AQI_HOVER_TEMPLATE = (
