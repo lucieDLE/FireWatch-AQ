@@ -131,7 +131,7 @@
   --shadow: rgba(0, 0, 0, 0.35);
 
   --Dash-Text-Strong:          var(--md-on-surface);
-  --Dash-Text-Disabled:         var(--md-inverse-primary);
+  --Dash-Text-Disabled:         var(--md-outline);
 
   --Dash-Fill-Interactive-Strong:  var(--md-secondary-container);
   --Dash-Fill-Interactive-Weak:    var(--md-on-secondary-container);
@@ -246,7 +246,53 @@ body {
   background-color: var(--bg-header);
   border-color: var(--text-tab);
 }
-
+/* ============================================================
+   Date slider
+   ============================================================ */
+   .dash-slider-container {
+    padding: 8px 16px 32px;
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 16px;
+  }
+  
+  /* Rail (unselected portion, after the handle) */
+  .rc-slider-rail {
+    background-color: var(--md-surface) !important;
+  }
+  
+  /* Trail (filled portion from start to handle) */
+  .rc-slider-track {
+    background-color: var(--Dash-Fill-Interactive-Strong) !important;
+  }
+  
+  /* Handle dot */
+  .rc-slider-handle {
+    border-color: var(--Dash-Fill-Interactive-Strong) !important;
+    background-color: var(--Dash-Fill-Interactive-Strong) !important;
+    opacity: 1 !important;
+  }
+  
+  .rc-slider-handle:hover,
+  .rc-slider-handle:active,
+  .rc-slider-handle-click-focused:focus {
+    border-color: var(--Dash-Fill-Interactive-Strong) !important;
+    box-shadow: 0 0 0 5px var(--shadow) !important;
+  }
+  
+  /* Mark labels outside selection (after handle) → gray */
+  .rc-slider-mark-text {
+    color: var(--border-color) !important;
+    font-size: 10px !important;
+  }
+  
+  /* Mark labels inside selection (before handle) → pink */
+  .rc-slider-mark-text-active {
+    color: var(--slider-pink) !important;
+    font-size: 10px !important;
+  
+}
 /* ============================================================
   Dropdown (dcc.Dropdown / react-select)
   ============================================================ */
@@ -261,6 +307,13 @@ body {
 .slider-track {
     background-color: var(--accent);
     border-color: var(--border-color);
+    font-size: 0.85rem;
+    font-weight: 400;
+
+}
+.dash-dropdown-value{
+  color: var(--Dash-Text-Strong);
+  border-color: var(--border-color);
 
 }
 

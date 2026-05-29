@@ -193,7 +193,7 @@ def build_layout():
                                                                         'style': {'fontSize': '11px'}}
                                                                     for i in range(0, len(event_dates), 3)
                                                                 },
-                                                                included=False,
+                                                                included=True,
                                                             ),
                                                             className='slider-container',
                                                         ),
