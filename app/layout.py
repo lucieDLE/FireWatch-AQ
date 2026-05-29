@@ -166,6 +166,17 @@ def build_layout():
                                             label='Event Time Series Visualization',
                                             children=[
                                                 dbc.Row([
+                                                    dbc.Col([
+                                                        html.Label("Select Fire Event:", className="fw-bold mt-2"),
+                                                        dcc.Dropdown(
+                                                            id='fire-dropdown',
+                                                            options=[{'label': name, 'value': name} for name in FIRE_OPTIONS],
+                                                            value=DEFAULT_FIRE,
+                                                            clearable=False,
+                                                        ),
+                                                    ], width=4, className='mb-3 mt-2'),
+                                                ]),
+                                                dbc.Row([
                                                     # left panel
                                                     dbc.Col([
                                                         textCard("Tab Description", "description Text"),
