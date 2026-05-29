@@ -1,6 +1,6 @@
 WATCH_SITES =  { 
     
-    'SAN LUIS OBISPO/SANTA BARBARA': [
+    'San Luis Obispo/Santa Barbara': [
         60798002,
         60792020,
         60792007,
@@ -10,7 +10,7 @@ WATCH_SITES =  {
         60832004,
     ],
     
-    'LOS ANGELES': [
+    'Los Angeles': [
         60372005, # Pasadena
         60374009, # Long Beach
         60374008, # Signal Beach (LBSH)
@@ -23,7 +23,7 @@ WATCH_SITES =  {
         60371027,
     ],
 
-    'FRESNO': [
+    'Fresno': [
         60190011, #Fresno - Garland
         60190007, #Fresno-Drummond
         60190242, #Fresno-Sky Park
@@ -34,7 +34,7 @@ WATCH_SITES =  {
 
     ],
 
-    'SIERRA': [
+    'Sierra National Forest': [
         60270002, #WMRC/NCORE
         60271023, #Bishop Tribe EMO
         60271033, #Stn.1 Big Pine Paiute site
@@ -45,11 +45,11 @@ WATCH_SITES =  {
 }
 
 FIRE_WATCH_SITES={
-    'Gifford': [ 'SAN LUIS OBISPO/SANTA BARBARA',"LOS ANGELES" ],
-    'Madre': ['SAN LUIS OBISPO/SANTA BARBARA', "LOS ANGELES"],
-    'Garnet':['FRESNO', 'SIERRA'],
-    'SALT 14-2': ['FRESNO', 'SIERRA'],
-    'PALISADES':['LOS ANGELES', 'SAN LUIS OBISPO/SANTA BARBARA']
+    'Gifford': [ 'San Luis Obispo/Santa Barbara',"Los Angeles" ],
+    'Madre': ['San Luis Obispo/Santa Barbara', "Los Angeles"],
+    'Garnet':['Fresno', 'Sierra National Forest'],
+    'SALT 14-2': ['Fresno', 'Sierra National Forest'],
+    'PALISADES':['Los Angeles', 'San Luis Obispo/Santa Barbara']
 }
 
 
