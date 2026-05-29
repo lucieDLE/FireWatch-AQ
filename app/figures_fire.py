@@ -43,7 +43,7 @@ def make_cloropleth_fire_counties(df, ca_geojson):
         featureidkey='properties.name',
         color='fire_score',
         color_continuous_scale='YlOrRd',
-        map_style='dark',
+        map_style='open-street-map',
         zoom=4.5,
         center={'lat': CENTER_LAT, 'lon': CENTER_LON},
         opacity=0.7,
