@@ -28,6 +28,23 @@ def compute_cluster_geometry(group):
     return union.buffer(0.006)
 
 
+def compute_burnt_area_gdf(gdf, selected_day):
+    """Union of all fire perimeters from days strictly before selected_day."""
+    gdf_before = gdf.loc[gdf['acq_date'] < selected_day]
+    if gdf_before.empty:
+        return gdf.iloc[:0]
+    burnt_union = gdf_before.geometry.unary_union
+    gdf_union = gpd.GeoDataFrame(geometry=[burnt_union], crs='EPSG:4326')
+    proj = gdf_union.to_crs('EPSG:3310')
+    return gpd.GeoDataFrame(
+        {'acq_date': [selected_day],
+         'perimeter_km': [round(proj.geometry.length.iloc[0] / 1000, 1)],
+         'area_km2':     [round(proj.geometry.area.iloc[0]   / 1e6,  1)],
+         'max_frp':      [round(gdf_before['max_frp'].max(), 1)]},
+        geometry=[burnt_union], crs='EPSG:4326'
+    )
+
+
 def create_fire_gdf_stats(df):
     df = df.loc[df['isFire'] == 1]
 
@@ -204,6 +221,10 @@ def get_event_data(fire_name: str) -> dict:
 
     gdf_event = create_fire_gdf_stats(df_fire_event)
     gdf_fire_day = gdf_event.loc[gdf_event['acq_date'] == selected_day] if selected_day else gdf_event.iloc[:0]
+    
+    gdf_burnt_area = compute_burnt_area_gdf(gdf_event, selected_day) if selected_day else gdf_event.iloc[:0]
+    geojson_burnt_dict = json.loads(gdf_burnt_area.to_json())
+
     geojson_fire_dict = json.loads(gdf_fire_day.to_json())
 
     df_day_site_1 = df_event_site_1[df_event_site_1['Date'] == selected_day].copy() if selected_day else df_event_site_1.iloc[:0]
@@ -225,6 +246,10 @@ def get_event_data(fire_name: str) -> dict:
         gdf=gdf_event,
         gdf_fire_day=gdf_fire_day,
         geojson_fire_dict=geojson_fire_dict,
+
+        gdf_burnt_area=gdf_burnt_area,
+        geojson_burnt_dict=geojson_burnt_dict,
+
         df_day_site_1=df_day_site_1,
         df_day_site_2=df_day_site_2,
     )
@@ -248,5 +273,7 @@ SELECTED_DAY      = _ev['SELECTED_DAY']
 gdf               = _ev['gdf']
 gdf_fire_day      = _ev['gdf_fire_day']
 geojson_fire_dict = _ev['geojson_fire_dict']
+gdf_burnt_area    = _ev['gdf_burnt_area']
+geojson_burnt_dict= _ev['geojson_burnt_dict']
 df_day_site_1     = _ev['df_day_site_1']
 df_day_site_2     = _ev['df_day_site_2']

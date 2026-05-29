@@ -86,7 +86,7 @@ def make_site_ellipse_trace(df_day, color_line, color_fill, name, padding=0.15):
     )
 
 
-def make_fire_perimeter_trace(gdf):
+def make_fire_perimeter_trace(gdf, color='fire'):
     if gdf.empty:
         return go.Scattermapbox(lat=[], lon=[], mode='lines', name='Fire perimeter', showlegend=True)
 
@@ -94,13 +94,22 @@ def make_fire_perimeter_trace(gdf):
     n_pts = len(perim_lats)
     cd_vals = np.tile(gdf[FIRE_REPORT_COLS].round(1).values[0], (n_pts, 1))
 
+    if color=='amber':
+        line_color =  'rgba(50,50,50,1.0)'
+        fill_color = 'rgba(50,50,50,0.7)'
+        name = 'Inactive Fire (Burnt area)'
+    else:
+        line_color = COLORS_MAP['FIRE'][1]
+        fill_color = 'rgba(253,141,60,0.7)'
+        name = 'Active Fire (Burning area)'
+
     return go.Scattermapbox(
         lat=perim_lats, lon=perim_lons,
         mode='lines',
         fill='toself',
-        fillcolor='rgba(253,141,60,0.2)',
-        line=dict(width=1.5, color=COLORS_MAP['FIRE'][1]),
-        name='Fire perimeter',
+        fillcolor=fill_color,
+        line=dict(width=1.5, color=line_color),
+        name=name,
         customdata=cd_vals,
         hovertemplate=FIRE_HOVER_TEMPLATE,
     )
@@ -162,7 +171,7 @@ def make_burning_area_plot(gdf, event_start=None, event_end=None):
     return fig
 
 
-def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict,
+def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict,gdf_burnt_area, geojson_burnt_dict,
                          selected_day='', mapbox_style='carto-positron',
                          site_name_1='Site 1', site_name_2='Site 2',
                          center_lat=None, center_lon=None):
@@ -176,7 +185,9 @@ def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fir
                                 f'Monitoring Site 2: {site_name_2}', padding=0.3),
         make_aq_hotspot_trace(df_day_site_1, site_name_1, show_colorbar=True, show_legend=True),
         make_aq_hotspot_trace(df_day_site_2, site_name_2, show_colorbar=False, show_legend=False),
-        make_fire_perimeter_trace(gdf_fire_day),
+        make_fire_perimeter_trace(gdf_burnt_area, color='amber'),
+        make_fire_perimeter_trace(gdf_fire_day, color='fire'),
+
     ])
 
     fig.update_layout(

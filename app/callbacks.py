@@ -118,10 +118,13 @@ def update_event_map(slider_idx, dark_mode, fire_name):
     center_lat   = (fire_lat[0] + fire_lat[1]) / 2
     center_lon   = (fire_lon[0] + fire_lon[1]) / 2
 
-    gdf_day      = ev['gdf'].loc[ev['gdf']['acq_date'] == selected_day]
-    geojson_day  = json.loads(gdf_day.to_json())
-    df_site1_day = ev['df_event_site_1'][ev['df_event_site_1']['Date'] == selected_day]
-    df_site2_day = ev['df_event_site_2'][ev['df_event_site_2']['Date'] == selected_day]
+    gdf_day       = ev['gdf'].loc[ev['gdf']['acq_date'] == selected_day]
+    gdf_burnt     = compute_burnt_area_gdf(ev['gdf'], selected_day)
+
+    geojson_day   = json.loads(gdf_day.to_json())
+    geojson_burnt = json.loads(gdf_burnt.to_json())
+    df_site1_day  = ev['df_event_site_1'][ev['df_event_site_1']['Date'] == selected_day]
+    df_site2_day  = ev['df_event_site_2'][ev['df_event_site_2']['Date'] == selected_day]
 
     # Slider drag: patch only the day-specific traces (ellipses 0,1 stay)
     if triggered == 'date-slider':
@@ -130,7 +133,8 @@ def update_event_map(slider_idx, dark_mode, fire_name):
                                                     show_colorbar=True, show_legend=True)
         patched['data'][3] = make_aq_hotspot_trace(df_site2_day, ev['site_name_2'],
                                                     show_colorbar=False, show_legend=False)
-        patched['data'][4] = make_fire_perimeter_trace(gdf_day)
+        patched['data'][4] = make_fire_perimeter_trace(gdf_burnt, color='amber')
+        patched['data'][5] = make_fire_perimeter_trace(gdf_day, color='fire')
         patched['layout']['mapbox']['layers'] = [dict(
             sourcetype='geojson', source=geojson_day,
             type='fill', color='rgba(255, 100, 0, 0.2)', below='traces',
@@ -140,6 +144,7 @@ def update_event_map(slider_idx, dark_mode, fire_name):
 
     # Fire change / theme switch / initial load: full rebuild
     fig = make_overlay_aq_fire(df_site1_day, df_site2_day, gdf_day, geojson_day,
+                                gdf_burnt, geojson_burnt,
                                 selected_day=selected_day, mapbox_style=mapbox_style,
                                 site_name_1=ev['site_name_1'], site_name_2=ev['site_name_2'],
                                 center_lat=center_lat, center_lon=center_lon)
