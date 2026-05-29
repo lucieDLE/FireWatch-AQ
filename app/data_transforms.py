@@ -13,10 +13,10 @@ from src.config import (
     POLLUTANT_STANDARD_NAMES, POLLUTATANT_SAMPLE_DURATION,
     EVENT_START, EVENT_END, FIRE_LAT, FIRE_LON, SELECTED_DAY,
 )
-from src.display import WATCH_SITES
+from src.display import WATCH_SITES, FIRE_WATCH_SITES
 from data_loaders import df_aqi, df_fire, df_aqr_annual, ca_geojson
 
-
+import numpy as np
 # ============================================================================
 # Geometry helpers
 # ============================================================================
@@ -126,7 +126,6 @@ df_biggest_fire = (
         )
     .reset_index()
     .sort_values(by='acres', ascending=False)
-    .head(8)
 )
 df_biggest_fire['label'] = df_biggest_fire['poly_IncidentName'] + '<br>' + df_biggest_fire['county']
 
@@ -153,57 +152,100 @@ df_aq_quantile = compute_aqi_quantiles(POLLUTANT_COL_MAP['PM2.5'])
 
 
 # ============================================================================
-# Panel 4: Event Dive — Garnet Fire
+# Panel 4: Event Dive — From Selected Event
 # ============================================================================
+# give us a 4 days to see the baseline before fire 
+df_biggest_fire['buffer_start_day'] = pd.to_datetime(df_biggest_fire['start_date']) - pd.Timedelta(days=4)
 
-site_1 = WATCH_SITES['Garnet - Site 1']
-site_2 = WATCH_SITES['Garnet - Site 2']
+FIRE_OPTIONS = [name for name in FIRE_WATCH_SITES if name in df_biggest_fire['poly_IncidentName'].values]
+DEFAULT_FIRE = FIRE_OPTIONS[1]
 
-# Derive event window from the Garnet fire entry in df_biggest_fire
-_garnet = df_biggest_fire[
-    df_biggest_fire['poly_IncidentName'].str.contains('GARNET', case=False, na=False)
-]
-if not _garnet.empty:
-    _row = _garnet.iloc[0]
-    EVENT_START = pd.to_datetime(_row['start_date']).strftime('%Y-%m-%d')
+_event_cache: dict = {}
 
-    # EVENT_END = last fire pixel inside the area bounds + 7 days
-    _area_pixels = df_fire.loc[
-        (df_fire['latitude']  > FIRE_LAT[0]) & (df_fire['latitude']  < FIRE_LAT[1]) &
-        (df_fire['longitude'] > FIRE_LON[0]) & (df_fire['longitude'] < FIRE_LON[1])
-    ]
-    if not _area_pixels.empty:
-        _last_pixel_date = pd.to_datetime(_area_pixels['acq_date'].max())
-        EVENT_END = (_last_pixel_date + pd.Timedelta(days=7)).strftime('%Y-%m-%d')
+def get_event_data(fire_name: str) -> dict:
+    """Compute all Panel-4 variables for a given fire name. Results are cached."""
+    if fire_name in _event_cache:
+        return _event_cache[fire_name]
+
+    row = df_biggest_fire[df_biggest_fire['poly_IncidentName'] == fire_name].iloc[0]
+    watch_site_list = FIRE_WATCH_SITES[fire_name]
+
+    # merge knonw fire complex
+    if fire_name == 'PALISADES':
+        df_fire_event = df_fire.loc[df_fire['poly_IncidentName'].isin(['PALISADES', 'Eaton', 'Hughes'])]
+    elif fire_name == 'Garnet':
+        df_fire_event = df_fire.loc[df_fire['poly_IncidentName'].isin(['Garnet', 'SALT 14-2'])]
     else:
-        EVENT_END = pd.to_datetime(_row['end_date']).strftime('%Y-%m-%d')
-# else: fall back to EVENT_START / EVENT_END imported from src.config
+        df_fire_event = df_fire.loc[df_fire['poly_IncidentName'] == fire_name]
 
-df_fire_event = df_fire.loc[
-    (df_fire['acq_date'] >= EVENT_START) & (df_fire['acq_date'] <= EVENT_END)
-]
-df_fire_event = df_fire_event.loc[
-    (df_fire_event['latitude']  > FIRE_LAT[0]) & (df_fire_event['latitude']  < FIRE_LAT[1]) &
-    (df_fire_event['longitude'] > FIRE_LON[0]) & (df_fire_event['longitude'] < FIRE_LON[1])
-]
+    event_start = row['buffer_start_day']
+    event_end = row['end_date']
+    fire_lat = (df_fire_event['latitude'].min(), df_fire_event['latitude'].max())
+    fire_lon = (df_fire_event['longitude'].min(), df_fire_event['longitude'].max())
 
-df_aqi_event = df_aqi.loc[
-    (df_aqi['Date'] >= EVENT_START) & (df_aqi['Date'] <= EVENT_END)
-].fillna('N/A')
+    df_aqi_event = df_aqi.loc[
+        (df_aqi['Date'] > str(event_start)) & (df_aqi['Date'] < event_end)
+    ].copy().fillna('N/A')
 
-df_event_site_1 = df_aqi_event.loc[df_aqi_event['Site ID'].isin(site_1)].copy()
-df_event_site_2 = df_aqi_event.loc[df_aqi_event['Site ID'].isin(site_2)].copy()
+    # focus on Pm 2,5 as previous panel shows that fire have a higher impact on PM2.5
+    df_aqi_event['max_AQI'] = df_aqi_event['Daily AQI Value_PM2.5']
 
-event_dates = sorted(df_aqi_event['Date'].unique())
+    site_1_ids = WATCH_SITES[watch_site_list[0]]
+    site_2_ids = WATCH_SITES[watch_site_list[1]]
 
-gdf = create_fire_gdf_stats(df_fire_event)
+    df_event_site_1 = df_aqi_event.loc[df_aqi_event['Site ID'].isin(site_1_ids)].copy()
+    df_event_site_2 = df_aqi_event.loc[df_aqi_event['Site ID'].isin(site_2_ids)].copy()
+    df_event_site_1['Site Name'] = watch_site_list[0]
+    df_event_site_2['Site Name'] = watch_site_list[1]
 
-# Validate SELECTED_DAY against available dates; fall back to midpoint
-if event_dates and SELECTED_DAY not in event_dates:
-    SELECTED_DAY = event_dates[len(event_dates) // 2]
+    event_dates = sorted(df_aqi_event['Date'].unique())
+    selected_day = event_dates[len(event_dates) // 2] if event_dates else None
 
-gdf_fire_day = gdf.loc[gdf['acq_date'] == SELECTED_DAY]
-geojson_fire_dict = json.loads(gdf_fire_day.to_json())
+    gdf_event = create_fire_gdf_stats(df_fire_event)
+    gdf_fire_day = gdf_event.loc[gdf_event['acq_date'] == selected_day] if selected_day else gdf_event.iloc[:0]
+    geojson_fire_dict = json.loads(gdf_fire_day.to_json())
 
-df_day_site_1 = df_event_site_1[df_event_site_1['Date'] == SELECTED_DAY]
-df_day_site_2 = df_event_site_2[df_event_site_2['Date'] == SELECTED_DAY]
+    df_day_site_1 = df_event_site_1[df_event_site_1['Date'] == selected_day].copy() if selected_day else df_event_site_1.iloc[:0]
+    df_day_site_2 = df_event_site_2[df_event_site_2['Date'] == selected_day].copy() if selected_day else df_event_site_2.iloc[:0]
+
+    result = dict(
+        site_1=site_1_ids,
+        site_2=site_2_ids,
+        site_name_1=watch_site_list[0],
+        site_name_2=watch_site_list[1],
+        df_event_site_1=df_event_site_1,
+        df_event_site_2=df_event_site_2,
+        EVENT_START=event_start,
+        EVENT_END=event_end,
+        FIRE_LAT=fire_lat,
+        FIRE_LON=fire_lon,
+        event_dates=event_dates,
+        SELECTED_DAY=selected_day,
+        gdf=gdf_event,
+        gdf_fire_day=gdf_fire_day,
+        geojson_fire_dict=geojson_fire_dict,
+        df_day_site_1=df_day_site_1,
+        df_day_site_2=df_day_site_2,
+    )
+    _event_cache[fire_name] = result
+    return result
+
+# Expose initial event variables at module level for layout.py initial render
+_ev = get_event_data(DEFAULT_FIRE)
+site_1            = _ev['site_1']
+site_2            = _ev['site_2']
+site_name_1       = _ev['site_name_1']
+site_name_2       = _ev['site_name_2']
+df_event_site_1   = _ev['df_event_site_1']
+df_event_site_2   = _ev['df_event_site_2']
+EVENT_START       = _ev['EVENT_START']
+EVENT_END         = _ev['EVENT_END']
+FIRE_LAT          = _ev['FIRE_LAT']
+FIRE_LON          = _ev['FIRE_LON']
+event_dates       = _ev['event_dates']
+SELECTED_DAY      = _ev['SELECTED_DAY']
+gdf               = _ev['gdf']
+gdf_fire_day      = _ev['gdf_fire_day']
+geojson_fire_dict = _ev['geojson_fire_dict']
+df_day_site_1     = _ev['df_day_site_1']
+df_day_site_2     = _ev['df_day_site_2']
