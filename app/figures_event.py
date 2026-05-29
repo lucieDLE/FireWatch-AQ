@@ -56,7 +56,13 @@ def make_aq_hotspot_trace(df_day, site_name, show_colorbar=True, show_legend=Tru
     )
 
 
-def _make_site_ellipse_trace(df_day, color_line, color_fill, name, padding=0.15):
+def make_site_ellipse_trace(df_day, color_line, color_fill, name, padding=0.15):
+    if df_day.empty:
+        return go.Scattermapbox(lat=[], lon=[], mode='lines', name=name,
+                                fill='toself', fillcolor=color_fill,
+                                line=dict(color=color_line, width=2),
+                                hoverinfo='skip', showlegend=True)
+
     lats = df_day['Site Latitude']
     lons = df_day['Site Longitude']
 
@@ -104,11 +110,13 @@ def make_aq_time_series(df, sites, site_name, colors, legend_entrywidth=0.33):
     fig = go.Figure()
     for idx, site_id in enumerate(sites):
         df_site = df.loc[df['Site ID'] == site_id]
+        if df_site.empty:
+            continue
         fig.add_trace(go.Scatter(
             x=df_site['Date'],
             y=df_site['max_AQI'],
             name=df_site.iloc[0]['Local Site Name'],
-            line_color=colors[idx],
+            line_color=colors[idx] if idx < len(colors) else None,
         ))
 
     for y0, y1, color in AQI_BANDS_COLOR:
@@ -155,15 +163,19 @@ def make_burning_area_plot(gdf, event_start=None, event_end=None):
 
 
 def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict,
-                         selected_day='', mapbox_style='carto-positron'):
+                         selected_day='', mapbox_style='carto-positron',
+                         site_name_1='Site 1', site_name_2='Site 2',
+                         center_lat=None, center_lon=None):
+    map_center_lat = center_lat if center_lat is not None else _FIRE_CENTER_LAT
+    map_center_lon = center_lon if center_lon is not None else _FIRE_CENTER_LON
+
     fig = go.Figure(data=[
-        _make_site_ellipse_trace(df_day_site_1, 'rgba(34,120,50,0.9)', 'rgba(34,120,50,0.10)',
-                                 'Monitoring Site 1: Fresno', padding=0.2),
-        _make_site_ellipse_trace(df_day_site_2, 'rgba(72,105,140,0.9)', 'rgba(72,105,140,0.08)',
-                                 'Monitoring Site 2: Sierra National Forest (EAST)', padding=0.3),
-        make_aq_hotspot_trace(df_day_site_1, 'Fresno', show_colorbar=True, show_legend=True),
-        make_aq_hotspot_trace(df_day_site_2, 'Sierra National Forest (EAST)',
-                              show_colorbar=False, show_legend=False),
+        make_site_ellipse_trace(df_day_site_1, 'rgba(34,120,50,0.9)', 'rgba(34,120,50,0.10)',
+                                f'Monitoring Site 1: {site_name_1}', padding=0.2),
+        make_site_ellipse_trace(df_day_site_2, 'rgba(72,105,140,0.9)', 'rgba(72,105,140,0.08)',
+                                f'Monitoring Site 2: {site_name_2}', padding=0.3),
+        make_aq_hotspot_trace(df_day_site_1, site_name_1, show_colorbar=True, show_legend=True),
+        make_aq_hotspot_trace(df_day_site_2, site_name_2, show_colorbar=False, show_legend=False),
         make_fire_perimeter_trace(gdf_fire_day),
     ])
 
@@ -181,7 +193,7 @@ def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fir
                 color='rgba(255, 100, 0, 0.2)',
                 below='traces',
             )],
-            center=dict(lat=_FIRE_CENTER_LAT, lon=_FIRE_CENTER_LON),
+            center=dict(lat=map_center_lat, lon=map_center_lon),
             zoom=7,
         ),
         margin=dict(l=10, r=10, t=50, b=10),
