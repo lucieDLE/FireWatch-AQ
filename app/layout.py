@@ -31,8 +31,7 @@ aq_fire_overlay = make_overlay_aq_fire(
     df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict, gdf_burnt_area, geojson_burnt_dict,
     selected_day=SELECTED_DAY,
     site_name_1=site_name_1, site_name_2=site_name_2,
-    center_lat=(FIRE_LAT[0] + FIRE_LAT[1]) / 2,
-    center_lon=(FIRE_LON[0] + FIRE_LON[1]) / 2,
+    center_lat=map_center_lat, center_lon=map_center_lon,
 )
 
 

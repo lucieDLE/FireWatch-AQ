@@ -216,8 +216,21 @@ def get_event_data(fire_name: str) -> dict:
     df_event_site_1['Site Name'] = watch_site_list[0]
     df_event_site_2['Site Name'] = watch_site_list[1]
 
+    # Compute bounding box across fire pixels + all monitoring sites
+    site_lats = (df_event_site_1['Site Latitude'].dropna().tolist() +
+                 df_event_site_2['Site Latitude'].dropna().tolist())
+    site_lons = (df_event_site_1['Site Longitude'].dropna().tolist() +
+                 df_event_site_2['Site Longitude'].dropna().tolist())
+    all_lats = site_lats + [fire_lat[0], fire_lat[1]]
+    all_lons = site_lons + [fire_lon[0], fire_lon[1]]
+    _pad = 0.35
+    _min_lat, _max_lat = min(all_lats) - _pad, max(all_lats) + _pad
+    _min_lon, _max_lon = min(all_lons) - _pad, max(all_lons) + _pad
+    map_center_lat = (_min_lat + _max_lat) / 2
+    map_center_lon = (_min_lon + _max_lon) / 2
+
     event_dates = sorted(df_aqi_event['Date'].unique())
-    selected_day = event_dates[len(event_dates) // 2] if event_dates else None
+    selected_day = event_dates[0] if event_dates else None
 
     gdf_event = create_fire_gdf_stats(df_fire_event)
     gdf_fire_day = gdf_event.loc[gdf_event['acq_date'] == selected_day] if selected_day else gdf_event.iloc[:0]
@@ -250,6 +263,9 @@ def get_event_data(fire_name: str) -> dict:
         gdf_burnt_area=gdf_burnt_area,
         geojson_burnt_dict=geojson_burnt_dict,
 
+        map_center_lat=map_center_lat,
+        map_center_lon=map_center_lon,
+
         df_day_site_1=df_day_site_1,
         df_day_site_2=df_day_site_2,
     )
@@ -275,5 +291,7 @@ gdf_fire_day      = _ev['gdf_fire_day']
 geojson_fire_dict = _ev['geojson_fire_dict']
 gdf_burnt_area    = _ev['gdf_burnt_area']
 geojson_burnt_dict= _ev['geojson_burnt_dict']
+map_center_lat    = _ev['map_center_lat']
+map_center_lon    = _ev['map_center_lon']
 df_day_site_1     = _ev['df_day_site_1']
 df_day_site_2     = _ev['df_day_site_2']

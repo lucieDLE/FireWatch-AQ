@@ -77,8 +77,6 @@ def update_figure_theme(dark_mode):
 def update_event_tab(fire_name, dark_mode):
     ev = get_event_data(fire_name)
     dates       = ev['event_dates']
-    midpoint    = len(dates) // 2
-
     fig_site1   = make_aq_time_series(ev['df_event_site_1'], ev['site_1'],
                                       site_name=ev['site_name_1'], colors=COLORS_MAP['FRESNO'])
     fig_site2   = make_aq_time_series(ev['df_event_site_2'], ev['site_2'],
@@ -91,7 +89,7 @@ def update_event_tab(fire_name, dark_mode):
     marks = {i: {'label': dates[i][5:], 'style': {'fontSize': '11px'}}
              for i in range(0, len(dates), 3)}
 
-    return fig_site1, fig_site2, fig_burning, 0, max(len(dates) - 1, 0), marks, midpoint
+    return fig_site1, fig_site2, fig_burning, 0, max(len(dates) - 1, 0), marks, 0
 
 
 @callback(
@@ -106,17 +104,15 @@ def update_event_map(slider_idx, dark_mode, fire_name):
     mapbox_style = 'carto-darkmatter' if dark_mode else 'carto-positron'
     triggered    = callback_context.triggered_id
 
-    # When the fire changes, ignore the (stale) slider and use the midpoint
+    # When the fire changes, ignore the stale slider and start from day 0
     if triggered == 'fire-dropdown' or not dates:
-        idx = len(dates) // 2
+        idx = 0
     else:
         idx = min(slider_idx, len(dates) - 1)
 
     selected_day = dates[idx] if dates else ''
-    fire_lat     = ev['FIRE_LAT']
-    fire_lon     = ev['FIRE_LON']
-    center_lat   = (fire_lat[0] + fire_lat[1]) / 2
-    center_lon   = (fire_lon[0] + fire_lon[1]) / 2
+    center_lat   = ev['map_center_lat']
+    center_lon   = ev['map_center_lon']
 
     gdf_day       = ev['gdf'].loc[ev['gdf']['acq_date'] == selected_day]
     gdf_burnt     = compute_burnt_area_gdf(ev['gdf'], selected_day)
