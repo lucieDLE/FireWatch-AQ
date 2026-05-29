@@ -42,10 +42,6 @@ def change_theme(value):
     # Tab 2 — Fire Data
     Output("top-counties-graph",          "figure"),
     Output("top-fire-graph",              "figure"),
-    # Tab 4 — Event Dive (time series + burning area only; map has its own callback)
-    Output("ts-site1-graph",              "figure"),
-    Output("ts-site2-graph",              "figure"),
-    Output("burning-graph",               "figure"),
     Input("switch-theme",                 "value"),
 )
 def update_figure_theme(dark_mode):
@@ -56,47 +52,83 @@ def update_figure_theme(dark_mode):
     # Tab 2
     fig_counties       = make_cloropleth_fire_counties(df_fire, ca_geojson)
     fig_top_fires      = make_bar_fire_event(df_biggest_fire)
-    # Tab 4
-    fig_site1  = make_aq_time_series(df_event_site_1, site_1, 'Fresno Area', colors=COLORS_MAP['FRESNO'])
-    fig_site2  = make_aq_time_series(df_event_site_2, site_2, 'Sierra National Forest - EAST', colors=COLORS_MAP['SIERRA'])
-    fig_burning = make_burning_area_plot(gdf, event_start=EVENT_START, event_end=EVENT_END)
 
-    all_figs = [fig_pollutant_dist, fig_us_map, fig_boxplot,
-                fig_counties, fig_top_fires,
-                fig_site1, fig_site2, fig_burning]
-
+    all_figs = [fig_pollutant_dist, fig_us_map, fig_boxplot, fig_counties, fig_top_fires]
     for fig in all_figs:
         apply_theme(fig, dark_mode)
-
     for fig in [fig_us_map, fig_counties]:
         fig.update_layout(template='plotly_dark' if dark_mode else 'ggplot2')
 
-    return (fig_pollutant_dist, fig_us_map, fig_boxplot,
-            fig_counties, fig_top_fires,
-            fig_site1, fig_site2, fig_burning)
+    return fig_pollutant_dist, fig_us_map, fig_boxplot, fig_counties, fig_top_fires
+
+
+@callback(
+    # Tab 4 — Event Dive (time series, burning area, slider reset)
+    Output("ts-site1-graph",    "figure"),
+    Output("ts-site2-graph",    "figure"),
+    Output("burning-graph",     "figure"),
+    Output("date-slider",       "min"),
+    Output("date-slider",       "max"),
+    Output("date-slider",       "marks"),
+    Output("date-slider",       "value"),
+    Input("fire-dropdown",      "value"),
+    Input("switch-theme",       "value"),
+)
+def update_event_tab(fire_name, dark_mode):
+    ev = get_event_data(fire_name)
+    dates       = ev['event_dates']
+    midpoint    = len(dates) // 2
+
+    fig_site1   = make_aq_time_series(ev['df_event_site_1'], ev['site_1'],
+                                      site_name=ev['site_name_1'], colors=COLORS_MAP['FRESNO'])
+    fig_site2   = make_aq_time_series(ev['df_event_site_2'], ev['site_2'],
+                                      site_name=ev['site_name_2'], colors=COLORS_MAP['SIERRA'])
+    fig_burning = make_burning_area_plot(ev['gdf'], event_start=ev['EVENT_START'], event_end=ev['EVENT_END'])
+
+    for fig in [fig_site1, fig_site2, fig_burning]:
+        apply_theme(fig, dark_mode)
+
+    marks = {i: {'label': dates[i][5:], 'style': {'fontSize': '11px'}}
+             for i in range(0, len(dates), 3)}
+
+    return fig_site1, fig_site2, fig_burning, 0, max(len(dates) - 1, 0), marks, midpoint
 
 
 @callback(
     Output("overlay-map-graph", "figure"),
     Input("date-slider",        "value"),
     Input("switch-theme",       "value"),
+    Input("fire-dropdown",      "value"),
 )
-def update_event_map(slider_idx, dark_mode):
-    selected_day = event_dates[slider_idx]
+def update_event_map(slider_idx, dark_mode, fire_name):
+    ev           = get_event_data(fire_name)
+    dates        = ev['event_dates']
     mapbox_style = 'carto-darkmatter' if dark_mode else 'carto-positron'
+    triggered    = callback_context.triggered_id
 
-    gdf_day      = gdf.loc[gdf['acq_date'] == selected_day]
+    # When the fire changes, ignore the (stale) slider and use the midpoint
+    if triggered == 'fire-dropdown' or not dates:
+        idx = len(dates) // 2
+    else:
+        idx = min(slider_idx, len(dates) - 1)
+
+    selected_day = dates[idx] if dates else ''
+    fire_lat     = ev['FIRE_LAT']
+    fire_lon     = ev['FIRE_LON']
+    center_lat   = (fire_lat[0] + fire_lat[1]) / 2
+    center_lon   = (fire_lon[0] + fire_lon[1]) / 2
+
+    gdf_day      = ev['gdf'].loc[ev['gdf']['acq_date'] == selected_day]
     geojson_day  = json.loads(gdf_day.to_json())
-    df_site1_day = df_event_site_1[df_event_site_1['Date'] == selected_day]
-    df_site2_day = df_event_site_2[df_event_site_2['Date'] == selected_day]
+    df_site1_day = ev['df_event_site_1'][ev['df_event_site_1']['Date'] == selected_day]
+    df_site2_day = ev['df_event_site_2'][ev['df_event_site_2']['Date'] == selected_day]
 
-    # Slider drag: only patch the three day-specific traces + geojson layer.
-    # The two ellipses (traces 0, 1) are static and never change.
-    if callback_context.triggered_id == 'date-slider':
+    # Slider drag: patch only the day-specific traces (ellipses 0,1 stay)
+    if triggered == 'date-slider':
         patched = Patch()
-        patched['data'][2] = make_aq_hotspot_trace(df_site1_day, 'Fresno',
+        patched['data'][2] = make_aq_hotspot_trace(df_site1_day, ev['site_name_1'],
                                                     show_colorbar=True, show_legend=True)
-        patched['data'][3] = make_aq_hotspot_trace(df_site2_day, 'Sierra National Forest (EAST)',
+        patched['data'][3] = make_aq_hotspot_trace(df_site2_day, ev['site_name_2'],
                                                     show_colorbar=False, show_legend=False)
         patched['data'][4] = make_fire_perimeter_trace(gdf_day)
         patched['layout']['mapbox']['layers'] = [dict(
@@ -106,9 +138,11 @@ def update_event_map(slider_idx, dark_mode):
         patched['layout']['title']['text'] = f'Fire Perimeter & Air Quality — {selected_day}'
         return patched
 
-    # Theme switch or initial load: full rebuild
+    # Fire change / theme switch / initial load: full rebuild
     fig = make_overlay_aq_fire(df_site1_day, df_site2_day, gdf_day, geojson_day,
-                                selected_day=selected_day, mapbox_style=mapbox_style)
+                                selected_day=selected_day, mapbox_style=mapbox_style,
+                                site_name_1=ev['site_name_1'], site_name_2=ev['site_name_2'],
+                                center_lat=center_lat, center_lon=center_lon)
     apply_theme(fig, dark_mode)
     fig.update_layout(template='plotly_dark' if dark_mode else 'ggplot2')
     return fig
