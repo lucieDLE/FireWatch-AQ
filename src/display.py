@@ -1,11 +1,11 @@
 WATCH_SITES =  { 
-    
+    #TODO: investigates the two sites that fail
     'San Luis Obispo/Santa Barbara': [
         60798002,
         60792020,
         60792007,
         60792004,
-        60793109,
+        # 60793109,
         60831009,
         60832004,
     ],
@@ -20,7 +20,7 @@ WATCH_SITES =  {
         60371201,
         60374010,
         60370016,
-        60371027,
+        # 60371027,
     ],
 
     'Fresno': [
@@ -45,7 +45,7 @@ WATCH_SITES =  {
 }
 
 FIRE_WATCH_SITES={
-    'Gifford': [ 'San Luis Obispo/Santa Barbara',"Los Angeles" ],
+    'Gifford': ['San Luis Obispo/Santa Barbara',"Los Angeles" ],
     'Madre': ['San Luis Obispo/Santa Barbara', "Los Angeles"],
     'Garnet':['Fresno', 'Sierra National Forest'],
     'SALT 14-2': ['Fresno', 'Sierra National Forest'],
