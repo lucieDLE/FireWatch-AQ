@@ -54,13 +54,13 @@ def make_cloropleth_fire_counties(df, ca_geojson):
     return fig
 
 
-def make_bar_fire_event(df_biggest_fire):
+def make_bar_fire_event(df_biggest_fire, num=10):
     fig = px.bar(
-        df_biggest_fire,
+        df_biggest_fire.head(num),
         x='label', y='acres',
         color='acres', color_continuous_scale=red_colors,
         labels={'label': 'Fire Event', 'acres': 'Estimated burnt acres'},
-        title='Top 10 California Fires in 2025',
+        title=f'Top {num} California Fires in 2025',
     )
     fig.update_layout(
         template='plotly_dark',
@@ -72,6 +72,7 @@ def make_bar_fire_event(df_biggest_fire):
 
 
 def make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire, pollutant_name='PM2.5'):
+    df_biggest_fire = df_biggest_fire.head(8)
     fig = make_subplots(specs=[[{'secondary_y': True}]])
 
     fig.add_trace(go.Scatter(
