@@ -172,9 +172,7 @@ def make_burning_area_plot(gdf, event_start=None, event_end=None):
 
 
 def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict,gdf_burnt_area, geojson_burnt_dict,
-                         selected_day='', mapbox_style='open-street-map',
-                         site_name_1='Site 1', site_name_2='Site 2',
-                         center_lat=None, center_lon=None):
+                         selected_day='', site_name_1='Site 1', site_name_2='Site 2', center_lat=None, center_lon=None):
     map_center_lat = center_lat if center_lat is not None else _FIRE_CENTER_LAT
     map_center_lon = center_lon if center_lon is not None else _FIRE_CENTER_LON
 
@@ -196,7 +194,7 @@ def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fir
             font=dict(size=15), x=0.5, xanchor='center',
         ),
         mapbox=dict(
-            style=mapbox_style,
+            style='open-street-map',
             layers=[dict(
                 sourcetype='geojson',
                 source=geojson_fire_dict,

@@ -101,7 +101,6 @@ def update_event_tab(fire_name, dark_mode):
 def update_event_map(slider_idx, dark_mode, fire_name):
     ev           = get_event_data(fire_name)
     dates        = ev['event_dates']
-    mapbox_style = 'carto-darkmatter' if dark_mode else 'carto-positron'
     triggered    = callback_context.triggered_id
 
     # When the fire changes, ignore the stale slider and start from day 0
@@ -141,11 +140,17 @@ def update_event_map(slider_idx, dark_mode, fire_name):
     # Fire change / theme switch / initial load: full rebuild
     fig = make_overlay_aq_fire(df_site1_day, df_site2_day, gdf_day, geojson_day,
                                 gdf_burnt, geojson_burnt,
-                                selected_day=selected_day, mapbox_style=mapbox_style,
+                                selected_day=selected_day,
                                 site_name_1=ev['site_name_1'], site_name_2=ev['site_name_2'],
                                 center_lat=center_lat, center_lon=center_lon)
-    apply_theme(fig, dark_mode)
-    fig.update_layout(template='plotly_dark' if dark_mode else 'ggplot2')
+    fig.update_layout(
+        template='plotly_dark' if dark_mode else 'ggplot2',
+        legend=dict(
+            bgcolor     ='rgba(255,255,255,1.0)',
+            bordercolor ='rgb(91,64,61)'  ,
+            font        =dict(color='rgb(39,24,22)'),
+        ),
+    )
     return fig
 
 
@@ -158,5 +163,4 @@ def update_fire_aqi_overlay(pollutant_name, dark_mode):
     col = POLLUTANT_COL_MAP[pollutant_name]
     df_q = compute_aqi_quantiles(col)
     fig = make_fire_aqi_overlay(df_q, df_biggest_fire, pollutant_name=pollutant_name)
-    apply_theme(fig, dark_mode)
     return fig
