@@ -10,7 +10,7 @@ SELECTED_DAY = '2025-09-08'
 # Raw data
 FIRE_RAW_PATH = ROOT / 'data/raw/fire_archive_J1V-C2_749152.csv'
 FIRE_PERIMETER = ROOT / 'data/raw/WFIGS_Interagency_Perimeters_-8730464049412665158.geojson'
-
+WIND_RAW_PATH =  ROOT / 'data/raw/daily_WIND_2025.csv'
 ANNUAL_CONCENTRATION_PATH = ROOT / 'data/raw/annual_conc_by_monitor_2025.csv'
 
 OZONE_PATH = ROOT / 'data/raw/ad_viz_plotval_data-O3.csv'
@@ -24,6 +24,7 @@ NITROGEN_DIOXIDE_PATH = ROOT / 'data/raw/ad_viz_plotval_data-NO2.csv'
 FIRE_EVENTS_PATH           = ROOT / 'data/processed/fire_event_2025.csv'
 FIRE_PIXEL_PATH            = ROOT / 'data/processed/fire_archive_pixels_2025_cleaned.csv'
 AIR_QUALITY_REPORT_PATH    = ROOT / 'data/processed/input_report_2025.csv'
+WIND_PROCESSED_PATH        = ROOT / 'data/processed/wind_california_2025.csv' 
 
 EVENT_START      = '2025-08-24'
 EVENT_END        = '2025-09-18'

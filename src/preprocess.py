@@ -12,8 +12,8 @@ from shapely.geometry import Point
 from shapely.ops import unary_union
 from src.config import (
      FIRE_RAW_PATH, FIRE_PIXEL_PATH, FIRE_PERIMETER,
-     OZONE_PATH, NITROGEN_DIOXIDE_PATH, PM10_PATH, PM25_PATH,
-     FIRE_EVENTS_PATH, AIR_QUALITY_REPORT_PATH,
+     OZONE_PATH, NITROGEN_DIOXIDE_PATH, PM10_PATH, PM25_PATH, AIR_QUALITY_REPORT_PATH,
+     WIND_RAW_PATH, WIND_PROCESSED_PATH
 )
     
 
@@ -42,7 +42,31 @@ AQI_MERGE_COLUMNS = ['Date',
                     'Site Latitude'
                     ]
 
+MERGE_COLS = ['Site Num',
+              'Latitude',
+              'Longitude',
+              'State Name',
+              'County Name',
+              'Local Site Name',
+              'Date Local',
+              ]
 
+DROP_COLS = [   'State Code', 
+                'County Code', 
+                'Event Type', 
+                'AQI',
+                'Address', 
+                'City Name', 
+                'CBSA Name',
+                'Date of Last Change'
+                'Datum', 
+                'Pollutant Standard',
+                'Parameter Name',
+                'Parameter Code',
+                'POC',
+                'Sample Duration',
+                'Observation Count', 
+                'Observation Percent']
 
 def get_max_AQI(row):
     val_max = row[['Daily AQI Value_PM2.5', 'Daily AQI Value_O3', 'Daily AQI Value_NO2', 'Daily AQI Value_PM10']].max()
@@ -195,6 +219,43 @@ def add_fire_name_stats(df, gdf_perimeter):
 
     return df_fire
 
+def process_wind_vectors(df_wind, scale = 0.01):
+    
+    df_wind_direction = df_wind.loc[df_wind['Parameter Name'] == 'Wind Direction - Resultant']
+    df_wind_speed = df_wind.loc[df_wind['Parameter Name'] == 'Wind Speed - Resultant']
+
+    df_wind_direction = df_wind_direction.drop(columns=DROP_COLS, errors='ignore')
+    df_wind_speed = df_wind_speed.drop(columns=DROP_COLS, errors='ignore')
+
+    merged = df_wind_direction.merge(
+        df_wind_speed, 
+        on=MERGE_COLS, 
+        how='outer',
+        suffixes=[' DIR', ' SPEED']
+        )
+
+    ## Compute additional lat and long to draw vector 
+    merged['u'] = -merged['Arithmetic Mean SPEED'] * np.sin(np.radians(merged['Arithmetic Mean DIR']))  # east component
+    merged['v'] = -merged['Arithmetic Mean SPEED'] * np.cos(np.radians(merged['Arithmetic Mean DIR']))  # north component
+
+    merged['lat2'] = merged['Latitude']  + merged['v'] * scale
+    merged['lon2'] = merged['Longitude'] + merged['u'] * scale
+
+    ## Compute the two arrowheads:
+    merged['dlat'] = merged['lat2'] - merged['Latitude']
+    merged['dlon'] = merged['lon2'] - merged['Longitude']
+
+    merged['theta'] = np.arctan2(merged['dlon'], merged['dlat'])                # arrow direction angle
+    merged['wing_len'] = 0.3 * np.sqrt(merged['dlat']**2 + merged['dlon']**2)   # 30% of arrow length
+    spread = np.radians(25)                                                     # wing opening angle
+
+    merged['left_lat']  = merged['lat2'] + merged['wing_len'] * np.cos(merged['theta'] + np.pi + spread)
+    merged['left_lon']  = merged['lon2'] + merged['wing_len'] * np.sin(merged['theta'] + np.pi + spread)
+    merged['right_lat'] = merged['lat2'] + merged['wing_len'] * np.cos(merged['theta'] + np.pi - spread)
+    merged['right_lon'] = merged['lon2'] + merged['wing_len'] * np.sin(merged['theta'] + np.pi - spread)
+
+    return merged
+
 def main(args):
 
     ### ------ step 1: fire preprocess ------ ###
@@ -205,11 +266,12 @@ def main(args):
     print("Loading datasets\n")
     df_fire = pd.read_csv(FIRE_RAW_PATH)
     gdf_fire_perimeter = gpd.read_file(FIRE_PERIMETER)
+    df_wind = pd.read_csv(WIND_RAW_PATH)
 
     gdf_fire_perimeter['discovery'] = pd.to_datetime(gdf_fire_perimeter['attr_FireDiscoveryDateTime'])
     gdf_fire_perimeter = gdf_fire_perimeter[gdf_fire_perimeter['discovery'].dt.year.isin([2025])]
 
-    if not args.skip_cleaning_fire_data:
+    if not args.skip_fire:
         print("Cleaning original fire dataset\n")
 
         # preprocess columns + clean data
@@ -232,14 +294,27 @@ def main(args):
         df_aqi = combine_aqi_metrics()
         df_aqi.to_csv(AIR_QUALITY_REPORT_PATH)
         print("=" * 20)
+
+
+    ## step 3: Wind vector computstion
+    if not args.skip_wind:
+        print("Computing Wind components\n")
+        df_wind = df_wind.loc[df_wind['State Name'] == 'California']
+
+        df_processed_wind = process_wind_vectors(df_wind)
+
+        df_processed_wind.to_csv(WIND_PROCESSED_PATH)
+        print("=" * 20)
+
     print("=" * 60)
     print("Process Ended.")
     print("=" * 60)
 
 def parse_args():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--skip_cleaning_fire_data", action="store_true", help="Skip fire preprocess")
+    p.add_argument("--skip_fire", action="store_true", help="Skip fire preprocess")
     p.add_argument("--skip_aqi",   action="store_true", help="Skip aqi preprocess")
+    p.add_argument("--skip_wind",   action="store_true", help="Skip wind preprocess")
     return p.parse_args()
 
 
