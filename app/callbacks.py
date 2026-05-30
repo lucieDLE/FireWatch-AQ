@@ -163,4 +163,5 @@ def update_fire_aqi_overlay(pollutant_name, dark_mode):
     col = POLLUTANT_COL_MAP[pollutant_name]
     df_q = compute_aqi_quantiles(col)
     fig = make_fire_aqi_overlay(df_q, df_biggest_fire, pollutant_name=pollutant_name)
+    fig = apply_theme(fig,dark_mode)
     return fig
