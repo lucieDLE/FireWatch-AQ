@@ -13,10 +13,8 @@ PANEL_AIR_CARD_MONITORS_1 = [ """Monitoring density is highly uneven across the 
 """
 California alone accounts for the largest share of daily monitoring records in 2025, and lower-coverage
 states like Vermont, Rhode Island, or Puerto Rico. This reflects two factors: 1) California is one of
-the most persistently polluted states in the US (between 2013/2015 8 of the 10 most polluted cities
-where in California) (wikipedia: Pollution in California) and 2) invested heavily in monitoring
-infrastructure to track and improve its air quality. It is important to remember that uneven coverage
-complicates direct state-to-state comparisons 
+the most polluted states in the US [[1](https://en.wikipedia.org/wiki/Pollution_in_California)] and 2) invested heavily in monitoring
+infrastructure to track and improve its air quality. 
 """
 ]
 
@@ -24,8 +22,8 @@ complicates direct state-to-state comparisons
 PANEL_AIR_CARD_MONITORS_2 = [ """Ozone and PM 2.5 are the two most monitored pollutant nationally.""", 
 """
 They are known to be the deadliest and most widespread air pollutants in the US, driving the majority
-of pollution-attributable disease and premature mortality[1]
-(https://www.stateofglobalair.org/sites/default/files/documents/2024-06/soga-2024-report_0.pdf).
+of pollution-attributable disease and premature mortality[[2]
+(https://www.stateofglobalair.org/sites/default/files/documents/2024-06/soga-2024-report_0.pdf)].
 """
 ]
 
@@ -40,7 +38,7 @@ predominantly green bubbles with few or no exceedance records.
 ]
 
 
-PANEL_AIR_CARD_BOXPLOT = ["""PM2.5 and ozone are the primary drivers of California's exceedance burden.""",
+PANEL_AIR_CARD_BOXPLOT_1 = ["""PM2.5 and ozone are the primary drivers of California's exceedance burden.""",
 """
 California's PM2.5 distribution is the most skewed of any state shown: The upper quartile extends well
 beyond it and extreme outliers reach above 250 µg/m³, which are consistent with acute wildfire smoke
@@ -48,7 +46,11 @@ events. However the Ozone median daily maximum is already at or above the 0.07 p
 exceedances are not driven by isolated spikes but by a structural, persistent elevation across the 
 measurement period. Texas and Arizona show a similar ozone pattern, consistent with high solar radiation
 and precursor emissions from petrochemical and transportation sources respectively.
+"""
+]
 
+PANEL_AIR_CARD_BOXPLOT_2 = ["""CO, SO, NO present no risk.""",
+"""
 Three pollutants show effectively no exceedance risk in any of the six states. Carbon monoxide, sulfur
 and nitrogen dioxide stays well under NAAQS threshold, showing that the air quality burden is driven 
 by ozone and fine particulate matter (PM10 and PM2.5).
@@ -141,19 +143,16 @@ This panel provides an event-level deep dive into individual California wildfire
 impact on nearby air quality monitoring stations. Select a fire event from the dropdown to load its
 perimeter map, fire progression timeline, and AQI curves from the two nearest monitoring zones.
 The map shows the fire perimeter evolving day by day alongside the AQI color-coded readings at each
-monitoring station.
-
-The burning area and fire perimeter chart below quantifies fire growth and contraction over the event window.
-
+monitoring station. The burning area and fire perimeter chart below quantifies fire growth and contraction over the event window.
 The two AQI time series on the right show how individual monitoring sites responded to the fire within each zone.
 Reading the two zones together reveals the smoke transport direction:
 """
 
 PANEL_EVENT_OVERVIEW_FIRES = """Four fires are available :
 - Gifford (August, Santa Barbara)
-- Madre (July, SLO coast),
+- Madre (July, San Luis Obispo coast),
 - Garnet (September, Fresno) .
-- Palisades (January, LA basin)
+- Palisades (January, Los Angeles basin)
 """
 
 PANEL_EVENT_OVERVIEW_ABBREVIATIONS = """**Abbreviations:**
