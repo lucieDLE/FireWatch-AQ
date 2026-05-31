@@ -150,6 +150,8 @@ body {
   margin: 0;
 }
 
+.row{margin-bottom: 48px;}
+
 #page-wrapper {
   color: var(--text-main);
   min-height: 100vh;
@@ -219,10 +221,11 @@ body {
    ============================================================ */
 .card {
   margin-bottom: 16px;
-  margin-top: 16px;
+  /* margin-top: 16px; */
   border: 1px solid var(--border-color) !important;
   border-radius: 12px;
   overflow: hidden;
+
 }
 
 .card-header {
@@ -239,7 +242,7 @@ body {
   background-color: var(--bg-card-body) !important;
   color: var(--text-card-body) !important;
   font-size: 0.92rem;
-  padding: 12px 14px;
+  padding: 12px 14px 4px;
 }
 
 
@@ -302,6 +305,9 @@ body {
   Dropdown (dcc.Dropdown / react-select)
   ============================================================ */
 
+.dash-dropdown-wrapper{
+  margin-bottom: 16px;
+}
 .dash-dropdown,
 .dash-dropdown-content {
     color: var(--Dash-Text-Strong);
@@ -319,7 +325,7 @@ body {
 .dash-dropdown-value{
   color: var(--Dash-Text-Strong);
   border-color: var(--border-color);
-
+  /* margin-bottom: 16px; */
 }
 
 .slider-handle {
