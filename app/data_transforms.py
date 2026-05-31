@@ -190,8 +190,8 @@ def get_event_data(fire_name: str) -> dict:
     # merge knonw fire complex
     if fire_name == 'PALISADES':
         df_fire_event = df_fire.loc[df_fire['poly_IncidentName'].isin(['PALISADES', 'Eaton', 'Hughes'])]
-    elif fire_name == 'Garnet':
-        df_fire_event = df_fire.loc[df_fire['poly_IncidentName'].isin(['Garnet', 'SALT 14-2'])]
+    # elif fire_name == 'Garnet':
+    #     df_fire_event = df_fire.loc[df_fire['poly_IncidentName'].isin(['Garnet', 'SALT 14-2'])]
     else:
         df_fire_event = df_fire.loc[df_fire['poly_IncidentName'] == fire_name]
 

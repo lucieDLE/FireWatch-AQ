@@ -48,7 +48,6 @@ FIRE_WATCH_SITES={
     'Gifford': ['San Luis Obispo/Santa Barbara',"Los Angeles" ],
     'Madre': ['San Luis Obispo/Santa Barbara', "Los Angeles"],
     'Garnet':['Fresno', 'Sierra National Forest'],
-    'SALT 14-2': ['Fresno', 'Sierra National Forest'],
     'PALISADES':['Los Angeles', 'San Luis Obispo/Santa Barbara']
 }
 
