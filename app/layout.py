@@ -13,7 +13,7 @@ from data_transforms import *
 from figures_aq import make_pollutant_distribution, make_aq_us_plot, compute_max_boxplot
 from figures_fire import make_cloropleth_fire_counties, make_bar_fire_event, make_fire_aqi_overlay
 from figures_event import make_aq_time_series, make_burning_area_plot, make_overlay_aq_fire
-
+import analysis
 
 annual_pollutant_distribution = make_pollutant_distribution(df_aqr_annual)
 pollutant_exceedances_us_map = make_aq_us_plot(df_county_aqr_annual, list_best=['WA', 'ID', 'MS'], list_worst=['CA', 'TX', 'AZ'])
@@ -80,19 +80,31 @@ def build_layout():
                                             children=[
                                                 # ── Top row: 2 charts side by side ──────────────────
                                                 dbc.Row([
+                                                        textCard("Overview", analysis.PANEL_AIR_OVERVIEW),
+                                                ]),
+                                                dbc.Row([
                                                     dbc.Col(
                                                         graphCard("annual-pollutant-graph", annual_pollutant_distribution, height='420px'),
-                                                        width=5
+                                                        width=8,
                                                     ),
+                                                    dbc.Col([
+                                                        textCard(analysis.PANEL_AIR_CARD_MONITORS_1[0], analysis.PANEL_AIR_CARD_MONITORS_1[1]),
+                                                        textCard(analysis.PANEL_AIR_CARD_MONITORS_2[0], analysis.PANEL_AIR_CARD_MONITORS_2[1]),
+                                                    ], width=4,),
+                                                ]),
+                                                dbc.Row([
+
                                                     dbc.Col(
                                                         graphCard("pollutant-exceedances-graph", pollutant_exceedances_us_map, height='420px'),
-                                                        width=5
+                                                        width=8
                                                     ),
                                                     dbc.Col(
-                                                        textCard("Overview", "Add your analysis here."),
-                                                        width=2
+                                                        textCard(analysis.PANEL_AIR_CARD_MAP[0], analysis.PANEL_AIR_CARD_MAP[1]),
+                                                        width=4,
                                                     ),
-                                                ]),
+
+                                                    ]),
+
                                                 # ── Bottom row: 1 full-width chart ──────────────────
                                                 dbc.Row([
                                                     dbc.Col(
@@ -102,8 +114,12 @@ def build_layout():
                                                 ]),
                                                 dbc.Row([
                                                     dbc.Col(
-                                                        textCard("Key Findings", "Add your analysis here."),
-                                                        width=12
+                                                        textCard(analysis.PANEL_AIR_CARD_BOXPLOT[0], analysis.PANEL_AIR_CARD_BOXPLOT[1]),
+                                                        width=4
+                                                    ),
+                                                    dbc.Col(
+                                                        textCard(analysis.PANEL_AIR_CARD_NOTE[0], analysis.PANEL_AIR_CARD_NOTE[1]),
+                                                        width=4
                                                     ),
                                                 ]),
 
@@ -122,7 +138,7 @@ def build_layout():
                                                         width=5
                                                     ),
                                                     dbc.Col(
-                                                        textCard("Overview", "Add your analysis here."),
+                                                        textCard("Overview", analysis.PANEL_FIRE_OVERVIEW),
                                                         width=2
                                                     ),
 
@@ -178,7 +194,7 @@ def build_layout():
                                                 dbc.Row([
                                                     # left panel
                                                     dbc.Col([
-                                                        textCard("Tab Description", "description Text"),
+                                                        textCard("Tab Description",analysis.PANEL_EVENT_OVERVIEW),
                                                         graphCard(fig_id="overlay-map-graph", figure=aq_fire_overlay, height='480px'),
                                                         html.Div(
                                                             dcc.Slider(
