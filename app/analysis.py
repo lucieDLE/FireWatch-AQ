@@ -9,7 +9,7 @@ exceedances at county level, and a pollutant-by-pollutant comparison between the
 polluted states. 
 """
 
-PANEL_AIR_CARD_MONITORS_1 = [ """Monitoring density is highly uneven across the country.""", 
+PANEL_AIR_CARD_MONITORS_1 = [ """Monitoring density is highly uneven across the country""", 
 """
 California alone accounts for the largest share of daily monitoring records in 2025, and lower-coverage
 states like Vermont, Rhode Island, or Puerto Rico. This reflects two factors: 1) California is one of
@@ -19,7 +19,7 @@ infrastructure to track and improve its air quality.
 ]
 
 
-PANEL_AIR_CARD_MONITORS_2 = [ """Ozone and PM 2.5 are the two most monitored pollutant nationally.""", 
+PANEL_AIR_CARD_MONITORS_2 = [ """Ozone and PM 2.5 are the two most monitored pollutant""", 
 """
 They are known to be the deadliest and most widespread air pollutants in the US, driving the majority
 of pollution-attributable disease and premature mortality[[2]
@@ -27,7 +27,7 @@ of pollution-attributable disease and premature mortality[[2]
 """
 ]
 
-PANEL_AIR_CARD_MAP = ["""A strong southwest cluster.""",
+PANEL_AIR_CARD_MAP = ["""A strong southwest cluster""",
 """
 California, Arizona, and Texas account for the largest number and size of orange bubbles, confirming
 their designation as worst-performing states. Exceedances in California are clustered in two zones: 
@@ -38,7 +38,7 @@ predominantly green bubbles with few or no exceedance records.
 ]
 
 
-PANEL_AIR_CARD_BOXPLOT_1 = ["""PM2.5 and ozone are the primary drivers of California's exceedance burden.""",
+PANEL_AIR_CARD_BOXPLOT_1 = ["""PM2.5 and ozone are the primary drivers""",
 """
 California's PM2.5 distribution is the most skewed of any state shown: The upper quartile extends well
 beyond it and extreme outliers reach above 250 µg/m³, which are consistent with acute wildfire smoke
@@ -49,7 +49,7 @@ and precursor emissions from petrochemical and transportation sources respective
 """
 ]
 
-PANEL_AIR_CARD_BOXPLOT_2 = ["""CO, SO, NO present no risk.""",
+PANEL_AIR_CARD_BOXPLOT_2 = ["""NO, SO, CO present no risk""",
 """
 Three pollutants show effectively no exceedance risk in any of the six states. Carbon monoxide, sulfur
 and nitrogen dioxide stays well under NAAQS threshold, showing that the air quality burden is driven 
@@ -57,7 +57,7 @@ by ozone and fine particulate matter (PM10 and PM2.5).
 """
 ]
 
-PANEL_AIR_CARD_NOTE=[ """A note on interpretation.""", 
+PANEL_AIR_CARD_NOTE=[ """A note on interpretation""", 
 """ 
 "Best-performing" state status reflects the aggregate performance of existing monitoring sites, it 
 does not guarantee clean air everywhere within that state. Sparse monitoring networks can miss 
@@ -79,7 +79,7 @@ and sensitive indicator of wildfire smoke.
 """
 
 
-PANEL_FIRE_CARD_COUNTY=[ """Most fire events are are geographically concentrated.""", 
+PANEL_FIRE_CARD_COUNTY=[ """Most fire events are geographically concentrated""", 
 """ 
 The map shows fire activity score (weighted by fire category and intensity) peaking sharply in
 Fresno, San Luis Obispo, and Santa Barbara counties. Los Angeles county's score is moderate despite
@@ -89,7 +89,7 @@ the score metric over the faster-moving but shorter-lived LA fires.
 """
 ]
 
-PANEL_FIRE_CARD_TOP10=[ """The top 10 fires are distributed across four distinct county.""", 
+PANEL_FIRE_CARD_TOP10=[ """The top 10 fires are distributed across four distinct county""", 
 f""" 
 At roughly 130,000 estimated burnt acres, Gifford (Santa Barbara) is nearly 60\% larger than the 
 second-ranked Madre fire (San Luis Obispo, ~80,000 acres) and more than twice the size of Garnet 
@@ -102,7 +102,7 @@ fifth by area.
 """
 ]
 
-PANEL_FIRE_BOXPLOT_PM25=[ """PM2.5 is the most fire-responsive pollutant and the primary public health concern.""", 
+PANEL_FIRE_BOXPLOT_PM25=[ """PM2.5 is the most fire responsive pollutant""", 
 """ 
 The 99th percentile PM2.5 AQI tracks fire events more precisely than any other pollutant, with clean
 spikes at Palisades (January, 8th), and a dramatic peak during the Garnet period (September) that 
@@ -112,7 +112,7 @@ extremes are spatially concentrated near fire sites rather than a statewide base
 ]
 
 
-PANEL_FIRE_BOXPLOT_PM10=[ """PM10 displays year-round volatility that makes fire attribution harder.""", 
+PANEL_FIRE_BOXPLOT_PM10=[ """PM10 displays year-round volatility""", 
 """ 
 Unlike PM2.5, the PM10 99th percentile shows frequent sharp spikes throughout January, March, May, 
 and November (periods with no significant fire activity). This reflects PM10's broader source profile: 
@@ -122,7 +122,7 @@ as separable as for PM2.5. This is for this reason, that for fire impact analysi
 focus on PM2.5."""
 ]
 
-PANEL_FIRE_BOXPLOT_O3=[ """Ozone levels are mostly driven by seasonality, with fires playing zero or secondary role.""",
+PANEL_FIRE_BOXPLOT_O3=[ """Ozone levels are mostly driven by seasonality""",
 """ 
 The ozone curve is the most visually distinct of the four: it rises steadily from a winter floor of
 ~25-50 AQI in January to sustained peaks above 150–190 AQI from June through September, then falls 
@@ -180,7 +180,7 @@ tracked: Los Angeles basin (primary impact zone) and San Luis Obispo/Santa Barba
 ]
 
 
-PANEL_EVENT_PALISADES_ANALYSIS_SITE_1=[ """The AQI response in LA was fast, severe, and spatially contained.""", 
+PANEL_EVENT_PALISADES_ANALYSIS_SITE_1=[ """The AQI response in LA was fast, severe, and spatially contained""", 
 """ 
 All six LA basin monitoring sites spiked sharply between January 8 and 10, reaching peaks of 150-175
 AQI ("unhealthy for all" category), before returning rapidly to baseline levels by January 12-13. 
@@ -212,7 +212,7 @@ national holiday, introducing a significant confounding source for one monitorin
 ]
 
 
-PANEL_EVENT_MADRE_ANALYSIS_SITE_1=[ """The SLO/Santa Barbara monitors show a moderate, fire-consistent response.""", 
+PANEL_EVENT_MADRE_ANALYSIS_SITE_1=[ """The SLO/Santa Barbara monitors show a moderate, fire-consistent response""", 
 """ 
 Most sites saw gradual increase from july 2nd to a broad peak of ~55–65 AQI around July 4–5, then 
 declined steadily through July 7–8 as the fire was contained (see perimeter). This gradual elevation 
@@ -222,7 +222,7 @@ breached the "unhealthy for sensitive groups" which meand the fire had little im
 ]
 
 
-PANEL_EVENT_MADRE_ANALYSIS_SITE_2=[ """Los Angeles monitors show mixed response.""", 
+PANEL_EVENT_MADRE_ANALYSIS_SITE_2=[ """Los Angeles monitors show mixed response""", 
 """ 
 Most sites shows a sharp, high-amplitude spike specifically on July 5, with West Los Angeles and 
 Compton reaching 160+ AQI ( "unhealthy for all" category), before collapsing back to ~50 by July 7. 
@@ -247,7 +247,7 @@ centered on the fire's active phase, with the same two monitoring zones as Madre
 ]
 
 
-PANEL_EVENT_MADRE_ANALYSIS_SITE_1=[ """Despite being the largest fire of the season, Gifford produced the least local AQI impact.""", 
+PANEL_EVENT_MADRE_ANALYSIS_SITE_1=[ """Despite being the largest fire of the season, Gifford produced the least local AQI impact""", 
 """ 
 SLO/SB monitors began elevated at ~30–40 AQI from the very start of the observation window (July 31),
 rising to a broad peak of ~60–65 around August 3–6 without breaking into the unhealthy for sensitive 
@@ -256,7 +256,7 @@ other events."""
 ]
 
 
-PANEL_EVENT_MADRE_ANALYSIS_SITE_2=[ """Los Angeles monitors show sustained moderate elevation with no dramatic spikes.""", 
+PANEL_EVENT_MADRE_ANALYSIS_SITE_2=[ """Los Angeles monitors show sustained moderate elevation with no dramatic spikes""", 
 """ 
 LA sites ranged between 50-75 AQI throughout August 3–12, with no site breaching the "unhealthy
 for sensitive groups" threshold during this window. The temporal pattern tracks loosely with the
@@ -279,7 +279,7 @@ in the dataset.
 ]
 
 
-PANEL_EVENT_MADRE_ANALYSIS_SITE_1=[ """The Owens Valley monitors experienced a catastrophic AQI spike.""", 
+PANEL_EVENT_MADRE_ANALYSIS_SITE_1=[ """The Owens Valley monitors experienced a catastrophic AQI spike""", 
 """ 
 The Owens Valley monitors experienced a catastrophic AQI spike. On September 7, the Sierra National Forest
 monitoring zone spiked to 275+ AQI, deeply into the "hazardous" range, before collapsing back to 10-20 by 
@@ -289,7 +289,7 @@ profile could be triggered by a rapid change in wind direction.
 ]
 
 
-PANEL_EVENT_MADRE_ANALYSIS_SITE_2=[ """The Fresno monitors, despite being in the same county as the fire, showed little impact.""", 
+PANEL_EVENT_MADRE_ANALYSIS_SITE_2=[ """The Fresno monitors, despite being in the same county as the fire, showed little impact""", 
 """ 
 Six Fresno basin sites peaked at approximately 75-85 AQI around September 7–9, reaching "unhealthy 
 for sensitive groups," but an order of magnitude lower than the other site.
