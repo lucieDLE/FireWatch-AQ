@@ -120,7 +120,7 @@ as separable as for PM2.5. This is for this reason, that for fire impact analysi
 focus on PM2.5."""
 ]
 
-PANEL_FIRE_BOXPLOT_PM25=[ """Ozone levels are mostly driven by seasonality, with fires playing zero or secondary role.""", 
+PANEL_FIRE_BOXPLOT_PMO3=[ """Ozone levels are mostly driven by seasonality, with fires playing zero or secondary role.""", 
 """ 
 The ozone curve is the most visually distinct of the four: it rises steadily from a winter floor of
 ~25-50 AQI in January to sustained peaks above 150–190 AQI from June through September, then falls 
@@ -136,25 +136,30 @@ photochemical production without a counterfactual model.
 #  Panel 3: EVENT ANALYSIS
 # ============================================================================
 
-PANEL_EVENT_OVERVIEW=""" 
+PANEL_EVENT_OVERVIEW_PREAMBLE = """
 This panel provides an event-level deep dive into individual California wildfires and their measurable
 impact on nearby air quality monitoring stations. Select a fire event from the dropdown to load its
 perimeter map, fire progression timeline, and AQI curves from the two nearest monitoring zones.
-The map shows the fire perimeter evolving day by day alongside the AQI color-coded readings at each 
-monitoring station. 
+The map shows the fire perimeter evolving day by day alongside the AQI color-coded readings at each
+monitoring station.
 
 The burning area and fire perimeter chart below quantifies fire growth and contraction over the event window.
 
-The two AQI time series on the right show how individual monitoring sites responded to the fire within each zone. 
-Reading the two zones together reveals the smoke transport direction: 
+The two AQI time series on the right show how individual monitoring sites responded to the fire within each zone.
+Reading the two zones together reveals the smoke transport direction:
+"""
 
-Four fires are currently available — Palisades (January, LA basin), Madre (July, SLO coast), 
-Gifford (August, Santa Barbara), and Garnet (September, Fresno) .
+PANEL_EVENT_OVERVIEW_FIRES = """Four fires are available :
+- Gifford (August, Santa Barbara)
+- Madre (July, SLO coast),
+- Garnet (September, Fresno) .
+- Palisades (January, LA basin)
+"""
 
-
-San Luis Obispo (SLO)
-Los Angeles (LA)
-Santa Barbara (SB)
+PANEL_EVENT_OVERVIEW_ABBREVIATIONS = """**Abbreviations:**
+- San Luis Obispo (SLO)
+- Los Angeles (LA)
+- Santa Barbara (SB)
 """
 
 
