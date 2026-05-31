@@ -85,22 +85,22 @@ def build_layout():
                                                 dbc.Row([
                                                     dbc.Col(
                                                         graphCard("annual-pollutant-graph", annual_pollutant_distribution, height='420px'),
-                                                        width=8,
+                                                        width=9,
                                                     ),
                                                     dbc.Col([
                                                         textCard(analysis.PANEL_AIR_CARD_MONITORS_1[0], analysis.PANEL_AIR_CARD_MONITORS_1[1]),
                                                         textCard(analysis.PANEL_AIR_CARD_MONITORS_2[0], analysis.PANEL_AIR_CARD_MONITORS_2[1]),
-                                                    ], width=4,),
+                                                    ], width=3,),
                                                 ]),
                                                 dbc.Row([
 
                                                     dbc.Col(
                                                         graphCard("pollutant-exceedances-graph", pollutant_exceedances_us_map, height='420px'),
-                                                        width=8
+                                                        width=9
                                                     ),
                                                     dbc.Col(
                                                         textCard(analysis.PANEL_AIR_CARD_MAP[0], analysis.PANEL_AIR_CARD_MAP[1]),
-                                                        width=4,
+                                                        width=3,
                                                     ),
 
                                                     ]),
@@ -114,7 +114,11 @@ def build_layout():
                                                 ]),
                                                 dbc.Row([
                                                     dbc.Col(
-                                                        textCard(analysis.PANEL_AIR_CARD_BOXPLOT[0], analysis.PANEL_AIR_CARD_BOXPLOT[1]),
+                                                        textCard(analysis.PANEL_AIR_CARD_BOXPLOT_1[0], analysis.PANEL_AIR_CARD_BOXPLOT_1[1]),
+                                                        width=4
+                                                    ),
+                                                    dbc.Col(
+                                                        textCard(analysis.PANEL_AIR_CARD_BOXPLOT_2[0], analysis.PANEL_AIR_CARD_BOXPLOT_2[1]),
                                                         width=4
                                                     ),
                                                     dbc.Col(
@@ -128,27 +132,38 @@ def build_layout():
                                         dcc.Tab(
                                             label='Fire Data Exploration', 
                                             children=[ 
+
+                                                dbc.Row([
+                                                    dbc.Col(
+                                                        textCard("Overview", analysis.PANEL_FIRE_OVERVIEW),
+                                                    ),
+                                                ]),
                                                 dbc.Row([
                                                     dbc.Col(
                                                         graphCard("top-counties-graph", top_counties, height='420px'),
-                                                        width=5
+                                                        width=9
                                                     ),
+                                                    dbc.Col(
+                                                        textCard(analysis.PANEL_FIRE_CARD_COUNTY[0], analysis.PANEL_FIRE_CARD_COUNTY[1]),
+                                                        width=3,
+                                                    )
+                                                ]),
+                                                dbc.Row([
                                                     dbc.Col(
                                                         graphCard("top-fire-graph", top_fires, height='420px'),
-                                                        width=5
+                                                        width=9
                                                     ),
                                                     dbc.Col(
-                                                        textCard("Overview", analysis.PANEL_FIRE_OVERVIEW),
-                                                        width=2
-                                                    ),
-
+                                                        textCard(analysis.PANEL_FIRE_CARD_TOP10[0], analysis.PANEL_FIRE_CARD_TOP10[1]),
+                                                        width=3,
+                                                    )
                                                 ]),
                                                 # ── Bottom row: pollutant selector + overlay chart ──
                                                 dbc.Row([
                                                     #Left Col
                                                     dbc.Col([
                                                         graphCard("overlay-fire-aqi-graph", overlay_fire_aqi, height='500px'),
-                                                    ], width=10),
+                                                    ], width=9),
                                                     
                                                     # Right Col
                                                     dbc.Col([
@@ -162,25 +177,33 @@ def build_layout():
                                                                     clearable=False,
                                                                 ),
                                                                 ]),
+                                                                textCard(analysis.PANEL_FIRE_BOXPLOT_PM25[0], analysis.PANEL_FIRE_BOXPLOT_PM25[1])
                                                         ], className='mb-2 mt-3 ms-2'),
-                                                    ], width=2),
-                                                ]),
-                                                dbc.Row([
-                                                    dbc.Col(
-                                                        textCard("Key Findings", "Add your analysis here."),
-                                                        width=12
-                                                    ),
+                                                    ], width=3),
                                                 ]),
                                             ]),
-
-                                        # dcc.Tab(
-                                        #     label='California Spike Insight', 
-                                        #     children=[ html.Div('coming soon') ]),
 
                                         dcc.Tab(
                                             label='Event Time Series Visualization',
                                             children=[
                                                 dbc.Row([
+                                                    dbc.Col([
+                                                        html.Div(
+                                                            dbc.Card([
+                                                                dbc.CardHeader("TAB DESCRIPTION"),
+                                                                dbc.CardBody([
+                                                                    dcc.Markdown(analysis.PANEL_EVENT_OVERVIEW_PREAMBLE),
+                                                                    dbc.Row([
+                                                                        dbc.Col(dcc.Markdown(analysis.PANEL_EVENT_OVERVIEW_FIRES), width=6),
+                                                                        dbc.Col(dcc.Markdown(analysis.PANEL_EVENT_OVERVIEW_ABBREVIATIONS), width=6),
+                                                                    ]),
+                                                                ]),
+                                                            ])
+                                                        ),
+                                                    ])
+                                                ]),
+                                                dbc.Row([
+                                                    # left panel
                                                     dbc.Col([
                                                         html.Label("Select Fire Event:", className="fw-bold mt-2"),
                                                         dcc.Dropdown(
@@ -189,12 +212,8 @@ def build_layout():
                                                             value=DEFAULT_FIRE,
                                                             clearable=False,
                                                         ),
-                                                    ], width=4, className='mb-3 mt-2'),
-                                                ]),
-                                                dbc.Row([
-                                                    # left panel
-                                                    dbc.Col([
-                                                        textCard("Tab Description",analysis.PANEL_EVENT_OVERVIEW),
+                                                        textCard(analysis.PANEL_EVENT_MADRE_DESCRIPTION[0], analysis.PANEL_EVENT_MADRE_DESCRIPTION[1]),
+
                                                         graphCard(fig_id="overlay-map-graph", figure=aq_fire_overlay, height='480px'),
                                                         html.Div(
                                                             dcc.Slider(
