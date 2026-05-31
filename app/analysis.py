@@ -122,7 +122,7 @@ as separable as for PM2.5. This is for this reason, that for fire impact analysi
 focus on PM2.5."""
 ]
 
-PANEL_FIRE_BOXPLOT_PMO3=[ """Ozone levels are mostly driven by seasonality, with fires playing zero or secondary role.""", 
+PANEL_FIRE_BOXPLOT_O3=[ """Ozone levels are mostly driven by seasonality, with fires playing zero or secondary role.""",
 """ 
 The ozone curve is the most visually distinct of the four: it rises steadily from a winter floor of
 ~25-50 AQI in January to sustained peaks above 150–190 AQI from June through September, then falls 
@@ -133,6 +133,12 @@ impossible to detects if fire has an effect on ozone (or the opposite) fire ampl
 photochemical production without a counterfactual model.
 """
 ]
+
+POLLUTANT_PANEL_MAP = {
+    'PM2.5': PANEL_FIRE_BOXPLOT_PM25,
+    'PM10':  PANEL_FIRE_BOXPLOT_PM10,
+    'Ozone': PANEL_FIRE_BOXPLOT_O3,
+}
 
 # ============================================================================
 #  Panel 3: EVENT ANALYSIS

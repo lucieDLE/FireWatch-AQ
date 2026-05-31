@@ -91,9 +91,8 @@ def build_layout():
                                                         textCard(analysis.PANEL_AIR_CARD_MONITORS_1[0], analysis.PANEL_AIR_CARD_MONITORS_1[1]),
                                                         textCard(analysis.PANEL_AIR_CARD_MONITORS_2[0], analysis.PANEL_AIR_CARD_MONITORS_2[1]),
                                                     ], width=3,),
-                                                ]),
+                                                ], align="start"),
                                                 dbc.Row([
-
                                                     dbc.Col(
                                                         graphCard("pollutant-exceedances-graph", pollutant_exceedances_us_map, height='420px'),
                                                         width=9
@@ -102,8 +101,7 @@ def build_layout():
                                                         textCard(analysis.PANEL_AIR_CARD_MAP[0], analysis.PANEL_AIR_CARD_MAP[1]),
                                                         width=3,
                                                     ),
-
-                                                    ]),
+                                                ], align="start"),
 
                                                 # ── Bottom row: 1 full-width chart ──────────────────
                                                 dbc.Row([
@@ -147,7 +145,7 @@ def build_layout():
                                                         textCard(analysis.PANEL_FIRE_CARD_COUNTY[0], analysis.PANEL_FIRE_CARD_COUNTY[1]),
                                                         width=3,
                                                     )
-                                                ]),
+                                                ], align="start"),
                                                 dbc.Row([
                                                     dbc.Col(
                                                         graphCard("top-fire-graph", top_fires, height='420px'),
@@ -157,7 +155,7 @@ def build_layout():
                                                         textCard(analysis.PANEL_FIRE_CARD_TOP10[0], analysis.PANEL_FIRE_CARD_TOP10[1]),
                                                         width=3,
                                                     )
-                                                ]),
+                                                ], align="start"),
                                                 # ── Bottom row: pollutant selector + overlay chart ──
                                                 dbc.Row([
                                                     #Left Col
@@ -167,20 +165,20 @@ def build_layout():
                                                     
                                                     # Right Col
                                                     dbc.Col([
-                                                        dbc.Row([
-                                                            dbc.Col([
-                                                                textCard("Overview", "Select on Pollutant to visualize its impact on public Health and if it has a relationship with fire onset."),
-                                                                dcc.Dropdown(
-                                                                    id='pollutant-dropdown',
-                                                                    options=[{'label': name, 'value': name} for name in POLLUTANT_COL_MAP],
-                                                                    value='PM2.5',
-                                                                    clearable=False,
-                                                                ),
-                                                                ]),
-                                                                textCard(analysis.PANEL_FIRE_BOXPLOT_PM25[0], analysis.PANEL_FIRE_BOXPLOT_PM25[1])
-                                                        ], className='mb-2 mt-3 ms-2'),
+                                                        textCard("Overview", "Select a pollutant to visualize its impact on public health and its relationship with fire onset."),
+                                                        dcc.Dropdown(
+                                                            id='pollutant-dropdown',
+                                                            options=[{'label': name, 'value': name} for name in POLLUTANT_COL_MAP if name != 'NO2'],
+                                                            value='PM2.5',
+                                                            clearable=False,
+                                                            className='mb-3',
+                                                        ),
+                                                        dbc.Card([
+                                                            dbc.CardHeader(id="pollutant-card-header", children=analysis.PANEL_FIRE_BOXPLOT_PM25[0]),
+                                                            dbc.CardBody(dcc.Markdown(id="pollutant-card-body", children=analysis.PANEL_FIRE_BOXPLOT_PM25[1])),
+                                                        ]),
                                                     ], width=3),
-                                                ]),
+                                                ], align="start"),
                                             ]),
 
                                         dcc.Tab(
@@ -196,7 +194,7 @@ def build_layout():
                                                                     dbc.Row([
                                                                         dbc.Col(dcc.Markdown(analysis.PANEL_EVENT_OVERVIEW_FIRES), width=6),
                                                                         dbc.Col(dcc.Markdown(analysis.PANEL_EVENT_OVERVIEW_ABBREVIATIONS), width=6),
-                                                                    ]),
+                                                                    ], className="mb-0"),
                                                                 ]),
                                                             ])
                                                         ),

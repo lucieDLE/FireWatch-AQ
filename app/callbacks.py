@@ -13,6 +13,7 @@ from figures_aq import make_pollutant_distribution, make_aq_us_plot, compute_max
 from figures_fire import make_cloropleth_fire_counties, make_bar_fire_event, make_fire_aqi_overlay
 from figures_event import (make_aq_time_series, make_burning_area_plot, make_overlay_aq_fire,
                            make_aq_hotspot_trace, make_fire_perimeter_trace)
+import analysis
 
 
 # ============================================================================
@@ -155,13 +156,16 @@ def update_event_map(slider_idx, dark_mode, fire_name):
 
 
 @callback(
-    Output("overlay-fire-aqi-graph", "figure"),
-    Input("pollutant-dropdown",      "value"),
-    Input("switch-theme",            "value"),
+    Output("overlay-fire-aqi-graph",  "figure"),
+    Output("pollutant-card-header",   "children"),
+    Output("pollutant-card-body",     "children"),
+    Input("pollutant-dropdown",       "value"),
+    Input("switch-theme",             "value"),
 )
 def update_fire_aqi_overlay(pollutant_name, dark_mode):
     col = POLLUTANT_COL_MAP[pollutant_name]
     df_q = compute_aqi_quantiles(col)
     fig = make_fire_aqi_overlay(df_q, df_biggest_fire, pollutant_name=pollutant_name)
-    fig = apply_theme(fig,dark_mode)
-    return fig
+    fig = apply_theme(fig, dark_mode)
+    panel = analysis.POLLUTANT_PANEL_MAP[pollutant_name]
+    return fig, panel[0], panel[1]
