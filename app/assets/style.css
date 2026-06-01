@@ -242,7 +242,7 @@ body {
   background-color: var(--bg-card-body) !important;
   color: var(--text-card-body) !important;
   font-size: 0.92rem;
-  padding: 12px 14px 4px;
+  padding: 12px 14px 6px;
 }
 
 
@@ -311,7 +311,7 @@ body {
 .dash-dropdown,
 .dash-dropdown-content {
     color: var(--Dash-Text-Strong);
-    font-size: 0.85rem;
+    font-size: 1.1rem;
     font-weight: 400;
     border-color: var(--border-color);
 }
@@ -334,4 +334,130 @@ body {
 }
 .dash-dropdown-search-container {
   border-color: var(--border-color);
+}
+
+/* ============================================================
+   Introduction Tab
+   ============================================================ */
+
+.section-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  margin-top: 8px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--accent);
+  display: inline-block;
+  max-width: 100%;
+}
+
+.intro-presentation {
+  text-align: left;
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--text-main);
+  background-color: transparent;
+  border-left: 4px solid var(--accent);
+  border-radius: 0;
+  padding: 6px 0 6px 20px;
+  margin-bottom: 16px;
+  margin-top: 48px;
+}
+
+/* AQI + NAAQS tables */
+.aqi-table-wrapper {
+  background-color: var(--bg-card);
+  /* border: 1px solid var(--border-color); */
+  /* border-radius: 12px; */
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.aqi-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 4px;
+  font-size: 0.88rem;
+  padding: 8px;
+}
+
+.aqi-table-head th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-card-header);
+  background-color: var(--bg-card-header);
+  padding: 6px 10px;
+}
+
+.sources-card,p {
+  border: 0px solid var(--border-color) !important;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 0rem;
+
+}
+
+.sources-card .card-body {
+  font-size: 0.85rem;
+  column-count: 2;
+  column-gap: 32px;
+}
+
+@media (max-width: 768px) {
+  .sources-card .card-body {
+    column-count: 1;
+  }
+}
+
+/* ============================================================
+   Hook cards (floating badge design)
+   ============================================================ */
+
+.hook-card-wrapper {
+  position: relative;
+  padding-top: 52px;
+  margin-bottom: 16px;
+}
+
+.hook-badge {
+  position: absolute;
+  top: 0;
+  left: 25%;
+  transform: translateX(-50%);
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+  border-radius: 16px;
+  padding: 18px 18px;
+  text-align: center;
+  z-index: 2;
+  min-width: 100px;
+  max-width: 160px;
+  box-shadow: 0 4px 12px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Shared padding for all intro section cards */
+.intro-card .card-body {
+  padding: 16px 20px !important;
+}
+
+.hook-badge .fa {
+  font-size: 3rem;
+}
+
+.hook-card-wrapper .card {
+  border-radius: 16px !important;
+  padding:  16px 16px 16px 16px;
+  margin-top: 16px;
+  background-color: var(--bg-card-body);
 }
