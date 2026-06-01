@@ -1,26 +1,23 @@
 # ============================================================================
 #  Panel Introduction to Air Quality and Fires in California
 # ============================================================================
-INTRO_SECTION_1_HOOK_1 =[ """ California's wildfire season is lengthening""", 
-""" Historically, the fire season occurs between May and October, however recent data show the 
-season starting sooner and ending later each year[1]
-(https://wfca.com/wildfire-articles/california-fire-season-in-depth-guide/).
-"""]
+INTRO_SECTION_1_HOOK_1 = """ 
+**California's wildfire season is lengthening.**
+Historically, the fire season occurs between May and October, however recent data show the
+season starting sooner and ending later each year.[1](https://wfca.com/wildfire-articles/california-fire-season-in-depth-guide/)
+"""
 
-INTRO_SECTION_1_HOOK_2 = ["""The scale of destruction is accelerating""", 
-""" 
-According to the California Department of Forestry and Fire Protection reports, 14 of the 20 
-most destructive wildfires  in California history occurred in the last decade alone[2]
-(https://www.fire.ca.gov/-/media/calfire-website/our-impact/fire-statistics/top-20-destructive-ca-wildfires.pdf).
+INTRO_SECTION_1_HOOK_2 ="""
+**The scale of destruction is accelerating.**
+According to the California Department of Forestry and Fire Protection reports, 14 of the 20
+most destructive wildfires in California history occurred in the last decade alone.[2](https://www.fire.ca.gov/-/media/calfire-website/our-impact/fire-statistics/top-20-destructive-ca-wildfires.pdf)
 """
-]
-INTRO_SECTION_1_HOOK_3 = ["""The consequences extend far beyond the fire perimeter""" ,
-"""
+
+INTRO_SECTION_1_HOOK_3 = """
+**The consequences extend far beyond the fire perimeter.**
 Smoke can travel hundreds to thousands of miles, and according to the EPA, the health risk from
-wildfire smoke persists for several days after the heaviest smoke events subside[3]
-(https://www.epa.gov/air-research/wildland-fire-research-human-health).
+wildfire smoke persists for several days after the heaviest smoke events subside.[3](https://www.epa.gov/air-research/wildland-fire-research-human-health)
 """
-]
 INTRO_DASHBOARD_PRESENTATION = """This dashboard examines the air quality consequences of the 2025
 California fire season, tracing the link between fire activity and pollutant exposure across the state.
 """
@@ -31,17 +28,15 @@ the public. It translates complex pollutant concentration measurements into a si
 0–500 scale, divided into six color-coded categories, each corresponding to a specific level of health
 concern. When multiple pollutants are measured at a site, the highest individual AQI is used to report 
 the overall air quality for that day[4](https://www.airnow.gov/aqi/aqi-basics/).
-"""
-
-INTRO_SECTION_2_CARD_2 = """ 
+<br><br>
 The AQI is defined by the **[United States Environmental Protection Agency](https://www.epa.gov) (EPA)**
 under the authority of the Clean Air Act (1990), and is tied directly to the **National Ambient Air 
 Quality Standards (NAAQS)**. NAAQS are concentration thresholds for each pollutant, which the EPA is required
 to review every five years.
-
+<br><br>
 It is worth noting that other countries operate their own indices under different rules and pollutant sets. 
 The **World Health Organization (WHO)** publishes separate guidelines that are stricter than NAAQS for several 
-pollutants[5](https://www.who.int/publications/i/item/9789240034228)[6](https://en.wikipedia.org/wiki/Air_quality_index]).
+pollutants.[5](https://www.who.int/publications/i/item/9789240034228)[6](https://en.wikipedia.org/wiki/Air_quality_index)
 
 """
 
@@ -49,7 +44,7 @@ pollutants[5](https://www.who.int/publications/i/item/9789240034228)[6](https://
 INTRO_SECTION_3_PM = """ 
 Particulate matter (PM) refers to inhalable particles suspended in the air, composed of complex mixtures with
 diverse chemical and physical characteristics. They are classified by aerodynamic diameter, with PM2.5 and 
-PM10 the most relevant for health monitoring[5](https://www.who.int/publications/i/item/9789240034228),[8](https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants).
+PM10 the most relevant for health monitoring.[5](https://www.who.int/publications/i/item/9789240034228)[7](https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants)
 """
 
 
