@@ -165,8 +165,8 @@ def make_burning_area_plot(gdf, event_start=None, event_end=None):
         title=dict(text='Estimated Burning Area and Fire Perimeter', yanchor='top', y=0.95),
         hovermode='x unified',
         xaxis=dict(title_text='Date', range=[event_start, event_end] if event_start else None),
-        legend=dict(orientation='h', yanchor='top', y=1.2, xanchor='left', maxheight=0.1),
-        margin=dict(l=10, r=10, t=75, b=10),
+        legend=dict(orientation='v', yanchor='top', y=1.0, xanchor='right', x=0.99),
+        margin=dict(l=10, r=10, t=40, b=0),
     )
     return fig
 
