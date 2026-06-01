@@ -236,65 +236,71 @@ analytically trustworthy for characterizing the Madre fire's direct air quality 
 ]
 
 #  Gifford
-PANEL_EVENT_MADRE_DESCRIPTION=[ """ EVENT DESCRIPTION """, 
-""" 
-The Gifford fire in Santa Barbara County was the largest fire of the 2025 California season by 
-estimated burnt area (~130,000 acres). It burned through late July and August two weeks after the 
-Madre fire and in the same location but at a much larger scale. The panel covers July 31–August 22, 
-centered on the fire's active phase, with the same two monitoring zones as Madre: SLO/Santa Barbara 
+PANEL_EVENT_GIFFORD_DESCRIPTION=[ """ EVENT DESCRIPTION """,
+"""
+The Gifford fire in Santa Barbara County was the largest fire of the 2025 California season by
+estimated burnt area (~130,000 acres). It burned through late July and August two weeks after the
+Madre fire and in the same location but at a much larger scale. The panel covers July 31–August 22,
+centered on the fire's active phase, with the same two monitoring zones as Madre: SLO/Santa Barbara
 (proximate) and Los Angeles (distal).
 """
 ]
 
 
-PANEL_EVENT_MADRE_ANALYSIS_SITE_1=[ """Despite being the largest fire of the season, Gifford produced the least local AQI impact""", 
-""" 
+PANEL_EVENT_GIFFORD_ANALYSIS_SITE_1=[ """Despite being the largest fire of the season, Gifford produced the least local AQI impact""",
+"""
 SLO/SB monitors began elevated at ~30–40 AQI from the very start of the observation window (July 31),
-rising to a broad peak of ~60–65 around August 3–6 without breaking into the unhealthy for sensitive 
+rising to a broad peak of ~60–65 around August 3–6 without breaking into the unhealthy for sensitive
 group category. This shows small smoke exposure rather than the sharp catastrophic spikes seen in
 other events."""
 ]
 
 
-PANEL_EVENT_MADRE_ANALYSIS_SITE_2=[ """Los Angeles monitors show sustained moderate elevation with no dramatic spikes""", 
-""" 
+PANEL_EVENT_GIFFORD_ANALYSIS_SITE_2=[ """Los Angeles monitors show sustained moderate elevation with no dramatic spikes""",
+"""
 LA sites ranged between 50-75 AQI throughout August 3–12, with no site breaching the "unhealthy
 for sensitive groups" threshold during this window. The temporal pattern tracks loosely with the
-SLO sites, suggesting some smoke transport southeastward, but the LA signal is too small to 
+SLO sites, suggesting some smoke transport southeastward, but the LA signal is too small to
 attribute it to Gifford alone given the basin's persistent summer background pollution.
 """
 ]
 
 
-
 # Garnet
-PANEL_EVENT_MADRE_DESCRIPTION=[ """ EVENT DESCRIPTION """, 
-""" 
+PANEL_EVENT_GARNET_DESCRIPTION=[ """ EVENT DESCRIPTION """,
+"""
 The Garnet fire burned in Fresno County in end of August 2025, reaching approximately 60,000 estimated
-acres. Its geographic position places it between two fundamentally different atmospheric environments: 
+acres. Its geographic position places it between two fundamentally different atmospheric environments:
 the Central Valley (Fresno basin, to the west) and the Owens Valley / Inyo county high desert (to the east).
-The contrast between these two monitoring zones produces the most analytically striking spatial asymmetry 
+The contrast between these two monitoring zones produces the most analytically striking spatial asymmetry
 in the dataset.
 """
 ]
 
 
-PANEL_EVENT_MADRE_ANALYSIS_SITE_1=[ """The Owens Valley monitors experienced a catastrophic AQI spike""", 
-""" 
+PANEL_EVENT_GARNET_ANALYSIS_SITE_2=[ """The Owens Valley monitors experienced a catastrophic AQI spike""",
+"""
 The Owens Valley monitors experienced a catastrophic AQI spike. On September 7, the Sierra National Forest
-monitoring zone spiked to 275+ AQI, deeply into the "hazardous" range, before collapsing back to 10-20 by 
-September 12–14. The spike is essentially instantaneous in onset and recovers almost as sharply. This 
+monitoring zone spiked to 275+ AQI, deeply into the "hazardous" range, before collapsing back to 10-20 by
+September 12–14. The spike is essentially instantaneous in onset and recovers almost as sharply. This
 profile could be triggered by a rapid change in wind direction.
 """
 ]
 
 
-PANEL_EVENT_MADRE_ANALYSIS_SITE_2=[ """The Fresno monitors, despite being in the same county as the fire, showed little impact""", 
-""" 
-Six Fresno basin sites peaked at approximately 75-85 AQI around September 7–9, reaching "unhealthy 
+PANEL_EVENT_GARNET_ANALYSIS_SITE_1=[ """The Fresno monitors, despite being in the same county as the fire, showed little impact""",
+"""
+Six Fresno basin sites peaked at approximately 75-85 AQI around September 7–9, reaching "unhealthy
 for sensitive groups," but an order of magnitude lower than the other site.
 
-This spatial asymmetry can be driven by different wind pattern, elevation, and terrain topology, 
+This spatial asymmetry can be driven by different wind pattern, elevation, and terrain topology,
 which are not the scope of this project.
 """
 ]
+
+FIRE_EVENT_PANEL_MAP = {
+    'PALISADES': (PANEL_EVENT_PALISADES_DESCRIPTION, PANEL_EVENT_PALISADES_ANALYSIS_SITE_1, PANEL_EVENT_PALISADES_ANALYSIS_SITE_2),
+    'Madre':     (PANEL_EVENT_MADRE_DESCRIPTION,     PANEL_EVENT_MADRE_ANALYSIS_SITE_1,     PANEL_EVENT_MADRE_ANALYSIS_SITE_2),
+    'Gifford':   (PANEL_EVENT_GIFFORD_DESCRIPTION,   PANEL_EVENT_GIFFORD_ANALYSIS_SITE_1,   PANEL_EVENT_GIFFORD_ANALYSIS_SITE_2),
+    'Garnet':    (PANEL_EVENT_GARNET_DESCRIPTION,    PANEL_EVENT_GARNET_ANALYSIS_SITE_1,    PANEL_EVENT_GARNET_ANALYSIS_SITE_2),
+}
