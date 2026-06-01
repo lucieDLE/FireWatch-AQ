@@ -210,8 +210,14 @@ def build_layout():
                                                             value=DEFAULT_FIRE,
                                                             clearable=False,
                                                         ),
-                                                        textCard(analysis.PANEL_EVENT_MADRE_DESCRIPTION[0], analysis.PANEL_EVENT_MADRE_DESCRIPTION[1]),
+                                                        dbc.Card([
+                                                            dbc.CardHeader(id="event-desc-header", children=analysis.PANEL_EVENT_MADRE_DESCRIPTION[0]),
+                                                            dbc.CardBody(dcc.Markdown(id="event-desc-body", children=analysis.PANEL_EVENT_MADRE_DESCRIPTION[1])),
+                                                        ]),
+                                                        graphCard(fig_id="burning-graph", figure=burning_area, height='300px'),
+                                                    ],width=5),
 
+                                                    dbc.Col([
                                                         graphCard(fig_id="overlay-map-graph", figure=aq_fire_overlay, height='480px'),
                                                         html.Div(
                                                             dcc.Slider(
@@ -229,15 +235,30 @@ def build_layout():
                                                             ),
                                                             className='slider-container',
                                                         ),
-                                                        graphCard(fig_id="burning-graph", figure=burning_area, height='320px'),
-                                                    ]),
+                                                    ],width=7),
+                                                ]),
                                                     
-                                                    # right panel
+                                                dbc.Row([
                                                     dbc.Col([
                                                         graphCard(fig_id="ts-site1-graph", figure=ts_site_1, height='400px'),
+                                                    ],width=6),
+                                                    dbc.Col([
                                                         graphCard(fig_id="ts-site2-graph", figure=ts_site_2, height='400px'),
-                                                        textCard("Tab Analysis", "analysis text"),
-                                                    ])
+                                                    ],width=6),
+                                                ]),
+                                                dbc.Row([
+                                                    dbc.Col([
+                                                        dbc.Card([
+                                                            dbc.CardHeader(id="event-site1-header", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_1[0]),
+                                                            dbc.CardBody(dcc.Markdown(id="event-site1-body", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_1[1])),
+                                                        ]),
+                                                    ],width=6),
+                                                    dbc.Col([
+                                                        dbc.Card([
+                                                            dbc.CardHeader(id="event-site2-header", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_2[0]),
+                                                            dbc.CardBody(dcc.Markdown(id="event-site2-body", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_2[1])),
+                                                        ]),
+                                                    ],width=6),
                                                 ])
                                             ]),
                                         ]),
