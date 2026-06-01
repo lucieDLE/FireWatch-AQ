@@ -64,7 +64,6 @@ def update_figure_theme(dark_mode):
 
 
 @callback(
-    # Tab 4 — Event Dive (time series, burning area, slider reset)
     Output("ts-site1-graph",    "figure"),
     Output("ts-site2-graph",    "figure"),
     Output("burning-graph",     "figure"),
@@ -72,6 +71,12 @@ def update_figure_theme(dark_mode):
     Output("date-slider",       "max"),
     Output("date-slider",       "marks"),
     Output("date-slider",       "value"),
+    Output("event-desc-header", "children"),
+    Output("event-desc-body",   "children"),
+    Output("event-site1-header","children"),
+    Output("event-site1-body",  "children"),
+    Output("event-site2-header","children"),
+    Output("event-site2-body",  "children"),
     Input("fire-dropdown",      "value"),
     Input("switch-theme",       "value"),
 )
@@ -90,7 +95,12 @@ def update_event_tab(fire_name, dark_mode):
     marks = {i: {'label': dates[i][5:], 'style': {'fontSize': '11px'}}
              for i in range(0, len(dates), 3)}
 
-    return fig_site1, fig_site2, fig_burning, 0, max(len(dates) - 1, 0), marks, 0
+    panel = analysis.FIRE_EVENT_PANEL_MAP[fire_name]
+    desc, site1, site2 = panel
+
+    return (fig_site1, fig_site2, fig_burning,
+            0, max(len(dates) - 1, 0), marks, 0,
+            desc[0], desc[1], site1[0], site1[1], site2[0], site2[1])
 
 
 @callback(
