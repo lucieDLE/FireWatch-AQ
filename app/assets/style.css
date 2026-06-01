@@ -461,3 +461,65 @@ body {
   margin-top: 16px;
   background-color: var(--bg-card-body);
 }
+
+/* ============================================================
+   Stat cards (Why California section)
+   ============================================================ */
+
+.stat-section-subtitle {
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--md-on-surface-variant);
+  letter-spacing: 0.02em;
+  margin-bottom: 14px;
+  margin-top: 4px;
+}
+
+.stat-card {
+  border-radius: 16px;
+  padding: 20px 16px;
+  color: white;
+  min-height: 130px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stat-top {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  flex-wrap: wrap;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-big {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+  color: white;
+}
+
+.stat-medium {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+  color: white;
+}
+
+.stat-context {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: white;
+  align-self: center;
+}
+
+.stat-desc {
+  font-size: 0.82rem;
+  margin: 0;
+  color: white;
+  line-height: 1.4;
+}
