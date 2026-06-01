@@ -99,27 +99,24 @@ California presents one of the most complex and consequential air quality challe
 Three structural factors drive it:
 """
 ]
-INTRO_SECTION_5_FACTOR_1 = ["""Transportation""", 
+INTRO_SECTION_5_FACTOR_1 = """
+**Transportation**
+* California's large population generate substantial vehicle emissions. 
+* It is known that vehicles powered wby fossil fuels contributes significantly to pollution.
+* The state has responded with the most aggressive zero-emission vehicle policy in the US, but the transition is ongoing.
 """
-    * California's large population generate substantial vehicle emissions. 
-    * It is known that vehicles powered wby fossil fuels contributes significantly to pollution.
-    * The state has responded with the most aggressive zero-emission vehicle policy in the US, but the transition is ongoing.
-"""
-]
 
-INTRO_SECTION_5_FACTOR_2 = ["""Climate""", 
+INTRO_SECTION_5_FACTOR_2 = """
+**Climate**
+* A warm, dry climate with low annual rainfall creates ideal conditions for both wildfire ignition and ozone formation. T
+* The Central Valley experiences extremely hot, dry summers with intensifying drought, extending the fire season and amplifying heat-driven ozone peaks. 
+* Wildfire activity has increased sharply as conditions become hotter and drier.
 """
-    * A warm, dry climate with low annual rainfall creates ideal conditions for both wildfire ignition and ozone formation. T
-    * he Central Valley experiences extremely hot, dry summers with intensifying drought, extending the fire season and amplifying heat-driven ozone peaks. 
-    * Wildfire activity has increased sharply as conditions become hotter and drier.
+INTRO_SECTION_5_FACTOR_3 = """
+**Geography**
+* Many of California's largest cities sit in basins enclosed by mountain ranges (Los Angeles, San Diego, Fresno). Mountains trap air pollution .
+* The surrounding mountains block horizontal wind dispersal, preventing the warm polluted air from rising and escaping.
 """
-]
-INTRO_SECTION_5_FACTOR_3 = ["""Geography""", 
-"""
-    * Many of California's largest cities sit in basins enclosed by mountain ranges (Los Angeles, San Diego, Fresno). Mountains trap air pollution .
-    * The surrounding mountains block horizontal wind dispersal, preventing the warm polluted air from rising and escaping.
-"""
-]
 
 # ============================================================================
 #  Panel AIR ANALYSIS:
