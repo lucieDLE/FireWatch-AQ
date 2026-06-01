@@ -85,6 +85,13 @@ def introTextCard(title, text):
     ], className="intro-card"))
 
 
+def statCard(stat_children, desc, bg_color):
+    return html.Div([
+        html.Div(stat_children, className="stat-top"),
+        html.P(desc, className="stat-desc"),
+    ], className="stat-card", style={"backgroundColor": bg_color})
+
+
 def hookCard(icon_class, text):
     return html.Div([
         html.Div([
@@ -223,20 +230,24 @@ def build_layout():
                                                 # ── Section 1: Three hooks ─────────────────────────
                                                 dbc.Row([
                                                     dbc.Col(hookCard("fa-fire",      analysis.INTRO_SECTION_1_HOOK_1), width=3),
-                                                    dbc.Col(hookCard("fa-chart-bar", analysis.INTRO_SECTION_1_HOOK_2), width=3),
+                                                    dbc.Col(hookCard("fa-line-chart", analysis.INTRO_SECTION_1_HOOK_2), width=3),
                                                     dbc.Col(hookCard("fa-wind",      analysis.INTRO_SECTION_1_HOOK_3), width=3),
                                                 ], className="justify-content-center", style={"marginTop": "60px"}),
 
                                                 # ── Section 2: What is AQI? ────────────────────────
-                                                dbc.Row([dbc.Col(sectionTitle("What is Air Quality Index (AQI)?", align='right'))]),
+                                                dbc.Row([dbc.Col(sectionTitle("What is Air Quality Index (AQI)?", align='left'))]),
                                                 dbc.Row([
                                                     dbc.Col(aqi_table(), width=6),
                                                     dbc.Col(introBodyCard(analysis.INTRO_SECTION_2_CARD_1), width=6),
                                                 ], align="start"),
 
-                                                # ── Section 3: Pollutants ──────────────────────────
-                                                dbc.Row([dbc.Col(sectionTitle("Pollutants covered in this Dashboard", align='left'))]),
-                                                dbc.Row([dbc.Col(introBodyCard(analysis.INTRO_SECTION_3_PM), width=5)]),
+
+                                                # ── Section 4: NAAQS / WHO table ──────────────────
+                                                dbc.Row([dbc.Col(sectionTitle("Pollutants Thresholds and Guidelines", align='right'))]),
+                                                dbc.Row([
+                                                    dbc.Col(introBodyCard(analysis.INTRO_SECTION_3_PM), width=4),
+                                                    dbc.Col(naaqs_table(), width=8),
+                                                ]),
                                                 dbc.Row([
                                                     dbc.Col(introTextCard(analysis.INTRO_SECTION_3_PM25[0], analysis.INTRO_SECTION_3_PM25[1]), width=4),
                                                     dbc.Col(introTextCard(analysis.INTRO_SECTION_3_PM10[0], analysis.INTRO_SECTION_3_PM10[1]), width=4),
@@ -248,21 +259,70 @@ def build_layout():
                                                     dbc.Col(introTextCard(analysis.INTRO_SECTION_3_CO[0],  analysis.INTRO_SECTION_3_CO[1]),  width=4),
                                                 ]),
 
-                                                # ── Section 4: NAAQS / WHO table ──────────────────
-                                                dbc.Row([dbc.Col(sectionTitle("NAAQS Legal Thresholds and WHO Guidelines", align='right'))]),
-                                                dbc.Row([
-                                                    dbc.Col(naaqs_table(), width={"size": 8, "offset": 2}),
-                                                ]),
 
                                                 # ── Section 5: Why California? ─────────────────────
                                                 dbc.Row([dbc.Col(sectionTitle("Why California?", align='left'))]),
+                                                # Subtitle row
                                                 dbc.Row([
-                                                    dbc.Col(introBodyCard(analysis.INTRO_SECTION_5_WHY[0]), width=5),
+                                                    dbc.Col(html.Div("The problem", className="stat-section-subtitle"), width=4),
+                                                    dbc.Col(width=4),
+                                                    dbc.Col(html.Div("Signs of progress", className="stat-section-subtitle"), width=4),
+                                                ], className="mb-0"),
+                                                # Cards row 1
+                                                dbc.Row([
+                                                    dbc.Col(statCard(
+                                                        [html.Span("88%", className="stat-big")],
+                                                        "Of Californians live in a community with unhealthy air",
+                                                        "#8B1A0E"
+                                                    ), width=2),
+                                                    dbc.Col(statCard(
+                                                        [html.Span("5", className="stat-big"), html.Span(" of the ", className="stat-context"), html.Span("10", className="stat-medium")],
+                                                        "US cities most polluted are in California",
+                                                        "#B84A1A"
+                                                    ), width=2),
+                                                    dbc.Col(width=4),
+                                                    dbc.Col(statCard(
+                                                        [html.Span("18.1", className="stat-big")],
+                                                        "Fewer bad air days for short-term particle pollution in Bakerfield",
+                                                        "#5A8C4A"
+                                                    ), width=2),
+                                                    dbc.Col(statCard(
+                                                        [html.Span("#1", className="stat-big")],
+                                                        "place on zero-emission vehicle adoption",
+                                                        "#4A7C3F"
+                                                    ), width=2),
+                                                ], className="mb-2"),
+                                                # Cards row 2
+                                                dbc.Row([
+                                                    dbc.Col(statCard(
+                                                        [html.Span("26", className="stat-big"), html.Span(" of the ", className="stat-context"), html.Span("27 Years", className="stat-medium")],
+                                                        "Los Angeles has ranked as the most ozone-polluted city",
+                                                        "#C97030"
+                                                    ), width=2),
+                                                    dbc.Col(statCard(
+                                                        [html.Span("2", className="stat-big")],
+                                                        "cities ranked 1st place in worst ozone and particle pollutions",
+                                                        "#D4A020"
+                                                    ), width=2),
+                                                    dbc.Col(width=4),
+                                                    dbc.Col(statCard(
+                                                        [html.Span("6", className="stat-big")],
+                                                        "metro areas improved enough to leave the Worst 25 list",
+                                                        "#2C5F2E"
+                                                    ), width=2),
+                                                    dbc.Col(statCard(
+                                                        [html.Span("18", className="stat-big"), html.Span(" of the ", className="stat-context"), html.Span("25", className="stat-medium")],
+                                                        "worst cities for daily PM2.5 improved vs. last year",
+                                                        "#3A6B3C"
+                                                    ), width=2),
                                                 ]),
                                                 dbc.Row([
-                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_5_FACTOR_1[0], analysis.INTRO_SECTION_5_FACTOR_1[1]), width=4),
-                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_5_FACTOR_2[0], analysis.INTRO_SECTION_5_FACTOR_2[1]), width=4),
-                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_5_FACTOR_3[0], analysis.INTRO_SECTION_5_FACTOR_3[1]), width=4),
+                                                    dbc.Col(html.Div("The causes", className="stat-section-subtitle text-center"), width=12),
+                                                ], className="mb-0"),
+                                                dbc.Row([
+                                                    dbc.Col(hookCard("fa-car", analysis.INTRO_SECTION_5_FACTOR_1), width=4),
+                                                    dbc.Col(hookCard("fa-thermometer-full", analysis.INTRO_SECTION_5_FACTOR_2), width=4),
+                                                    dbc.Col(hookCard("fa-globe", analysis.INTRO_SECTION_5_FACTOR_3), width=4),
                                                 ]),
 
                                                 # ── Sources ────────────────────────────────────────
