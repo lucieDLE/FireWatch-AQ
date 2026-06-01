@@ -95,7 +95,7 @@ INTRO_SECTION_3_SO2 = ["""Sulfur Dioxide (SO2)""",
 
 INTRO_SECTION_5_WHY = [
 """
-California presents one of the most complex and consequential air quality challenges in the United States[9-13]:
+California presents one of the most complex and consequential air quality challenges in the United States[8-12]:
 
 * The Central Valley (Fresno, Bakersfield) and South Coast (Los Angeles, San Diego) experience some of the highest air pollution levels in the entire United States.
 * 5 of the 10 US cities most polluted (has improved since 2015)
@@ -432,3 +432,30 @@ FIRE_EVENT_PANEL_MAP = {
     'Gifford':   (PANEL_EVENT_GIFFORD_DESCRIPTION,   PANEL_EVENT_GIFFORD_ANALYSIS_SITE_1,   PANEL_EVENT_GIFFORD_ANALYSIS_SITE_2),
     'Garnet':    (PANEL_EVENT_GARNET_DESCRIPTION,    PANEL_EVENT_GARNET_ANALYSIS_SITE_1,    PANEL_EVENT_GARNET_ANALYSIS_SITE_2),
 }
+
+
+SOURCES_MD = """
+**[1]** California fire season guide — [wfca.com](https://wfca.com/wildfire-articles/california-fire-season-in-depth-guide/)
+
+**[2]** CalFire — Top 20 Most Destructive California Wildfires — [fire.ca.gov](https://www.fire.ca.gov/-/media/calfire-website/our-impact/fire-statistics/top-20-destructive-ca-wildfires.pdf)
+
+**[3]** EPA — Wildland Fire Research: Human Health — [epa.gov](https://www.epa.gov/air-research/wildland-fire-research-human-health)
+
+**[4]** AirNow — AQI Basics — [airnow.gov](https://www.airnow.gov/aqi/aqi-basics/)
+
+**[5]** WHO — Air Quality Guidelines 2021 — [who.int](https://www.who.int/publications/i/item/9789240034228)
+
+**[6]** Wikipedia — Air Quality Index — [wikipedia.org](https://en.wikipedia.org/wiki/Air_quality_index)
+
+**[7]** WHO — Types of Pollutants — [who.int](https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants)
+
+**[8]** EPA — California Air & Transportation Initiative (CATI) — [epa.gov](https://www.epa.gov/cati/about)
+
+**[9]** American Lung Association — California State of the Air 2025 — [lung.org](https://www.lung.org/getmedia/3575a218-b54e-4dfe-8d91-892276870a14/california-sota-2025-fact-sheet.pdf)
+
+**[10]** Earth.org — Air Pollution in California — [earth.org](https://earth.org/air-pollution-in-california)
+
+**[11]** Wikipedia — Pollution in California — [wikipedia.org](https://en.wikipedia.org/wiki/Pollution_in_California)
+
+**[12]** Wikipedia — San Joaquin Valley — [wikipedia.org](https://en.wikipedia.org/wiki/San_Joaquin_Valley)
+"""
