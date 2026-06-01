@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+import re
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT_DIR))
 
@@ -53,6 +54,136 @@ def textCard(title="TITLE", text='some text'):
         ]),
     )
 
+
+def bodyCard(text):
+    return html.Div(
+        dbc.Card([
+            dbc.CardBody(dcc.Markdown(text)),
+        ]),
+    )
+
+
+def _fmt_refs(text):
+    """Convert [N](url) → superscript link and [N-M] standalone → superscript."""
+    text = re.sub(
+        r'\[(\d+)\]\((https?://[^)]+)\)',
+        r'<sup><a href="\2" target="_blank">[\1]</a></sup>',
+        text
+    )
+    text = re.sub(r'\[(\d+-\d+)\](?!\()', r'<sup>[\1]</sup>', text)
+    return text
+
+
+def introMd(text):
+    return dcc.Markdown(_fmt_refs(text), dangerously_allow_html=True)
+
+
+def introTextCard(title, text):
+    return html.Div(dbc.Card([
+        dbc.CardHeader(title),
+        dbc.CardBody(introMd(text)),
+    ], className="intro-card"))
+
+
+def hookCard(icon_class, text):
+    return html.Div([
+        html.Div([
+            html.I(className=f"fa {icon_class}"),
+        ], className="hook-badge"),
+        dbc.Card(dbc.CardBody(introMd(text)), className="intro-card"),
+    ], className="hook-card-wrapper")
+
+
+def introBodyCard(text):
+    return html.Div(dbc.Card([
+        dbc.CardBody(introMd(text)),
+    ], className="intro-card"))
+
+
+def sectionTitle(text, align='left'):
+    return html.Div(
+        html.H5(text, className="section-title"),
+        style={"textAlign": align}
+    )
+
+
+def aqi_table():
+    rows = [
+        ("0–50",   "Good",                           "#00E400", "#000",  "Air quality is satisfactory; little or no risk."),
+        ("51–100",  "Moderate",                       "#FFFF00", "#000",  "Acceptable; some people may experience symptoms for some pollutants."),
+        ("101–150", "Unhealthy for Sensitive Groups", "#FF7E00", "#000",  "Members of sensitive groups may experience health effects."),
+        ("151–200", "Unhealthy",                      "#FF0000", "#fff",  "Everyone may begin to experience health effects."),
+        ("201–300", "Very Unhealthy",                 "#8F3F97", "#fff",  "Health warnings of emergency conditions. Entire population is more likely to be affected."),
+        ("301–500", "Hazardous",                      "#7E0023", "#fff",  "Health alert: everyone may experience serious health effects."),
+    ]
+    return html.Div(
+        html.Table([
+            html.Thead(html.Tr([
+                html.Th("AQI", style={"width": "60px"}),
+                html.Th("Category"),
+                html.Th("Health Concern"),
+            ], className="aqi-table-head")),
+            html.Tbody([
+                html.Tr([
+                    html.Td(aqi, style={"background": color, "color": text_color, "fontWeight": "700",
+                                        "textAlign": "center", "padding": "6px 8px", "borderRadius": "4px",
+                                        "whiteSpace": "nowrap"}),
+                    html.Td(cat, style={"background": color, "color": text_color, "fontWeight": "600",
+                                        "padding": "6px 10px"}),
+                    html.Td(health, style={"padding": "6px 10px", "fontSize": "0.85rem"}),
+                ])
+                for aqi, cat, color, text_color, health in rows
+            ])
+        ], className="aqi-table"),
+        className="aqi-table-wrapper"
+    )
+
+
+def naaqs_table():
+    # color: None=neutral, 'red'=NAAQS more lenient than WHO, 'green'=NAAQS stricter
+    rows = [
+        ("SO₂",   "1-hour",  "75 ppb",                 "—",            None),
+        ("PM2.5", "24-hour", "35 µg/m³",               "15 µg/m³",     "red"),
+        ("PM10",  "24-hour", "150 µg/m³",              "45 µg/m³",     "red"),
+        ("Ozone", "8-hour",  "0.070 ppm → 137 µg/m³", "100 µg/m³",    "red"),
+        ("NO₂",   "1-hour",  "100 ppb → 188 µg/m³",   "200 µg/m³",    "green"),
+        ("CO",    "8-hour",  "9 ppm → 10,350 µg/m³",  "10,000 µg/m³", "red"),
+    ]
+    _color_style = {
+        "red":   {"background": "rgba(220,50,50,0.12)", "color": "#b91c1c", "padding": "6px 12px"},
+        "green": {"background": "rgba(22,163,74,0.12)", "color": "#15803d", "padding": "6px 12px"},
+        None:    {"padding": "6px 12px"},
+    }
+    return html.Div(
+        html.Table([
+            html.Thead(html.Tr([
+                html.Th("Pollutant"),
+                html.Th("Averaging Time"),
+                html.Th("NAAQS Threshold"),
+                html.Th("WHO Guideline"),
+            ], className="aqi-table-head")),
+            html.Tbody([
+                html.Tr([
+                    html.Td(pol, style={"fontWeight": "600", "padding": "6px 12px"}),
+                    html.Td(avg, style={"padding": "6px 12px", "color": "var(--md-on-surface-variant)"}),
+                    html.Td(naaqs, style=_color_style[flag]),
+                    html.Td(who,   style={"padding": "6px 12px"}),
+                ])
+                for pol, avg, naaqs, who, flag in rows
+            ])
+        ], className="aqi-table"),
+        className="aqi-table-wrapper"
+    )
+
+
+def sources_card():
+    sources_md = analysis.SOURCES_MD
+    return dbc.Card([
+        dbc.CardHeader("Sources"),
+        dbc.CardBody(dcc.Markdown(sources_md)),
+    ], className="sources-card intro-card")
+
+
 # ============================================================================
 #  APP LAYOUT
 # ============================================================================
@@ -75,7 +206,70 @@ def build_layout():
                                     ],className='app-header'
                                     ),
                                     dcc.Tabs([
-                                        dcc.Tab(    
+                                        dcc.Tab(
+                                            label='Introduction',
+                                            children=[
+                                                # ── Dashboard presentation ─────────────────────────
+                                                dbc.Row([
+                                                    dbc.Col(
+                                                        html.Div(
+                                                            dcc.Markdown(analysis.INTRO_DASHBOARD_PRESENTATION),
+                                                            className="intro-presentation"
+                                                        ),
+                                                        width=12
+                                                    ),
+                                                ]),
+
+                                                # ── Section 1: Three hooks ─────────────────────────
+                                                dbc.Row([
+                                                    dbc.Col(hookCard("fa-fire",      analysis.INTRO_SECTION_1_HOOK_1), width=3),
+                                                    dbc.Col(hookCard("fa-chart-bar", analysis.INTRO_SECTION_1_HOOK_2), width=3),
+                                                    dbc.Col(hookCard("fa-wind",      analysis.INTRO_SECTION_1_HOOK_3), width=3),
+                                                ], className="justify-content-center", style={"marginTop": "60px"}),
+
+                                                # ── Section 2: What is AQI? ────────────────────────
+                                                dbc.Row([dbc.Col(sectionTitle("What is Air Quality Index (AQI)?", align='right'))]),
+                                                dbc.Row([
+                                                    dbc.Col(aqi_table(), width=6),
+                                                    dbc.Col(introBodyCard(analysis.INTRO_SECTION_2_CARD_1), width=6),
+                                                ], align="start"),
+
+                                                # ── Section 3: Pollutants ──────────────────────────
+                                                dbc.Row([dbc.Col(sectionTitle("Pollutants covered in this Dashboard", align='left'))]),
+                                                dbc.Row([dbc.Col(introBodyCard(analysis.INTRO_SECTION_3_PM), width=5)]),
+                                                dbc.Row([
+                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_3_PM25[0], analysis.INTRO_SECTION_3_PM25[1]), width=4),
+                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_3_PM10[0], analysis.INTRO_SECTION_3_PM10[1]), width=4),
+                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_3_O3[0],   analysis.INTRO_SECTION_3_O3[1]),   width=4),
+                                                ]),
+                                                dbc.Row([
+                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_3_NO2[0], analysis.INTRO_SECTION_3_NO2[1]), width=4),
+                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_3_SO2[0], analysis.INTRO_SECTION_3_SO2[1]), width=4),
+                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_3_CO[0],  analysis.INTRO_SECTION_3_CO[1]),  width=4),
+                                                ]),
+
+                                                # ── Section 4: NAAQS / WHO table ──────────────────
+                                                dbc.Row([dbc.Col(sectionTitle("NAAQS Legal Thresholds and WHO Guidelines", align='right'))]),
+                                                dbc.Row([
+                                                    dbc.Col(naaqs_table(), width={"size": 8, "offset": 2}),
+                                                ]),
+
+                                                # ── Section 5: Why California? ─────────────────────
+                                                dbc.Row([dbc.Col(sectionTitle("Why California?", align='left'))]),
+                                                dbc.Row([
+                                                    dbc.Col(introBodyCard(analysis.INTRO_SECTION_5_WHY[0]), width=5),
+                                                ]),
+                                                dbc.Row([
+                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_5_FACTOR_1[0], analysis.INTRO_SECTION_5_FACTOR_1[1]), width=4),
+                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_5_FACTOR_2[0], analysis.INTRO_SECTION_5_FACTOR_2[1]), width=4),
+                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_5_FACTOR_3[0], analysis.INTRO_SECTION_5_FACTOR_3[1]), width=4),
+                                                ]),
+
+                                                # ── Sources ────────────────────────────────────────
+                                                dbc.Row([dbc.Col(sources_card(), width=12)]),
+                                            ]),
+
+                                        dcc.Tab(
                                             label='Air Quality Data Exploration',
                                             children=[
                                                 # ── Top row: 2 charts side by side ──────────────────
