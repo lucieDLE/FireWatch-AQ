@@ -273,7 +273,9 @@ def build_layout():
                                                     dbc.Col(naaqs_table(), width=8),
                                                 ]),
                                                 dbc.Row([dbc.Col(sectionTitle("Pollutants Covered in This Dashboard", align='right'))]),
-                                                dbc.Row(className="justify-content-center", style={"gap": "3rem"}, children=[
+                                                dbc.Row(
+                                                    className="justify-content-center g-4",
+                                                    children=[
                                                     # ── Particulate Matter panel ───────────────────
                                                     dbc.Col(html.Div([
                                                         html.Div("PARTICULATE MATTER", className="poll-group-label"),
@@ -285,6 +287,8 @@ def build_layout():
                                                                 desc=analysis.INTRO_SECTION_3_PM,
                                                                 risk_level="Very high", risk_pct=90, color="var(--md-on-surface-variant)"
                                                             ),width=12),
+                                                        ],className="mb-2"),
+                                                        dbc.Row([
 
                                                             dbc.Col(pollutantCard(
                                                                 symbol_children=[html.Span("PM", className="poll-sym-text"), html.Sub("2.5", className="poll-sym-sub")],
@@ -300,7 +304,7 @@ def build_layout():
                                                                 desc=analysis.INTRO_SECTION_3_PM10,
                                                                 risk_level="Moderate", risk_pct=50, color="#8B7355"
                                                             ),width=6),
-                                                        ])
+                                                        ],className="mb-2")
                                                     ], className="poll-group-wrapper"), width=5),
                                                     # ── Gaseous Pollutants panel ───────────────────
                                                     dbc.Col(html.Div([
@@ -336,7 +340,7 @@ def build_layout():
                                                                 desc=analysis.INTRO_SECTION_3_SO2,
                                                                 risk_level="Moderate", risk_pct=50, color="#065F46"
                                                             ), width=6),
-                                                        ]),
+                                                        ],className="mb-2"),
                                                     ], className="poll-group-wrapper"), width=5),
                                                 ]),
 
@@ -344,7 +348,9 @@ def build_layout():
                                                 # ── Section 5: Why California? ─────────────────────
                                                 dbc.Row([dbc.Col(sectionTitle("Why California?", align='left'))]),
 
-                                                dbc.Row(className="justify-content-center", style={"gap": "3rem"}, children=[
+                                                dbc.Row(
+                                                    className="justify-content-center g-4",
+                                                    children=[
                                                     dbc.Col(html.Div([
                                                         html.Div("Public Health Concerns", className="poll-group-label"),
                                                         dbc.Row([
@@ -352,54 +358,54 @@ def build_layout():
                                                                 [html.Span("88%", className="stat-big")],
                                                                 "Of Californians live in a community with unhealthy air",
                                                                 "var(--stat-problem-1)"
-                                                            ), width=5),
+                                                            ), width=6),
                                                             dbc.Col(statCard(
                                                                 [html.Span("5", className="stat-big"), html.Span(" of the ", className="stat-context"), html.Span("10", className="stat-big")],
                                                                 "US cities most polluted are in California",
                                                                 "var(--stat-problem-2)"
-                                                            ), width=5),
-                                                        ]),
+                                                            ), width=6),
+                                                        ],className="g-4 mb-2"),
                                                         dbc.Row([
                                                             dbc.Col(statCard(
                                                                 [html.Span("26", className="stat-big"), html.Span(" of the ", className="stat-context"), html.Span("27", className="stat-big")],
                                                                 "years Los Angeles has ranked as the most ozone-polluted city",
                                                                 "var(--stat-problem-3)"
-                                                            ), width=5),
+                                                            ), width=6),
                                                             dbc.Col(statCard(
                                                                 [html.Span("2", className="stat-big")],
                                                                 "cities ranked 1st place in worst ozone and particle pollutions",
                                                                 "var(--stat-problem-4)"
-                                                            ), width=5),
-                                                        ]),
-                                                    ]),width=5),
+                                                            ), width=6),
+                                                        ],className="g-4 mb-2",),
+                                                    ]),width=4),
 
                                                     dbc.Col(html.Div([
                                                         html.Div("Signs of Progress", className="poll-group-label"),
                                                         dbc.Row([
                                                             dbc.Col(statCard(
                                                                 [html.Span("18.1", className="stat-big")],
-                                                                "Fewer bad air days for short-term particle pollution in Bakerfield",
+                                                                "Fewer bad days for short-term particle pollution in Bakerfield",
                                                                 "var(--stat-progress-1)"
-                                                            ), width=5),
+                                                            ), width=6),
                                                             dbc.Col(statCard(
                                                                 [html.Span("#1", className="stat-big")],
                                                                 "US state on zero-emission vehicle adoption",
                                                                 "var(--stat-progress-2)"
-                                                            ), width=5),
-                                                        ]),
+                                                            ), width=6),
+                                                        ],className="g-4 mb-2",),
                                                         dbc.Row([
                                                             dbc.Col(statCard(
                                                                 [html.Span("6", className="stat-big")],
                                                                 "metro areas improved enough to leave the Worst 25 list",
                                                                 "var(--stat-progress-3)"
-                                                            ), width=5),
+                                                            ), width=6),
                                                             dbc.Col(statCard(
                                                                 [html.Span("18", className="stat-big"), html.Span(" of the ", className="stat-context"), html.Span("25", className="stat-big")],
                                                                 "worst cities for daily PM2.5 improved vs. last year",
                                                                 "var(--stat-progress-4)"
-                                                            ), width=5),
-                                                        ]),
-                                                    ]),width=5),
+                                                            ), width=6),
+                                                        ],className="g-4 mb-2"),
+                                                    ]),width=4),
                                                 ]),
                                                 dbc.Row([
                                                     dbc.Col(html.Div("Causes and Risk Factors", className="poll-group-label", style={"textAlign": "center"})),
