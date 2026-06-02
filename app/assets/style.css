@@ -47,7 +47,6 @@
   --md-on-secondary:             rgb(104 3 0);
   --md-secondary-container:      rgb(155 7 0);
   --md-on-secondary-container:   rgb(255 165 149);
-  /* --md-tertiary:                         rgb(252, 186, 88); */
   --md-surface:                  rgb(18 19 22);
   --md-on-surface:               rgb(227 226 230);
   --md-surface-variant:          rgb(68 71 79);
@@ -95,6 +94,17 @@
   --accent:           var(--md-secondary);
   --border-color:     var(--md-outline-variant);
   --shadow:           rgba(0, 0, 0, 0.08);
+
+  /* Stat card palette to be decided */
+  --stat-problem-1:   #701106;
+  --stat-problem-2:   #9B2B10;
+  --stat-problem-3:   #C25120;
+  --stat-problem-4:   #d4752d;
+  
+  --stat-progress-1:  #1E4D20;
+  --stat-progress-2:  #2A6130;
+  --stat-progress-3:  #3A7D40;
+  --stat-progress-4:  #4E9455;
 
   --Dash-Text-Strong:          var(--md-on-surface);
   --Dash-Text-Disabled:           var(--md-inverse-primary);
@@ -395,7 +405,7 @@ body {
 
 .sources-card,p {
   border: 0px solid var(--border-color) !important;
-  border-radius: 12px;
+  border-radius: 0px;
   overflow: hidden;
   margin-bottom: 0rem;
 
@@ -471,7 +481,7 @@ body {
    ============================================================ */
 
 .poll-group-label {
-  font-size: 0.72rem;
+  font-size: 1.0rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -578,7 +588,7 @@ body {
 
 .stat-section-subtitle {
   text-align: center;
-  font-size: 1.05rem;
+  font-size: 1.35rem;
   font-weight: 500;
   color: var(--md-on-surface-variant);
   letter-spacing: 0.02em;
@@ -587,14 +597,31 @@ body {
 }
 
 .stat-card {
-  border-radius: 16px;
-  padding: 20px 16px;
+  border-radius: 20px;
+  padding: 40px 40px;
+  margin-bottom: 0px;
   color: white;
-  min-height: 130px;
-  margin-bottom: 12px;
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
+  aspect-ratio: 3/2;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: -25px;
+  right: -25px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.10);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.stat-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .stat-top {
@@ -603,33 +630,26 @@ body {
   gap: 4px;
   flex-wrap: wrap;
   line-height: 1;
-  margin-bottom: 8px;
+  margin-bottom: 0px;
 }
 
 .stat-big {
-  font-size: 3rem;
-  font-weight: 700;
-  line-height: 1;
-  color: white;
-}
-
-.stat-medium {
-  font-size: 1.6rem;
+  font-size: 4rem;
   font-weight: 700;
   line-height: 1;
   color: white;
 }
 
 .stat-context {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 400;
   color: white;
-  align-self: center;
+  align-self: bottom;
 }
 
 .stat-desc {
-  font-size: 0.82rem;
+  font-size: 0.94rem;
   margin: 0;
   color: white;
-  line-height: 1.4;
+  line-height: 2.0;
 }
