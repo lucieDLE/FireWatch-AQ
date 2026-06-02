@@ -3,11 +3,14 @@ import sys
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT_DIR))
 
+import os
 import json
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
 from shapely.ops import unary_union
+
+os.environ.setdefault('PROJ_NETWORK', 'OFF')
 
 from src.config import (
     POLLUTANT_STANDARD_NAMES, POLLUTATANT_SAMPLE_DURATION,
@@ -51,7 +54,7 @@ def create_fire_gdf_stats(df):
     df_frp_max = df.groupby('acq_date').max('frp').reset_index()[['acq_date', 'frp']]
     df_frp_max = df_frp_max.rename(columns={'frp': 'max_frp'})
 
-    geoms = df.groupby('acq_date').apply(compute_cluster_geometry).rename('geometry').reset_index()
+    geoms = df.groupby('acq_date').apply(compute_cluster_geometry, include_groups=False).rename('geometry').reset_index()
 
     gdf = gpd.GeoDataFrame(geoms, geometry='geometry', crs='EPSG:4326')
     gdf_proj = gdf.to_crs('EPSG:3310')
