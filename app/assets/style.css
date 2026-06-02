@@ -602,7 +602,7 @@ body {
   margin-bottom: 0px;
   color: white;
   justify-content: space-between;
-  aspect-ratio: 3/2;
+  /* aspect-ratio: 3/2; */
   position: relative;
   overflow: hidden;
 }
