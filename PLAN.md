@@ -47,19 +47,8 @@ firewatch-aq/
 
 ---
 
-## Phase 3 — Air Quality Reports
-
-### Idea: charts take parameter as input
-
-- Pollutant dropdown to switch the trend chart
-- Fire layer toggle (show/hide hotspots)
----
-
 
 ### Step 15: Documentation & Deployment
-
-- README with full setup guide
-- `requirements.txt`
 - Screenshots and demo GIF for portfolio/sharing
 
 ---
@@ -82,7 +71,7 @@ firewatch-aq/
 ## Development Plan
 
 ```
-Step 1              [ ]Environment setup, install Dash + Plotly
+Step 1              [x]Environment setup, install Dash + Plotly
 Step 2              [x] Download and clean data
 Step 3              [x] Explore data in notebooks
 Step 4              [x] Fire hotspot map in Plotly (notebook)
@@ -90,11 +79,11 @@ Step 5              [x] Add AQ stations to the map (notebook)
 Step 7              [x] Pollutant bar chart function (notebook)
 Step 8              [x] Time series trend chart (notebook)
 Step 9              [x] AQI (notebook)
-Step 10             [ ] Assemble Dash app shell (Here)
-Step 11             [ ] Wire up map click / report callback
-Step 12             [ ] Add controls (date slider, dropdowns)
+Step 10             [x] Assemble Dash app shell
+Step 11             [x] Wire up map click / report callback
+Step 12             [x] Add controls (date slider, dropdowns)
 Step 6 (optional)   [ ] Distance rings + wind overlay
-Step 13             [ ] Dark theme + CSS polish
+Step 13             [x] Dark theme + CSS polish
 Step 14             [ ] Metric cards + summary bar
 Step 15             [ ] Docs + deploy
 ```
