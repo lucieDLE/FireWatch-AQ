@@ -538,7 +538,7 @@ def build_layout():
                                                     dbc.Col([
                                                         html.Div(
                                                             dbc.Card([
-                                                                dbc.CardHeader("TAB DESCRIPTION"),
+                                                                dbc.CardHeader("Overview"),
                                                                 dbc.CardBody([
                                                                     dcc.Markdown(analysis.PANEL_EVENT_OVERVIEW_PREAMBLE),
                                                                     dbc.Row([
