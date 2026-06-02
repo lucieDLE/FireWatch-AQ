@@ -42,18 +42,16 @@ pollutants.[5](https://www.who.int/publications/i/item/9789240034228)[6](https:/
 
 
 INTRO_SECTION_3_PM = """
-Inhalable particles suspended in the air, composed of complex mixtures with diverse chemical and physical characteristics.
-
-Classified by aerodynamic diameter, with PM2.5 and PM10 the most relevant for health monitoring.
-
-The smaller the particle, the deeper it penetrates the respiratory system, making size the primary determinant of health impact[5](https://www.who.int/publications/i/item/9789240034228)[7](https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants)
+* Inhalable particles suspended in the air, composed of complex mixtures with diverse chemical and physical characteristics.
+* Classified by aerodynamic diameter, with PM2.5 and PM10 the most relevant for health monitoring.
+* The smaller the particle, the deeper it penetrates the respiratory system, making size the primary determinant of health impact[5](https://www.who.int/publications/i/item/9789240034228)[7](https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants)
 """
 
 
 INTRO_SECTION_3_PM25 = """
 * Under 2.5 µm
 * Primary fire smoke tracer
-* Penetrates deep into lungs and enters bloodstream
+* Penetrates into lungs and bloodstream
 """
 
 INTRO_SECTION_3_PM10 = """
@@ -63,7 +61,7 @@ INTRO_SECTION_3_PM10 = """
 """
 
 INTRO_SECTION_3_O3 = """
-* Formed when sunlight reacts with volatile organic compounds, CO, NOx from vehicles
+* Formed when sunlight reacts with VOCs, CO, NOx from vehicles
 * Peaks in hot summers
 * No safe exposure level
 """
