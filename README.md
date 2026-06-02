@@ -1,16 +1,29 @@
 # FireWatch-AQ: Fire & Smoke Air Quality Assessment
 
-An interactive geospatial platform that examines how wildfire smoke degrades air quality, combining satellite fire detection data with ground-level air quality readings around a single wildfire event in Southern California.
+## Overview
+
+An interactive dashboard for exploring the **air quality consequences of the 2025 California wildfire season**, combining satellite fire detection data with ground-level pollutant readings across the state.
+
+**Wildfires** release massive amounts of fine particulate matter and gases into the atmosphere. Smoke can travel hundreds to thousands of miles from the ignition zone, exposing populations far outside the fire perimeter to dangerous concentrations of PM2.5, ozone, and other pollutants. The health risk persists for several days after 
 
 The project addresses two core questions:
 - **Spatial:** How far does wildfire smoke travel from the ignition zone?
 - **Temporal:** How long does it take for air quality to recover after a fire?
 
-**Target events:** Major Southern California fire sites — including Gifford, Madre, and Garnet — selected for their dense air quality monitoring network and the severity of recent fire activity.
+**Target events:** Major Southern California fires — Madre, Garnet, and Gifford — selected for their severity and the density of nearby air quality monitoring stations.
 
 ---
+## Tools
 
-## Data Sources
+| Layer | Libraries |
+|---|---|
+| Dashboard | `Dash`, `dash-bootstrap-components` |
+| Charts & maps | `Plotly` (Express, Graph Objects, Mapbox) |
+| Data wrangling | `pandas`, `geopandas` |
+| Geo utilities | `shapely` |
+
+
+## Datasets
 
 ### A. Air Quality (EPA AQS)
 
@@ -44,11 +57,11 @@ Daily records are downloaded by year and county, selecting all California monito
 
 ### B. Fire Detections (NASA FIRMS / VIIRS)
 
+#### B.1 Fire pixels data
 Fire detections are sourced from [NASA's FIRMS (Fire Information for Resource Management System)](https://firms.modaps.eosdis.nasa.gov/download/), using the **VIIRS instrument aboard the NOAA-20 (N20) satellite** at 375 m spatial resolution. The dataset spans approximately one year of observations from late 2024 through early 2026, with a primary focus on 2025.
 
 > Downloading requires registering your email on the [FIRMS download portal](https://firms.modaps.eosdis.nasa.gov/download/). A full description of all data columns is available in the [FIRMS Active Fire Data Attributes reference](https://www.earthdata.nasa.gov/data/tools/firms/active-fire-data-attributes-modis-viirs).
 
-#### Derived Columns
 
 Two fields are computed prior to analysis:
 
@@ -73,3 +86,37 @@ The raw dataset is filtered through the following steps in order:
 2. **Fire type filter** — retain vegetation fires only (`type == 0`).
 3. **Thermal contrast filter** — retain only detections where `isFire == 1`, removing false positives that passed the confidence and type filters but lack sufficient thermal anomaly.
 4. **FRP filter** — retain only detections with `frp >= 5 MW`. The FRP distribution is heavily right-skewed with a large concentration of detections below 5 MW, which correspond to marginal or near-noise fire signals.
+
+
+#### B.2 Fire Perimeters — WFIGS
+
+Pre-computed fire perimeters from [NIFC WFIGS](https://data-nifc.opendata.arcgis.com/datasets/nifc::wfigs-interagency-fire-perimeters/about). Download as GeoJSON and place in `data/raw/WFIGS_Interagency_Perimeters_*.geojson`.
+
+
+
+
+## Requirements
+
+The app uses a conda environment where all the librairies are installed. To create the environment, run the following commands:
+```
+conda env create -f environment.yml
+conda activate firewatch-aq
+```
+
+## Running the Dashboard
+
+```bash
+cd app
+python app.py
+```
+
+The dashboard runs at `http://localhost:8050`.
+
+
+
+## References
+
+- U.S. EPA. Air Quality Index (AQI) Basics. https://www.airnow.gov/aqi/aqi-basics/
+- NASA FIRMS. Active Fire Data Attributes — MODIS/VIIRS. https://www.earthdata.nasa.gov/data/tools/firms/active-fire-data-attributes-modis-viirs
+- WHO. Global Air Quality Guidelines (2021). https://www.who.int/publications/i/item/9789240034228
+- California Department of Forestry and Fire Protection. Top 20 Most Destructive California Wildfires. https://www.fire.ca.gov/
