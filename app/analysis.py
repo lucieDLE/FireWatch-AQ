@@ -3,20 +3,23 @@
 # ============================================================================
 INTRO_SECTION_1_HOOK_1 = """ 
 **California's wildfire season is lengthening.**
+
 Historically, the fire season occurs between May and October, however recent data show the
 season starting sooner and ending later each year.[1](https://wfca.com/wildfire-articles/california-fire-season-in-depth-guide/)
 """
 
 INTRO_SECTION_1_HOOK_2 ="""
 **The scale of destruction is accelerating.**
-According to the California Department of Forestry and Fire Protection reports, 14 of the 20
-most destructive wildfires in California history occurred in the last decade alone.[2](https://www.fire.ca.gov/-/media/calfire-website/our-impact/fire-statistics/top-20-destructive-ca-wildfires.pdf)
+
+According to the California Department of Forestry and Fire Protection, 14 of the 20
+most destructive wildfires occurred in the last decade.[2](https://www.fire.ca.gov/-/media/calfire-website/our-impact/fire-statistics/top-20-destructive-ca-wildfires.pdf)
 """
 
 INTRO_SECTION_1_HOOK_3 = """
 **The consequences extend far beyond the fire perimeter.**
-Smoke can travel hundreds to thousands of miles, and according to the EPA, the health risk from
-wildfire smoke persists for several days after the heaviest smoke events subside.[3](https://www.epa.gov/air-research/wildland-fire-research-human-health)
+
+Smoke can travel hundreds to thousands of miles, and the health risk from
+wildfire smoke can persists for several days after a fire event.[3](https://www.epa.gov/air-research/wildland-fire-research-human-health)
 """
 INTRO_DASHBOARD_PRESENTATION = """This dashboard examines the air quality consequences of the 2025
 California fire season, tracing the link between fire activity and pollutant exposure across the state.
@@ -43,8 +46,8 @@ pollutants.[5](https://www.who.int/publications/i/item/9789240034228)[6](https:/
 
 INTRO_SECTION_3_PM = """
 * Inhalable particles suspended in the air, composed of complex mixtures with diverse chemical and physical characteristics.
-* Classified by aerodynamic diameter, with PM2.5 and PM10 the most relevant for health monitoring.
-* The smaller the particle, the deeper it penetrates the respiratory system, making size the primary determinant of health impact[5](https://www.who.int/publications/i/item/9789240034228)[7](https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants)
+* Classified by diameter, with PM2.5 and PM10 the most relevant for health monitoring.
+* The smaller the particle, the deeper it penetrates the respiratory system[5](https://www.who.int/publications/i/item/9789240034228)[7](https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants)
 """
 
 
@@ -67,18 +70,20 @@ INTRO_SECTION_3_O3 = """
 """
 
 INTRO_SECTION_3_NO2 = """
-* Produced by high-temperature combustion (heating, transport, industry)
+* Produced by high-temperature combustion
 * Important ozone precursor
 * Amplifies smog formation
 """
 
 INTRO_SECTION_3_CO = """
-* From incomplete combustion of fuels
-* Predominant ambient source is motor vehicles
+* Incomplete combustion of fuels
+* Predominant source is motor vehicles
+* Reduces oxygen delivery
 """
 
 INTRO_SECTION_3_SO2 = """
-* Released from burning fuels (heating, industry, power generation)
+* Released from burning fuels
+* Creates P2.5 if chemical reaction
 * Irritates airways
 """
 
@@ -96,21 +101,22 @@ Three structural factors drive it:
 ]
 INTRO_SECTION_5_FACTOR_1 = """
 **Transportation**
-* California's large population generate substantial vehicle emissions. 
-* It is known that vehicles powered wby fossil fuels contributes significantly to pollution.
-* The state has responded with the most aggressive zero-emission vehicle policy in the US, but the transition is ongoing.
+* Large population generate vehicle emissions
+* Vehicles powered by fossil fuels contributes significantly to pollution
+* Has responded with zero-emission vehicle policy
 """
 
 INTRO_SECTION_5_FACTOR_2 = """
 **Climate**
-* A warm, dry climate with low annual rainfall creates ideal conditions for both wildfire ignition and ozone formation. T
-* The Central Valley experiences extremely hot, dry summers with intensifying drought, extending the fire season and amplifying heat-driven ozone peaks. 
-* Wildfire activity has increased sharply as conditions become hotter and drier.
+* Warm, dry climate with low rainfall 
+* Perfect conditions for wildfire ignition and ozone formation
+* Wildfire activity has increased sharply
 """
 INTRO_SECTION_5_FACTOR_3 = """
 **Geography**
-* Many of California's largest cities sit in basins enclosed by mountain ranges (Los Angeles, San Diego, Fresno). Mountains trap air pollution .
-* The surrounding mountains block horizontal wind dispersal, preventing the warm polluted air from rising and escaping.
+* Many large cities sit in basins enclosed by mountains
+* Mountains block horizontal wind dispersal
+* Prevents the warm polluted air from rising and escaping
 """
 
 # ============================================================================
@@ -134,7 +140,7 @@ infrastructure to track and improve its air quality.
 ]
 
 
-PANEL_AIR_CARD_MONITORS_2 = [ """Ozone and PM 2.5 are the two most monitored pollutant""", 
+PANEL_AIR_CARD_MONITORS_2 = [ """Ozone and PM2.5 are the most monitored pollutant""", 
 """
 They are known to be the deadliest and most widespread air pollutants in the US, driving the majority
 of pollution-attributable disease and premature mortality[[2]
