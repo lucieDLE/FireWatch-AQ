@@ -85,6 +85,30 @@ def introTextCard(title, text):
     ], className="intro-card"))
 
 
+def pollutantCard(symbol_children, source_icon, source_text, source_bg, title, desc, risk_level, risk_pct, color):
+    return html.Div([
+        html.Div([
+            html.Div(symbol_children, className="poll-symbol", style={"color": color}),
+            html.Div([
+                html.I(className=f"fa {source_icon}", style={"marginRight": "5px"}),
+                html.Span(source_text),
+            ], className="poll-source-badge", style={"backgroundColor": source_bg}),
+        ], className="poll-card-top"),
+        html.P(html.Strong(title), className="poll-title"),
+        dcc.Markdown(desc, className="poll-desc"),
+        html.Div([
+            html.Div([
+                html.Span("Health risk", className="poll-risk-label"),
+                html.Span(risk_level, className="poll-risk-value", style={"color": color}),
+            ], className="poll-risk-row"),
+            html.Div(
+                html.Div(style={"width": f"{risk_pct}%", "height": "3px", "backgroundColor": color, "borderRadius": "2px"}),
+                className="poll-risk-bar-bg"
+            ),
+        ], className="poll-risk-section"),
+    ], className="poll-card")
+
+
 def statCard(stat_children, desc, bg_color):
     return html.Div([
         html.Div(stat_children, className="stat-top"),
@@ -243,20 +267,77 @@ def build_layout():
 
 
                                                 # ── Section 4: NAAQS / WHO table ──────────────────
-                                                dbc.Row([dbc.Col(sectionTitle("Pollutants Thresholds and Guidelines", align='right'))]),
+                                                dbc.Row([dbc.Col(sectionTitle("Legal Thresholds and WHO Guidelines", align='left'))]),
                                                 dbc.Row([
-                                                    dbc.Col(introBodyCard(analysis.INTRO_SECTION_3_PM), width=4),
+                                                    # dbc.Col(introBodyCard(analysis.INTRO_SECTION_3_PM), width=4),
                                                     dbc.Col(naaqs_table(), width=8),
                                                 ]),
-                                                dbc.Row([
-                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_3_PM25[0], analysis.INTRO_SECTION_3_PM25[1]), width=4),
-                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_3_PM10[0], analysis.INTRO_SECTION_3_PM10[1]), width=4),
-                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_3_O3[0],   analysis.INTRO_SECTION_3_O3[1]),   width=4),
-                                                ]),
-                                                dbc.Row([
-                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_3_NO2[0], analysis.INTRO_SECTION_3_NO2[1]), width=4),
-                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_3_SO2[0], analysis.INTRO_SECTION_3_SO2[1]), width=4),
-                                                    dbc.Col(introTextCard(analysis.INTRO_SECTION_3_CO[0],  analysis.INTRO_SECTION_3_CO[1]),  width=4),
+                                                dbc.Row([dbc.Col(sectionTitle("Pollutants Covered in This Dashboard", align='left'))]),
+                                                dbc.Row(className="justify-content-center", style={"gap": "3rem"}, children=[
+                                                    # ── Particulate Matter panel ───────────────────
+                                                    dbc.Col(html.Div([
+                                                        html.Div("PARTICULATE MATTER", className="poll-group-label"),
+                                                        dbc.Row([
+                                                            dbc.Col(pollutantCard(
+                                                                symbol_children=[html.Span("PM", className="poll-sym-text") ],
+                                                                source_icon="fa-fire", source_text="various sources", source_bg="rgba(220,50,50,0.1)",
+                                                                title="Particulate Matter",
+                                                                desc=analysis.INTRO_SECTION_3_PM,
+                                                                risk_level="Very high", risk_pct=90, color="#5B5BD6"
+                                                            ),width=12),
+
+                                                            dbc.Col(pollutantCard(
+                                                                symbol_children=[html.Span("PM", className="poll-sym-text"), html.Sub("2.5", className="poll-sym-sub")],
+                                                                source_icon="fa-fire", source_text="Wildfires · combustion", source_bg="rgba(220,50,50,0.1)",
+                                                                title="Fine particles",
+                                                                desc=analysis.INTRO_SECTION_3_PM25,
+                                                                risk_level="Very high", risk_pct=90, color="#5B5BD6"
+                                                            ),width=6),
+                                                            dbc.Col(pollutantCard(
+                                                                symbol_children=[html.Span("PM", className="poll-sym-text"), html.Sub("10", className="poll-sym-sub")],
+                                                                source_icon="fa-road", source_text="Dust · construction", source_bg="rgba(180,140,80,0.1)",
+                                                                title="Coarse particles",
+                                                                desc=analysis.INTRO_SECTION_3_PM10,
+                                                                risk_level="Moderate", risk_pct=50, color="#8B7355"
+                                                            ),width=6),
+                                                        ])
+                                                    ], className="poll-group-wrapper"), width=5),
+                                                    # ── Gaseous Pollutants panel ───────────────────
+                                                    dbc.Col(html.Div([
+                                                        html.Div("GASEOUS POLLUTANTS", className="poll-group-label"),
+                                                        dbc.Row([
+                                                            dbc.Col(pollutantCard(
+                                                                symbol_children=[html.Span("O", className="poll-sym-text"), html.Sub("3", className="poll-sym-sub")],
+                                                                source_icon="fa-sun", source_text="Sunlight · smog", source_bg="rgba(220,50,50,0.1)",
+                                                                title="Ground-level ozone",
+                                                                desc=analysis.INTRO_SECTION_3_O3,
+                                                                risk_level="Very high", risk_pct=90, color="#9B1C1C"
+                                                            ), width=6),
+                                                            dbc.Col(pollutantCard(
+                                                                symbol_children=[html.Span("NO", className="poll-sym-text"), html.Sub("2", className="poll-sym-sub")],
+                                                                source_icon="fa-bus", source_text="Transport · industry", source_bg="rgba(30,58,138,0.1)",
+                                                                title="Nitrogen dioxide",
+                                                                desc=analysis.INTRO_SECTION_3_NO2,
+                                                                risk_level="High", risk_pct=70, color="#1E3A8A"
+                                                            ), width=6),
+                                                        ], className="mb-2"),
+                                                        dbc.Row([
+                                                            dbc.Col(pollutantCard(
+                                                                symbol_children=[html.Span("CO", className="poll-sym-text")],
+                                                                source_icon="fa-car", source_text="Motor vehicles", source_bg="rgba(55,65,81,0.1)",
+                                                                title="Carbon monoxide",
+                                                                desc=analysis.INTRO_SECTION_3_CO,
+                                                                risk_level="Moderate", risk_pct=50, color="#374151"
+                                                            ), width=6),
+                                                            dbc.Col(pollutantCard(
+                                                                symbol_children=[html.Span("SO", className="poll-sym-text"), html.Sub("2", className="poll-sym-sub")],
+                                                                source_icon="fa-industry", source_text="Power · industry", source_bg="rgba(6,95,70,0.1)",
+                                                                title="Sulfur dioxide",
+                                                                desc=analysis.INTRO_SECTION_3_SO2,
+                                                                risk_level="Moderate", risk_pct=50, color="#065F46"
+                                                            ), width=6),
+                                                        ]),
+                                                    ], className="poll-group-wrapper"), width=5),
                                                 ]),
 
 

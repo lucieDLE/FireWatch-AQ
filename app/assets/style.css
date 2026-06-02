@@ -466,6 +466,116 @@ body {
    Stat cards (Why California section)
    ============================================================ */
 
+/* ============================================================
+   Pollutant cards (Section 3 — Pollutants)
+   ============================================================ */
+
+.poll-group-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--md-on-surface-variant);
+  margin-bottom: 14px;
+}
+
+.poll-card {
+  background-color: var(--bg-card-body);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+
+.poll-pm-intro-card {
+  background-color: var(--md-surface-container);
+}
+
+.poll-pm-intro {
+  font-size: 0.88rem;
+  color: var(--md-on-surface-variant);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.poll-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.poll-symbol {
+  display: flex;
+  align-items: baseline;
+  gap: 1px;
+  line-height: 1;
+}
+
+.poll-sym-text {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.poll-sym-sub {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.poll-source-badge {
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--md-on-surface-variant);
+  border-radius: 20px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+.poll-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.poll-desc {
+  font-size: 0.83rem;
+  color: var(--md-on-surface-variant);
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.poll-risk-section {
+  margin-top: auto;
+}
+
+.poll-risk-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.poll-risk-label {
+  font-size: 0.75rem;
+  color: var(--md-on-surface-variant);
+}
+
+.poll-risk-value {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.poll-risk-bar-bg {
+  background-color: var(--md-surface-container-high);
+  height: 3px;
+  border-radius: 2px;
+  width: 100%;
+}
+
 .stat-section-subtitle {
   text-align: center;
   font-size: 1.05rem;
