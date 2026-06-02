@@ -210,7 +210,7 @@ body {
 }
 
 .tab-content {
-  padding: 16px 200px;
+  padding: 16px 150px;
   background-color: var(--bg-page);
 }
 
@@ -364,6 +364,57 @@ body {
   max-width: 100%;
 }
 
+/* ── Hero block ── */
+.hero-block {
+  border-left: 4px solid var(--accent);
+  padding: 28px 0 28px 28px;
+  margin-bottom: 48px;
+}
+
+.hero-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.hero-title {
+  font-size: 3.6rem;
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.hero-stats {
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--text-main);
+  margin-bottom: 20px;
+}
+
+.hero-stat {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.hero-divider {
+  border-color: var(--border-color);
+  margin: 20px 0;
+  opacity: 1;
+}
+
+.hero-desc {
+  font-size: 1.15rem;
+  color: var(--text-main);
+  max-width: 780px;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
 .intro-presentation {
   text-align: left;
   font-size: 1.25rem;
@@ -407,7 +458,7 @@ body {
   border: 0px solid var(--border-color) !important;
   border-radius: 0px;
   overflow: hidden;
-  margin-bottom: 0rem;
+  margin-bottom: 1rem;
 
 }
 
@@ -431,6 +482,7 @@ body {
   position: relative;
   padding-top: 52px;
   margin-bottom: 16px;
+  overflow: visible;
 }
 
 .hook-badge {
@@ -438,8 +490,8 @@ body {
   top: 0;
   left: 25%;
   transform: translateX(-50%);
-  background-color: var(--md-secondary-container);
-  color: var(--md-on-secondary-container);
+  background-color: var(--accent);
+  color: var(--md-on-secondary);
   border-radius: 16px;
   padding: 18px 18px;
   text-align: center;
@@ -502,7 +554,7 @@ body {
 }
 
 .poll-pm-intro {
-  font-size: 0.88rem;
+  font-size: 0.80rem;
   color: var(--md-on-surface-variant);
   margin: 0;
   line-height: 1.5;
@@ -523,20 +575,20 @@ body {
 }
 
 .poll-sym-text {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1;
 }
 
 .poll-sym-sub {
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 600;
 }
 
 .poll-source-badge {
   display: flex;
   align-items: center;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 500;
   color: var(--md-on-surface-variant);
   border-radius: 20px;
@@ -552,7 +604,7 @@ body {
 }
 
 .poll-desc {
-  font-size: 0.83rem;
+  font-size: 0.80rem;
   color: var(--md-on-surface-variant);
   line-height: 1.45;
   margin-bottom: 12px;
@@ -598,13 +650,16 @@ body {
 
 .stat-card {
   border-radius: 20px;
-  padding: 40px 40px;
-  margin-bottom: 0px;
+  padding: 30px 20px;
+  margin-bottom: 4px;
   color: white;
   justify-content: space-between;
-  /* aspect-ratio: 3/2; */
   position: relative;
   overflow: hidden;
+  width: 100%;  /* override the hardcoded 200px */
+  aspect-ratio: 5/3;
+  min-height: unset; /* remove any existing min-height */
+
 }
 .stat-card::before {
   content: '';
@@ -634,7 +689,7 @@ body {
 }
 
 .stat-big {
-  font-size: 4rem;
+  font-size: 2.5rem;
   font-weight: 700;
   line-height: 1;
   color: white;
@@ -648,8 +703,12 @@ body {
 }
 
 .stat-desc {
-  font-size: 0.94rem;
+  font-size: 0.7rem;
   margin: 0;
   color: white;
-  line-height: 2.0;
+  line-height: 1.6;
+}
+
+ol, ul {
+  padding-left: 1rem;
 }
