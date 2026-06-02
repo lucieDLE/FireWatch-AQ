@@ -240,16 +240,21 @@ def build_layout():
                                         dcc.Tab(
                                             label='Introduction',
                                             children=[
-                                                # ── Dashboard presentation ─────────────────────────
-                                                dbc.Row([
-                                                    dbc.Col(
-                                                        html.Div(
-                                                            dcc.Markdown(analysis.INTRO_DASHBOARD_PRESENTATION),
-                                                            className="intro-presentation"
-                                                        ),
-                                                        width=12
-                                                    ),
-                                                ]),
+
+                                                # ── Hero ───────────────────────────────────────────
+                                                html.Div([
+                                                    html.Div("2025 FIRE SEASON", className="hero-eyebrow"),
+                                                    html.H1("California.", className="hero-title"),
+                                                    html.P([
+                                                        html.Span("8,036", className="hero-stat"), " fires.  ",
+                                                        html.Span("525,223", className="hero-stat"), " acres burned.",
+                                                    ], className="hero-stats"),
+                                                    html.Hr(className="hero-divider"),
+                                                    html.P([
+                                                        html.Em("This dashboard examines the air quality consequences of the 2025 California fire season: "),
+                                                        html.Strong("tracing the link between fire activity and pollutant exposure across the state."),
+                                                    ], className="hero-desc"),
+                                                ], className="hero-block"),
 
                                                 # ── Section 1: Three hooks ─────────────────────────
                                                 dbc.Row([
