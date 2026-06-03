@@ -12,6 +12,11 @@ The project addresses two core questions:
 
 **Target events:** Major Southern California fires — Madre, Garnet, and Gifford — selected for their severity and the density of nearby air quality monitoring stations.
 
+<br><br>
+
+### Example of the Fire Perimeter and Air quality Evolution during Garnet
+<video src="assets/animation_fire.mp4" controls width="80%"></video>
+
 ---
 ## Tools
 
