@@ -1,3 +1,4 @@
+
 # FireWatch-AQ: Fire & Smoke Air Quality Assessment
 
 ## Overview
@@ -15,7 +16,7 @@ The project addresses two core questions:
 <br><br>
 
 ### Example of the Fire Perimeter and Air quality Evolution during Garnet
-<video src="assets/animation_fire.mp4" controls width="80%"></video>
+<video src="https://github.com/user-attachments/assets/e16b551f-08c4-4a16-934d-74ec791afc4f" controls width="80%"></video>
 
 ---
 ## Tools
