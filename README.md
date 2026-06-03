@@ -11,12 +11,12 @@ The project addresses two core questions:
 - **Spatial:** How far does wildfire smoke travel from the ignition zone?
 - **Temporal:** How long does it take for air quality to recover after a fire?
 
-**Target events:** Major Southern California fires — Madre, Garnet, and Gifford — selected for their severity and the density of nearby air quality monitoring stations.
+**Target events:** Major Southern California fires: Madre, Garnet, Palisades...
 
 <br><br>
 
 ### Example of the Fire Perimeter and Air quality Evolution during Garnet
-<video src="https://github.com/user-attachments/assets/e16b551f-08c4-4a16-934d-74ec791afc4f" controls width="100%"></video>
+<video src="https://github.com/user-attachments/assets/e16b551f-08c4-4a16-934d-74ec791afc4f"></video>
 
 ---
 ## Tools
@@ -110,10 +110,9 @@ conda activate firewatch-aq
 ```
 
 ## Running the Dashboard
-
+All preprocessed files are provided and the app can be run directly with the following:
 ```bash
-cd app
-python app.py
+python app/app.py
 ```
 
 The dashboard runs at `http://localhost:8050`.
