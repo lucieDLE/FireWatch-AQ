@@ -1,41 +1,6 @@
 # FireWatch-AQ
 
-## Tech Stack
-
-| Role | Tool | 
-|------|------|
-| Dashboard framework | **Dash** |
-| Maps | **Plotly Mapbox**  |
-| Charts | **Plotly**  |
-| Data wrangling | **pandas, geopandas** |
-| API calls | **requests** |
-| Geo utilities | **shapely** (distance rings, fire perimeter) |
-| Styling | **CSS** (Dash supports custom stylesheets) |
-
-
-## Phase 1 — Setup & Data Ingestion
-*Notebooks: data exploration and API testing*
-
-### Step 1: Environment & Project Structure (TODO)
-
-```
-firewatch-aq/
-├── notebooks/
-├── data/
-├── src/
-│   ├── data_processing.py
-│   ├── figures.py
-│   └── config.py
-├── app/
-│   ├── app.py
-│   ├── layout.py
-│   ├── callbacks.py
-│   └── assets/
-│       └── style.css
-├── .env
-├── requirements.txt
-└── README.md
-```
+]
 
 ## Phase 2 — Fire Map & Station Visualization
 
