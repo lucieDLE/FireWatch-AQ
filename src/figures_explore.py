@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT_DIR))
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from src.display import green_colors, red_colors, line_greens, line_reds, FIRE_CAT_NAMES
+from display import green_colors, red_colors, line_greens, line_reds, FIRE_CAT_NAMES
 
 
 def make_fire_category_repartition(df, df_cleaned):
