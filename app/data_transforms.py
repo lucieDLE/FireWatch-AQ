@@ -13,7 +13,7 @@ from shapely.ops import unary_union
 os.environ.setdefault('PROJ_NETWORK', 'OFF')
 
 from src.config import (
-    POLLUTANT_STANDARD_NAMES, POLLUTATANT_SAMPLE_DURATION,
+    POLLUTANT_STANDARD_NAMES, POLLUTANT_SAMPLE_DURATION,
     EVENT_START, EVENT_END, FIRE_LAT, FIRE_LON, SELECTED_DAY,
 )
 from src.display import WATCH_SITES, FIRE_WATCH_SITES
@@ -71,7 +71,7 @@ def create_fire_gdf_stats(df):
 
 df_aqr_annual = df_aqr_annual.loc[
     (df_aqr_annual['Pollutant Standard'].isin(POLLUTANT_STANDARD_NAMES)) &
-    (df_aqr_annual['Sample Duration'].isin(POLLUTATANT_SAMPLE_DURATION))
+    (df_aqr_annual['Sample Duration'].isin(POLLUTANT_SAMPLE_DURATION))
 ]
 df_aqr_annual = df_aqr_annual.loc[df_aqr_annual['State Name'] != 'Country Of Mexico']
 
