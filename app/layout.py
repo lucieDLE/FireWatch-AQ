@@ -1,8 +1,5 @@
-from pathlib import Path
-import sys
+import path_setup  # noqa: F401
 import re
-ROOT_DIR = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT_DIR))
 
 import dash
 from dash import html, dcc

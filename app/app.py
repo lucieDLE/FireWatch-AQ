@@ -1,8 +1,7 @@
+import path_setup  # noqa: F401
 from pathlib import Path
-import sys
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT_DIR))
 
 import dash_bootstrap_components as dbc
 from dash import Dash
