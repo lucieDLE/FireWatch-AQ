@@ -7,6 +7,9 @@ AREA_LAT = (32.0, 43.0)
 SELECTED_DAY = '2025-09-08'
 
 
+CA_COUNTIES_GEOJSON_URL  = 'https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/california-counties.geojson'
+CA_COUNTIES_GEOJSON_PATH = ROOT / 'data/raw/california-counties.geojson'
+
 # Raw data
 FIRE_RAW_PATH = ROOT / 'data/raw/fire_archive_J1V-C2_749152.csv'
 FIRE_PERIMETER = ROOT / 'data/raw/WFIGS_Interagency_Perimeters_-8730464049412665158.geojson'
