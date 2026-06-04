@@ -48,7 +48,7 @@ def change_theme(value):
 def update_figure_theme(dark_mode):
     # Tab 1
     fig_pollutant_dist = make_pollutant_distribution(df_aqr_annual)
-    fig_us_map         = make_aq_us_plot(df_county_aqr_annual, list_best=['WA', 'ID', 'MS'], list_worst=['CA', 'TX', 'AZ'])
+    fig_us_map         = make_aq_us_plot(df_county_aqr_annual, list_best=list_best_codes, list_worst=list_worst_codes)
     fig_boxplot        = compute_max_boxplot(df_annual_stats, state_list)
     # Tab 2
     fig_counties       = make_cloropleth_fire_counties(df_fire, ca_geojson)

@@ -15,7 +15,7 @@ os.environ.setdefault('PROJ_NETWORK', 'OFF')
 from src.config import (
     POLLUTANT_STANDARD_NAMES, POLLUTANT_SAMPLE_DURATION,
 )
-from src.display import WATCH_SITES, FIRE_WATCH_SITES
+from src.display import WATCH_SITES, FIRE_WATCH_SITES, STATE_NAME_TO_CODE
 from data_loaders import df_aqi, df_fire, df_aqr_annual, ca_geojson
 
 import numpy as np
@@ -114,6 +114,9 @@ df_worst_states = df_state_aqr_annual.sort_values(
 )[:3]['state_name']
 
 state_list = df_cleanest_states.to_list() + df_worst_states.to_list()
+
+list_best_codes  = [STATE_NAME_TO_CODE[s] for s in df_cleanest_states if s in STATE_NAME_TO_CODE]
+list_worst_codes = [STATE_NAME_TO_CODE[s] for s in df_worst_states  if s in STATE_NAME_TO_CODE]
 
 df_annual_stats = df_aqr_annual[[
     '1st Max Value', '2nd Max Value', '3rd Max Value', '4th Max Value',
