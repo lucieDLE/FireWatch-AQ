@@ -5,6 +5,7 @@ sys.path.insert(0, str(ROOT_DIR))
 
 import numpy as np
 import plotly.graph_objects as go
+import pandas as pd
 
 from src.config import CENTER_LAT, CENTER_LON, FIRE_LAT, FIRE_LON
 
@@ -146,7 +147,6 @@ def make_aq_time_series(df, sites, site_name, colors, legend_entrywidth=0.33):
 
 
 def make_burning_area_plot(gdf, event_start=None, event_end=None):
-    import pandas as pd
     plot_df = gdf[['acq_date', 'area_km2', 'perimeter_km']].copy()
 
     if event_end:

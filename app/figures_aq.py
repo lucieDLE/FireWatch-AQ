@@ -9,6 +9,7 @@ from plotly.subplots import make_subplots
 
 from src.config import POLLUTANT_THRESHOLDS
 from src.display import green_colors, red_colors, line_greens, line_reds
+import numpy as np
 
 
 def make_pollutant_distribution(df):
@@ -161,7 +162,6 @@ def compute_max_boxplot(df_stats, states_list):
                 (df_stats['Parameter Name'] == pollutant)
             ]
             df_maxes = df_ca_pm[['1st Max Value', '2nd Max Value', '3rd Max Value', '4th Max Value']]
-            import numpy as np
             np_maxes = df_maxes.to_numpy().reshape(-1)
 
             if len(np_maxes) > 5:
