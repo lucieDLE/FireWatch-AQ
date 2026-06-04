@@ -14,7 +14,6 @@ os.environ.setdefault('PROJ_NETWORK', 'OFF')
 
 from src.config import (
     POLLUTANT_STANDARD_NAMES, POLLUTANT_SAMPLE_DURATION,
-    EVENT_START, EVENT_END, FIRE_LAT, FIRE_LON, SELECTED_DAY,
 )
 from src.display import WATCH_SITES, FIRE_WATCH_SITES
 from data_loaders import df_aqi, df_fire, df_aqr_annual, ca_geojson
