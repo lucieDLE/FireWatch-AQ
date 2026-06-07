@@ -427,6 +427,36 @@ FIRE_EVENT_PANEL_MAP = {
 }
 
 
+
+
+# ============================================================================
+#  Panel 5: BEHIND THE DATA (methodology / data cleaning)
+# ============================================================================
+# Placeholder #TODO: do the analysis
+
+PANEL_EXPLORE_OVERVIEW = """_TODO: overview of the data-cleaning and AQI-methodology tab._"""
+
+# --- fire-pixel cleaning ---
+PANEL_EXPLORE_SCANTRACK = """_TODO: explain the scan/track pixel-size filter and the 0.6 threshold._"""
+PANEL_EXPLORE_ENTRIES   = """_TODO: explain the day/night, fire-type and confidence filtering decisions._"""
+PANEL_EXPLORE_CATEGORY  = """_TODO: explain FRP-based fire categories, raw vs cleaned._"""
+
+# --- rethinking the AQI ---
+PANEL_EXPLORE_EPA_CARD = """ 
+- One number: the **highest** individual pollutant AQI
+- All other pollutants are **discarded**
+"""
+PANEL_EXPLORE_EPA       = """_TODO: explain why a single-pollutant AQI understates exposure._"""
+PANEL_EXPLORE_SUMAQI    = """_TODO: explain the composite/sum AQI and exceedance accumulation._"""
+PANEL_EXPLORE_PIE       = """_TODO: explain how many pollutants each monitor measures._"""
+PANEL_EXPLORE_MISCLASS  = """_TODO: explain the misclassified-day examples below._"""
+
+
+
+# ============================================================================
+#  Sources
+# ============================================================================
+
 SOURCES_MD = """
 **[1]** California fire season guide — [wfca.com](https://wfca.com/wildfire-articles/california-fire-season-in-depth-guide/)
 
