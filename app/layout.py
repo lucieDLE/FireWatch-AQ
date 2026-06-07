@@ -5,7 +5,7 @@ import dash
 from dash import html, dcc
 import dash_bootstrap_components as dbc
 
-from src.display import COLORS_MAP
+from src.display import COLORS_MAP, red_colors, green_colors, line_greens, line_reds
 
 from data_transforms import *
 from figures_aq import make_pollutant_distribution, make_aq_us_plot, compute_max_boxplot
@@ -125,22 +125,20 @@ def statCard(stat_children, desc, bg_color):
     ], className="stat-card", style={"backgroundColor": bg_color})
 
 
-# AQI band colors (shared with aqi_table) used for pollutant badges
-_AQI_BAND_COLORS = [
-    (0,   50,  "#00E400", "#000"),
-    (51,  100, "#FFFF00", "#000"),
-    (101, 150, "#FF7E00", "#000"),
-    (151, 200, "#FF0000", "#fff"),
-    (201, 300, "#8F3F97", "#fff"),
-    (301, 500, "#7E0023", "#fff"),
+_AQI_BADGE_BANDS = [
+    (50,  green_colors[2], line_greens[5]),  # good
+    (100, red_colors[2],   line_reds[5]),    # moderate
+    (150, red_colors[3],   line_reds[5]),    # unhealthy-SG
+    (200, red_colors[4],   "var(--text)"),           # unhealthy
+    (300, red_colors[5],   "var(--text)"),           # very unhealthy
+    (500, red_colors[5],   "var(--text)"),           # hazardous
 ]
 
 
-def _aqi_badge_colors(value):
-    for lo, hi, bg, fg in _AQI_BAND_COLORS:
-        if lo <= value <= hi:
-            return bg, fg
-    return "#7E0023", "#fff"
+def aqi_badge_colors(value):
+    for hi, bg, fg in _AQI_BADGE_BANDS:
+        if value <= hi:
+            return bg.replace('0.8', '0.5'), fg
 
 
 def epaReportCard(value, category, text):
@@ -155,28 +153,52 @@ def epaReportCard(value, category, text):
     ], className="epa-report-card")
 
 
-def misclassExampleCard(example):
-    """A single misclassified-day example: site header + per-pollutant AQI badges."""
-    badges = [
-        html.Span(
-            f"{p['name']} {p['value']}",
-            className="misclass-badge",
-            style={"backgroundColor": bg, "color": fg},
-        )
-        for p in example["pollutants"]
-        for bg, fg in [_aqi_badge_colors(p["value"])]
-    ]
+def pollutant_badge(p):
+    """One poll: 'PM2.5 146', colored by AQI severity (grey if no reading)."""
+    if p["value"] is None:
+        return html.Span(f"{p['name']} —", className="misclass-badge misclass-badge-empty")
+    bg, fg = aqi_badge_colors(p["value"])
+    return html.Span(
+        f"{p['name']} {p['value']}",
+        className="misclass-badge",
+        style={"backgroundColor": bg, "color": fg},
+    )
+
+
+def misclassExampleCard(group):
+    n = group["n_days"]
+    title = f"{n} day{'s' if n != 1 else ''} misclassified as {group['epa_label']}"
+
+    site_blocks = []
+    for s in group["sites"]:
+        site_blocks.append(html.Div([
+            html.Div(f"{s['site']}, {s['county']}", className="misclass-site"),
+            *[html.Div([pollutant_badge(p) for p in day], className="misclass-badges")
+              for day in s["days"]],
+        ], className="misclass-site-block"))
+    
+    epa_bg, epa_fg = aqi_badge_colors(group['epa_value'])
+    sum_bg, sum_fg = aqi_badge_colors(group['sum_aqi_value'])
+
+
     return html.Div([
+        html.Div(title, className="misclass-title"),
         html.Div([
-            html.Span(f"EPA → {example['epa_category']} (~{example['epa_value']})",
-                      className="misclass-from"),
-            html.Span(" → ", className="misclass-arrow"),
-            html.Span(f"Composite → {example['composite_category']} (~{example['composite_value']})",
-                      className="misclass-to"),
-        ], className="misclass-headline"),
-        html.Div(f"{example['site']}, {example['county']} · {example['date']}",
-                 className="misclass-site"),
-        html.Div(badges, className="misclass-badges"),
+            html.Span(
+                f"EPA: {group['epa_label']} ({group['epa_value']})",
+                className="misclass-poll misclass-poll-epa",
+                style={"backgroundColor": epa_bg, "color": epa_fg},
+                ),
+
+            html.Span("→", className="misclass-arrow"),
+            html.Span(
+                f"sum AQI Exceedance: {group['sum_aqi_label']} ({group['sum_aqi_value']})",
+                className="misclass-poll misclass-poll-composite",
+                style={"backgroundColor": sum_bg, "color": sum_fg},
+                ),
+
+        ], className="misclass-polls"),
+        *site_blocks,
     ], className="misclass-card")
 
 
