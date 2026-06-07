@@ -11,11 +11,23 @@ from data_transforms import *
 from figures_aq import make_pollutant_distribution, make_aq_us_plot, compute_max_boxplot
 from figures_fire import make_cloropleth_fire_counties, make_bar_fire_event, make_fire_aqi_overlay
 from figures_event import make_aq_time_series, make_burning_area_plot, make_overlay_aq_fire
+from figures_explore import (
+    make_scan_track_distribution, make_fire_data_entry_analysis, make_fire_category_repartition,
+    make_barplot_sum_aqi, make_pollutant_number_pie_chart, make_wrong_guidance_plot,
+)
 import analysis
 
 annual_pollutant_distribution = make_pollutant_distribution(df_aqr_annual)
 pollutant_exceedances_us_map = make_aq_us_plot(df_county_aqr_annual, list_best=list_best_codes, list_worst=list_worst_codes)
 pollutant_distribution_us_barplot = compute_max_boxplot(df_annual_stats, state_list)
+
+# Behind the Data tab — fire-pixel cleaning + AQI methodology figures
+explore_scan_track   = make_scan_track_distribution(df_fire_raw)
+explore_data_entries = make_fire_data_entry_analysis(df_fire_raw)
+explore_category     = make_fire_category_repartition(df_fire_raw, df_fire)
+explore_sum_aqi      = make_barplot_sum_aqi(df_aqi)
+explore_pie          = make_pollutant_number_pie_chart(df_aqi)
+explore_wrong_guide  = make_wrong_guidance_plot(df_aqi)
 
 top_counties = make_cloropleth_fire_counties(df_fire, ca_geojson)
 top_fires = make_bar_fire_event(df_biggest_fire)
@@ -111,6 +123,61 @@ def statCard(stat_children, desc, bg_color):
         html.Div(stat_children, className="stat-top"),
         html.P(desc, className="stat-desc"),
     ], className="stat-card", style={"backgroundColor": bg_color})
+
+
+# AQI band colors (shared with aqi_table) used for pollutant badges
+_AQI_BAND_COLORS = [
+    (0,   50,  "#00E400", "#000"),
+    (51,  100, "#FFFF00", "#000"),
+    (101, 150, "#FF7E00", "#000"),
+    (151, 200, "#FF0000", "#fff"),
+    (201, 300, "#8F3F97", "#fff"),
+    (301, 500, "#7E0023", "#fff"),
+]
+
+
+def _aqi_badge_colors(value):
+    for lo, hi, bg, fg in _AQI_BAND_COLORS:
+        if lo <= value <= hi:
+            return bg, fg
+    return "#7E0023", "#fff"
+
+
+def epaReportCard(value, category, text):
+    """Orange highlight card: 'What the EPA reports'."""
+    return html.Div([
+        html.Div(analysis.PANEL_EXPLORE_EPA_TITLE, className="epa-report-title"),
+        html.Div([
+            html.Span(str(value), className="epa-report-value"),
+            html.Span(category, className="epa-report-category"),
+        ], className="epa-report-headline"),
+        dcc.Markdown(text, className="epa-report-text"),
+    ], className="epa-report-card")
+
+
+def misclassExampleCard(example):
+    """A single misclassified-day example: site header + per-pollutant AQI badges."""
+    badges = [
+        html.Span(
+            f"{p['name']} {p['value']}",
+            className="misclass-badge",
+            style={"backgroundColor": bg, "color": fg},
+        )
+        for p in example["pollutants"]
+        for bg, fg in [_aqi_badge_colors(p["value"])]
+    ]
+    return html.Div([
+        html.Div([
+            html.Span(f"EPA → {example['epa_category']} (~{example['epa_value']})",
+                      className="misclass-from"),
+            html.Span(" → ", className="misclass-arrow"),
+            html.Span(f"Composite → {example['composite_category']} (~{example['composite_value']})",
+                      className="misclass-to"),
+        ], className="misclass-headline"),
+        html.Div(f"{example['site']}, {example['county']} · {example['date']}",
+                 className="misclass-site"),
+        html.Div(badges, className="misclass-badges"),
+    ], className="misclass-card")
 
 
 def hookCard(icon_class, text):
@@ -607,6 +674,52 @@ def build_layout():
                                                         ]),
                                                     ],width=6),
                                                 ])
+                                            ]),
+
+                                        dcc.Tab(
+                                            label='Behind the Data',
+                                            children=[
+                                                dbc.Row([
+                                                    dbc.Col(
+                                                        textCard("Overview", analysis.PANEL_EXPLORE_OVERVIEW),
+                                                    ),
+                                                ]),
+
+                                                # ══ Section 1: Fire Data Cleaning ════════════════
+                                                dbc.Row([dbc.Col(sectionTitle("Fire Data Cleaning", align='left'))]),
+                                                dbc.Row([
+                                                    dbc.Col(graphCard("explore-scan-track-graph", explore_scan_track, height='420px'), width=8),
+                                                    dbc.Col(textCard("Pixel-size filter", analysis.PANEL_EXPLORE_SCANTRACK), width=4),
+                                                ], align="start"),
+                                                dbc.Row([
+                                                    dbc.Col(graphCard("explore-data-entries-graph", explore_data_entries, height='450px'), width=8),
+                                                    dbc.Col(textCard("Filtering decisions", analysis.PANEL_EXPLORE_ENTRIES), width=4),
+                                                ], align="start"),
+                                                dbc.Row([
+                                                    dbc.Col(graphCard("explore-category-graph", explore_category, height='500px'), width=8),
+                                                    dbc.Col(textCard("Fire categories", analysis.PANEL_EXPLORE_CATEGORY), width=4),
+                                                ], align="start"),
+
+                                                # ══ Section 2: Rethinking the AQI ════════════════
+                                                dbc.Row([dbc.Col(sectionTitle("Rethinking the AQI", align='left'))]),
+                                                dbc.Row([
+                                                    dbc.Col(epaReportCard(113, "Unhealthy for Sensitive Groups",
+                                                                          analysis.PANEL_EXPLORE_EPA), width=4),
+                                                    dbc.Col(textCard("Why it matters", analysis.PANEL_EXPLORE_SUMAQI), width=4),
+                                                    dbc.Col(graphCard("explore-sum-aqi-graph", explore_sum_aqi, height='320px'), width=4),
+                                                ], align="start"),
+                                                dbc.Row([
+                                                    dbc.Col(graphCard("explore-pie-graph", explore_pie, height='360px'), width=8),
+                                                    dbc.Col(textCard("Monitor coverage", analysis.PANEL_EXPLORE_PIE), width=4),
+                                                ], align="start"),
+                                                dbc.Row([
+                                                    dbc.Col(graphCard("explore-wrong-guide-graph", explore_wrong_guide, height='360px'), width=8),
+                                                    dbc.Col(textCard("Reading the examples", analysis.PANEL_EXPLORE_MISCLASS), width=4),
+                                                ], align="start"),
+                                                dbc.Row([
+                                                    dbc.Col(misclassExampleCard(ex), width=6)
+                                                    for ex in misclassification_examples[:2]
+                                                ], className="g-3"),
                                             ]),
                                         ]),
 

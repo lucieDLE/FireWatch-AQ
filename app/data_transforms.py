@@ -11,9 +11,14 @@ os.environ.setdefault('PROJ_NETWORK', 'OFF')
 
 from src.config import (
     POLLUTANT_STANDARD_NAMES, POLLUTANT_SAMPLE_DURATION,
+    FIRE_RAW_PATH,
 )
 from src.display import WATCH_SITES, FIRE_WATCH_SITES, STATE_NAME_TO_CODE
 from data_loaders import df_aqi, df_fire, df_aqr_annual, ca_geojson
+
+# Raw (unfiltered) fire pixels — keeps the isFire==0 rows the cleaned file drops,
+# needed for the "kept vs removed" data-cleaning figures on the Behind the Data tab.
+df_fire_raw = pd.read_csv(FIRE_RAW_PATH)
 
 import numpy as np
 # ============================================================================
@@ -154,6 +159,79 @@ POLLUTANT_COL_MAP = {
     'Ozone':  'Daily AQI Value_O3',
     'NO2':    'Daily AQI Value_NO2',
 }
+
+
+# ----------------------------------------------------------------------------
+# Misclassification examples (Behind the Data tab)
+# ----------------------------------------------------------------------------
+# EPA reports a single number = the worst individual pollutant (max_AQI). The
+# custom composite_penalty also folds in secondary exceedances, so on some days
+# it lands the site in a higher health category than the EPA number suggests.
+# These are the real days where that happens — used to build example cards.
+
+# (upper_bound, category label) — checked ascending so non-integer AQI values
+# (e.g. composite_penalty=150.5) still land in the right band.
+_AQI_CATEGORIES = [
+    (50,  'Good'),
+    (100, 'Moderate'),
+    (150, 'Unhealthy for Sensitive Groups'),
+    (200, 'Unhealthy'),
+    (300, 'Very Unhealthy'),
+    (500, 'Hazardous'),
+]
+
+
+def _aqi_category(value):
+    for hi, label in _AQI_CATEGORIES:
+        if value <= hi:
+            return label
+    return 'Hazardous'
+
+
+def compute_misclassification_examples(df, n_per_threshold=1):
+    """
+    Find real days where composite_penalty pushes a site into a higher EPA health
+    category than max_AQI (the EPA-reported number) would indicate.
+
+    Returns a list of dicts, one per example day, sorted worst-first:
+        site, county, date,
+        epa_value, epa_category,             # from max_AQI
+        composite_value, composite_category, # from composite_penalty
+        pollutants: [{'name', 'value'}, ...] # per-pollutant Daily AQI values
+    """
+    examples = []
+    seen = set()
+    for threshold in [150, 100, 50]:
+        bumped = df.loc[(df['max_AQI'] <= threshold) & (df['composite_penalty'] > threshold)]
+        bumped = bumped.sort_values(by='hidden_pollution', ascending=False)
+        taken = 0
+        for _, row in bumped.iterrows():
+            key = (row.get('Site ID'), row.get('Date'))
+            if key in seen:
+                continue
+            seen.add(key)
+            pollutants = []
+            for name, col in POLLUTANT_COL_MAP.items():
+                val = pd.to_numeric(pd.Series([row.get(col)]), errors='coerce').iloc[0]
+                if pd.notna(val):
+                    pollutants.append({'name': name, 'value': round(float(val))})
+            examples.append({
+                'site':               row.get('Local Site Name'),
+                'county':             row.get('County'),
+                'date':               row.get('Date'),
+                'epa_value':          round(float(row['max_AQI'])),
+                'epa_category':       _aqi_category(row['max_AQI']),
+                'composite_value':    round(float(row['composite_penalty'])),
+                'composite_category': _aqi_category(row['composite_penalty']),
+                'pollutants':         pollutants,
+            })
+            taken += 1
+            if taken >= n_per_threshold:
+                break
+    return examples
+
+
+misclassification_examples = compute_misclassification_examples(df_aqi)
 
 
 def compute_aqi_quantiles(pollutant_col):

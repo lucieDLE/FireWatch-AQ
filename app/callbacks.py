@@ -10,6 +10,10 @@ from figures_aq import make_pollutant_distribution, make_aq_us_plot, compute_max
 from figures_fire import make_cloropleth_fire_counties, make_bar_fire_event, make_fire_aqi_overlay
 from figures_event import (make_aq_time_series, make_burning_area_plot, make_overlay_aq_fire,
                            make_aq_hotspot_trace, make_fire_perimeter_trace)
+from figures_explore import (
+    make_scan_track_distribution, make_fire_data_entry_analysis, make_fire_category_repartition,
+    make_barplot_sum_aqi, make_pollutant_number_pie_chart, make_wrong_guidance_plot,
+)
 import analysis
 
 
@@ -40,6 +44,13 @@ def change_theme(value):
     # Tab 2 — Fire Data
     Output("top-counties-graph",          "figure"),
     Output("top-fire-graph",              "figure"),
+    # Behind the Data — methodology / cleaning figures
+    Output("explore-scan-track-graph",    "figure"),
+    Output("explore-data-entries-graph",  "figure"),
+    Output("explore-category-graph",      "figure"),
+    Output("explore-sum-aqi-graph",       "figure"),
+    Output("explore-pie-graph",           "figure"),
+    Output("explore-wrong-guide-graph",   "figure"),
     Input("switch-theme",                 "value"),
 )
 def update_figure_theme(dark_mode):
@@ -57,7 +68,18 @@ def update_figure_theme(dark_mode):
     for fig in [fig_us_map, fig_counties]:
         fig.update_layout(template='plotly_dark' if dark_mode else 'ggplot2')
 
-    return fig_pollutant_dist, fig_us_map, fig_boxplot, fig_counties, fig_top_fires
+    # Behind the Data — these handle their own template via dark_mode
+    fig_scan_track   = make_scan_track_distribution(df_fire_raw, dark_mode)
+    fig_data_entries = make_fire_data_entry_analysis(df_fire_raw, dark_mode)
+    fig_category     = make_fire_category_repartition(df_fire_raw, df_fire, dark_mode)
+    fig_sum_aqi      = make_barplot_sum_aqi(df_aqi, dark_mode)
+    fig_pie          = make_pollutant_number_pie_chart(df_aqi, dark_mode)
+    fig_wrong_guide  = make_wrong_guidance_plot(df_aqi, dark_mode)
+
+    return (
+        fig_pollutant_dist, fig_us_map, fig_boxplot, fig_counties, fig_top_fires,
+        fig_scan_track, fig_data_entries, fig_category, fig_sum_aqi, fig_pie, fig_wrong_guide,
+    )
 
 
 @callback(
