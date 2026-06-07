@@ -709,6 +709,81 @@ body {
   line-height: 1.6;
 }
 
+/* ── Behind the Data: misclassified-day example cards ───────────────── */
+.misclass-card {
+  background-color: var(--bg-card-body);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+}
+
+.misclass-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--md-on-surface);
+  margin-bottom: 12px;
+}
+
+.misclass-polls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.misclass-poll {
+  font-size: 0.80rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.misclass-poll-epa {
+  background-color: rgba(254, 240, 217, 0.85);  /* red_colors[0] — cream */
+  color: rgba(120, 60, 20, 1);
+}
+
+.misclass-poll-composite {
+  background-color: rgba(253, 204, 138, 0.45);  /* light red_colors[1] */
+  color: rgba(150, 0, 0, 1);
+}
+
+.misclass-arrow {
+  color: var(--md-on-surface-variant);
+  font-weight: 700;
+}
+
+.misclass-site-block { margin-bottom: 10px; }
+
+.misclass-site {
+  font-size: 0.8rem;
+  color: var(--md-on-surface);
+  margin: 8px 0 6px;
+}
+
+.misclass-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.misclass-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.misclass-badge-empty {
+  background-color: var(--md-surface-container-high);
+  color: var(--md-on-surface-variant);
+}
+
 ol, ul {
   padding-left: 1rem;
 }
