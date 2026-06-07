@@ -1,18 +1,16 @@
 """
-Data Cleaning/Exploration figures — not used in the dashboard (yet?).
+Data Cleaning/Exploration figures — used in the Data Exploration tab.
 """
-from pathlib import Path
-import sys
-ROOT_DIR = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT_DIR))
+import path_setup  # noqa: F401
 
+import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from display import green_colors, red_colors, line_greens, line_reds, FIRE_CAT_NAMES
+from src.display import green_colors, red_colors, line_greens, line_reds, FIRE_CAT_NAMES
 
 
-def make_fire_category_repartition(df, df_cleaned):
+def make_fire_category_repartition(df, df_cleaned, dark_mode=True):
     fig = make_subplots(
         rows=1, cols=5,
         column_widths=[0.2, 0.2, 0.2, 0.2, 0.2],
@@ -58,7 +56,7 @@ def make_fire_category_repartition(df, df_cleaned):
         ))
 
     fig.update_layout(
-        template='plotly_dark',
+        template='plotly_dark' if dark_mode else 'ggplot2',
         title_text='Fire Repartition by Category and FRP',
         height=500,
     )
@@ -66,7 +64,7 @@ def make_fire_category_repartition(df, df_cleaned):
     return fig
 
 
-def make_fire_data_entry_analysis(df):
+def make_fire_data_entry_analysis(df, dark_mode=True):
     fig = make_subplots(
         rows=1, cols=3,
         column_widths=[0.33, 0.33, 0.33],
@@ -117,8 +115,9 @@ def make_fire_data_entry_analysis(df):
         ))
 
     fig.update_layout(
-        template='plotly_dark',
+        template='plotly_dark' if dark_mode else 'ggplot2',
         title_text='Data Entries and filtering decisions',
+        # margin = dict(t=40, l=0, r=0, b=0) ,
         barmode='overlay',
         height=450, bargap=0.2,
         yaxis_title='Number of pixels',
@@ -133,7 +132,7 @@ def make_fire_data_entry_analysis(df):
     return fig
 
 
-def make_scan_track_distribution(df):
+def make_scan_track_distribution(df, dark_mode=True):
     fig = go.Figure([
         go.Histogram(x=df['scan'],  name='scan',  marker_color=red_colors[2],  opacity=.8),
         go.Histogram(x=df['track'], name='track', marker_color=red_colors[-1], opacity=.8),
@@ -141,7 +140,7 @@ def make_scan_track_distribution(df):
     fig.add_vline(x=0.6, line_width=3, line_dash='dash',
                   line_color=line_reds[-1], annotation_text='threshold')
     fig.update_layout(
-        template='plotly_dark',
+        template='plotly_dark' if dark_mode else 'ggplot2',
         title_text='Scan and Track distribution',
         bargap=0.3, bargroupgap=0,
     )
@@ -152,7 +151,7 @@ def make_scan_track_distribution(df):
 
 
 
-def make_pollutant_number_pie_chart(df_aqi):
+def make_pollutant_number_pie_chart(df_aqi, dark_mode=True):
     df_pollutant_counts = df_aqi['n_pollutants'].value_counts().to_frame().reset_index()
     
     fig = go.Figure([go.Pie(
@@ -166,7 +165,7 @@ def make_pollutant_number_pie_chart(df_aqi):
         marker=dict(colors=green_colors[::-1], line=dict(color=line_greens[-1], width=1)))
 
     fig.update_layout(
-        
+        template='plotly_dark' if dark_mode else 'ggplot2',
         margin = dict(t=40, l=0, r=0, b=0) ,
         # title_text="Number of pollutant per monitor",
         legend=dict(
@@ -178,7 +177,7 @@ def make_pollutant_number_pie_chart(df_aqi):
     return fig
 
 
-def make_wrong_guidance_plot(df_aqi):
+def make_wrong_guidance_plot(df_aqi, dark_mode=True):
     indices = [
         "Unhealthy -> Very Unhealthy",
         "Unhealthy for SG -> Unhealthy" ,
@@ -205,7 +204,7 @@ def make_wrong_guidance_plot(df_aqi):
                     title='Days where sum_AQI pushes a site into a higher EPA health category than max_AQI',
                     ),
         title='How many days were people given wrong health guidance?',
-        plot_bgcolor='white',
+        template='plotly_dark' if dark_mode else 'ggplot2',
         legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='left', x=0),
     )
 
@@ -214,7 +213,7 @@ def make_wrong_guidance_plot(df_aqi):
 
 
 
-def make_barplot_sum_aqi(df_aqi):
+def make_barplot_sum_aqi(df_aqi, dark_mode=True):
 
     AQI_BANDS_COLOR = [ (0,   50,  line_greens[-2]), (51,  100, '#FFBF00'), (101, 150, '#EB6F2B'),
                         (151, 200, line_reds[-2]), (201, 300, '#6C3082'), (301, 400, '#58111A'),]
@@ -274,10 +273,10 @@ def make_barplot_sum_aqi(df_aqi):
 
     fig.update_layout(
         xaxis=dict( showgrid=False, ),
-        plot_bgcolor='white',
+        template='plotly_dark' if dark_mode else 'ggplot2',
         legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='left', x=0),
     )
-    fig.add_vline(x=50, 
+    fig.add_vline(x=50,
                 line_width=2, line_dash='dash',
                 line_color='black',
                 name='guideline threshold',
