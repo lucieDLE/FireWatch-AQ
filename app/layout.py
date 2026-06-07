@@ -125,6 +125,9 @@ def statCard(stat_children, desc, bg_color):
     ], className="stat-card", style={"backgroundColor": bg_color})
 
 
+# Pollutant-badge colors by AQI band, drawn from the project's red/green palettes.
+# Good (≤50) → green; everything above scales up the red_colors ramp.
+# (upper_bound, background, text color)
 _AQI_BADGE_BANDS = [
     (50,  green_colors[2], line_greens[5]),  # good
     (100, red_colors[2],   line_reds[5]),    # moderate
@@ -700,14 +703,37 @@ def build_layout():
 
                                         dcc.Tab(
                                             label='Behind the Data',
+                                            value='behind-the-data',
                                             children=[
                                                 dbc.Row([
                                                     dbc.Col(
                                                         textCard("Overview", analysis.PANEL_EXPLORE_OVERVIEW),
                                                     ),
                                                 ]),
+                                                # ══ Section 1: Rethinking the AQI ════════════════
+                                                dbc.Row([dbc.Col(sectionTitle("Rethinking the AQI", align='left'))]),
+                                                dbc.Row([
+                                                    dbc.Col([
+                                                        textCard("Why it matters", analysis.PANEL_EXPLORE_SUMAQI),
+                                                        epaReportCard(113, "Unhealthy for Sensitive Groups", analysis.PANEL_EXPLORE_EPA),
+                                                        ] ,width=4),
+                                                    dbc.Col(graphCard("explore-sum-aqi-graph", explore_sum_aqi, height='360px'), width=8),
+                                                ], align="start"),
+                                                dbc.Row([
+                                                    dbc.Col(graphCard("explore-pie-graph", explore_pie, height='360px'), width=8),
+                                                    dbc.Col(textCard("Monitor coverage", analysis.PANEL_EXPLORE_PIE), width=4),
+                                                ], align="start"),
+                                                dbc.Row([
+                                                    dbc.Col(graphCard("explore-wrong-guide-graph", explore_wrong_guide, height='360px'), width=8),
+                                                    dbc.Col(textCard("Reading the examples", analysis.PANEL_EXPLORE_MISCLASS), width=4),
+                                                ], align="start"),
+                                                dbc.Row([
+                                                    dbc.Col(misclassExampleCard(ex), width=6)
+                                                    for ex in misclassification_examples[:2]
+                                                ], className="g-3"),
 
-                                                # ══ Section 1: Fire Data Cleaning ════════════════
+
+                                                # ══ Section 2: Fire Data Cleaning ════════════════
                                                 dbc.Row([dbc.Col(sectionTitle("Fire Data Cleaning", align='left'))]),
                                                 dbc.Row([
                                                     dbc.Col(graphCard("explore-scan-track-graph", explore_scan_track, height='420px'), width=8),
@@ -722,26 +748,7 @@ def build_layout():
                                                     dbc.Col(textCard("Fire categories", analysis.PANEL_EXPLORE_CATEGORY), width=4),
                                                 ], align="start"),
 
-                                                # ══ Section 2: Rethinking the AQI ════════════════
-                                                dbc.Row([dbc.Col(sectionTitle("Rethinking the AQI", align='left'))]),
-                                                dbc.Row([
-                                                    dbc.Col(epaReportCard(113, "Unhealthy for Sensitive Groups",
-                                                                          analysis.PANEL_EXPLORE_EPA), width=4),
-                                                    dbc.Col(textCard("Why it matters", analysis.PANEL_EXPLORE_SUMAQI), width=4),
-                                                    dbc.Col(graphCard("explore-sum-aqi-graph", explore_sum_aqi, height='320px'), width=4),
-                                                ], align="start"),
-                                                dbc.Row([
-                                                    dbc.Col(graphCard("explore-pie-graph", explore_pie, height='360px'), width=8),
-                                                    dbc.Col(textCard("Monitor coverage", analysis.PANEL_EXPLORE_PIE), width=4),
-                                                ], align="start"),
-                                                dbc.Row([
-                                                    dbc.Col(graphCard("explore-wrong-guide-graph", explore_wrong_guide, height='360px'), width=8),
-                                                    dbc.Col(textCard("Reading the examples", analysis.PANEL_EXPLORE_MISCLASS), width=4),
-                                                ], align="start"),
-                                                dbc.Row([
-                                                    dbc.Col(misclassExampleCard(ex), width=6)
-                                                    for ex in misclassification_examples[:2]
-                                                ], className="g-3"),
+
                                             ]),
                                         ]),
 
