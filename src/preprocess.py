@@ -17,6 +17,7 @@ from src.config import (
 )
     
 
+AQI_COLS = ['Daily AQI Value_PM2.5', 'Daily AQI Value_O3', 'Daily AQI Value_NO2', 'Daily AQI Value_PM10']
 ## preprocessing variables
 AQI_DROP_COLUMNS = ['Source', 
                     'POC', 
@@ -68,9 +69,9 @@ DROP_COLS = [   'State Code',
                 'Observation Count', 
                 'Observation Percent']
 
-def get_max_AQI(row):
-    val_max = row[['Daily AQI Value_PM2.5', 'Daily AQI Value_O3', 'Daily AQI Value_NO2', 'Daily AQI Value_PM10']].max()
-    return val_max
+# def get_max_AQI(row):
+#     val_max = row[AQI_COLS].max()
+#     return val_max
 
 
 def is_fire(row):
@@ -163,11 +164,11 @@ def combine_aqi_metrics():
 
     # step 2.3 : compute and filter on missing values
     df_all['n_missing_values'] = df_all.apply(lambda row: row.isnull().sum(), axis=1)
-    df_aqi = df_all.loc[df_all['n_missing_values'] <= 9].reset_index() # keep rows where at least 2 metrics
+    # df_aqi = df_all.loc[df_all['n_missing_values'] <= 9].reset_index() # keep rows where at least 2 metrics
 
     # step 2.4 : compute global AQI value based on max AQI_pollutant value
-    df_aqi['max_AQI'] = df_aqi.apply(lambda row: get_max_AQI(row), axis =1 )
-
+    df_aqi = compute_scores(df_all, penalty_factor=0.2)
+    
     df_aqi['Units_PM2.5'] = 'ug/m3 LC'
     df_aqi['Units_O3'] = 'ppm'
     df_aqi['Units_NO2'] = 'ppb'
@@ -176,6 +177,45 @@ def combine_aqi_metrics():
     df_aqi = df_aqi.fillna('N/A')
     df_aqi['Date'] = pd.to_datetime(df_aqi['Date'])
     return df_aqi
+
+def compute_scores(df, penalty_factor=0.2):
+    aqi = df.copy()
+
+    aqi = aqi[AQI_COLS]
+    exceedance = (aqi - 50).clip(lower=0)   # zero for AQI <= 50
+
+    df["max_AQI"] = aqi.max(axis=1)
+
+    # Compute exceedances, total, first, and secondary
+    # EPA guidelenies return first exceedance
+    # Secondary exceedance: sum of above-threshold exceedances for every
+    # pollutant that is NOT the dominant one. 
+    # AQI 30 contributes 0; one at AQI 80 contributes 30.
+    dominant_exceedance  = (df["max_AQI"] - 50).clip(lower=0)
+    total_exceedance     = exceedance.sum(axis=1, min_count=1)
+    secondary_exceedance = (total_exceedance - dominant_exceedance).clip(lower=0)
+ 
+    # 1. composite_sum -------------------------------------------------------
+    # max_AQI (dominant pollutant, full raw value) + secondary exceedances.
+    # Keeps the dominant pollutant on its natural AQI scale while adding only
+    df["sum_AQI"] = df["max_AQI"] + secondary_exceedance
+ 
+    # 2. composite_penalty ---------------------------------------------------
+    # Conservative: anchors on max_AQI and adds a fractional uplift from
+    # secondary exceedances only.
+    # Formula: max_AQI + penalty_factor * secondary_exceedance
+    df["composite_penalty"] = df["max_AQI"] + penalty_factor * secondary_exceedance
+ 
+    # 3. hidden_pollution ----------------------------------------------------
+    # Exceedance burden discarded by the EPA max method:
+    # everything above-threshold in secondary pollutants that max_AQI ignores.
+    df["hidden_pollution"] = secondary_exceedance
+ 
+    # 4. n_pollutants --------------------------------------------------------
+    df["n_pollutants"] = aqi.notna().sum(axis=1)
+
+    return df
+
 
 def add_fire_name_stats(df, gdf_perimeter):
 
