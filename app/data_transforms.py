@@ -165,16 +165,13 @@ POLLUTANT_COL_MAP = {
 # Misclassification examples (Behind the Data tab)
 # ----------------------------------------------------------------------------
 # EPA reports a single number = the worst individual pollutant (max_AQI). The
-# custom composite_penalty also folds in secondary exceedances, so on some days
-# it lands the site in a higher health category than the EPA number suggests.
-# These are the real days where that happens — used to build example cards.
+# custom sum_AQI also uses secondary exceedances, so on some days
+# the site has a higher health category than the EPA number suggests.
 
-# (upper_bound, category label) — checked ascending so non-integer AQI values
-# (e.g. composite_penalty=150.5) still land in the right band.
 _AQI_CATEGORIES = [
     (50,  'Good'),
     (100, 'Moderate'),
-    (150, 'Unhealthy for Sensitive Groups'),
+    (150, 'Unhealthy for SG'),
     (200, 'Unhealthy'),
     (300, 'Very Unhealthy'),
     (500, 'Hazardous'),
@@ -185,50 +182,43 @@ def _aqi_category(value):
     for hi, label in _AQI_CATEGORIES:
         if value <= hi:
             return label
-    return 'Hazardous'
 
 
-def compute_misclassification_examples(df, n_per_threshold=1):
+def compute_misclassification_examples(df, max_days=6):
     """
-    Find real days where composite_penalty pushes a site into a higher EPA health
-    category than max_AQI (the EPA-reported number) would indicate.
-
-    Returns a list of dicts, one per example day, sorted worst-first:
-        site, county, date,
-        epa_value, epa_category,             # from max_AQI
-        composite_value, composite_category, # from composite_penalty
-        pollutants: [{'name', 'value'}, ...] # per-pollutant Daily AQI values
+    Find real days where sum_AQI pushes a site into 2 categories above
+    than max_AQI.
     """
-    examples = []
-    seen = set()
-    for threshold in [150, 100, 50]:
-        bumped = df.loc[(df['max_AQI'] <= threshold) & (df['composite_penalty'] > threshold)]
-        bumped = bumped.sort_values(by='hidden_pollution', ascending=False)
-        taken = 0
-        for _, row in bumped.iterrows():
-            key = (row.get('Site ID'), row.get('Date'))
-            if key in seen:
-                continue
-            seen.add(key)
-            pollutants = []
-            for name, col in POLLUTANT_COL_MAP.items():
-                val = pd.to_numeric(pd.Series([row.get(col)]), errors='coerce').iloc[0]
-                if pd.notna(val):
-                    pollutants.append({'name': name, 'value': round(float(val))})
-            examples.append({
-                'site':               row.get('Local Site Name'),
-                'county':             row.get('County'),
-                'date':               row.get('Date'),
-                'epa_value':          round(float(row['max_AQI'])),
-                'epa_category':       _aqi_category(row['max_AQI']),
-                'composite_value':    round(float(row['composite_penalty'])),
-                'composite_category': _aqi_category(row['composite_penalty']),
-                'pollutants':         pollutants,
-            })
-            taken += 1
-            if taken >= n_per_threshold:
-                break
-    return examples
+    groups = []
+    for threshold in [100, 150]:
+        df_exceed = df.loc[(df['max_AQI'] <= threshold) & (df['sum_AQI'] > threshold+50)]
+        if df_exceed.empty:
+            continue
+        df_exceed = df_exceed.sort_values(by='hidden_pollution', ascending=False).head(max_days)
+
+        sites = []
+        for (site, county), g in df_exceed.groupby(['Local Site Name', 'County'], sort=False):
+            days = []
+            for idx, row in g.iterrows():
+                pollutants = []
+                for name, col in POLLUTANT_COL_MAP.items():
+                    val = pd.to_numeric(pd.Series([row.get(col)]), errors='coerce').iloc[0]
+                    pollutants.append({
+                        'name':  name,
+                        'value': round(float(val)) if pd.notna(val) else None,
+                    })
+                days.append(pollutants)
+            sites.append({'site': site, 'county': county, 'days': days})
+
+        groups.append({
+            'epa_label':       _aqi_category(threshold),
+            'epa_value':       df_exceed['max_AQI'].max(),
+            'sum_aqi_value': df_exceed['sum_AQI'].max(),
+            'sum_aqi_label': _aqi_category(df_exceed['sum_AQI'].max()),
+            'n_days':          len(df_exceed),
+            'sites':           sites,
+        })
+    return groups
 
 
 misclassification_examples = compute_misclassification_examples(df_aqi)
