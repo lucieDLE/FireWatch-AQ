@@ -141,20 +141,16 @@ _AQI_BADGE_BANDS = [
 def aqi_badge_colors(value):
     for hi, bg, fg in _AQI_BADGE_BANDS:
         if value <= hi:
-            return bg.replace('0.8', '0.5'), fg
+            return bg.replace('0.8', '0.6'), fg
 
 
-def epaReportCard(value, category, text):
-    """Orange highlight card: 'What the EPA reports'."""
+def epaReportCard(value, category, text, bg_color):
     return html.Div([
-        html.Div(analysis.PANEL_EXPLORE_EPA_TITLE, className="epa-report-title"),
-        html.Div([
-            html.Span(str(value), className="epa-report-value"),
-            html.Span(category, className="epa-report-category"),
-        ], className="epa-report-headline"),
-        dcc.Markdown(text, className="epa-report-text"),
-    ], className="epa-report-card")
-
+            html.P("What the EPA reports", className="poll-group-label"),
+            html.Span(str(value), className="stat-big"),
+            html.P(category, className="stat-context"),
+            dcc.Markdown(text, className="stat-desc"),
+        ], className="stat-card", style={"backgroundColor": bg_color})
 
 def pollutant_badge(p):
     """One poll: 'PM2.5 146', colored by AQI severity (grey if no reading)."""
@@ -712,12 +708,10 @@ def build_layout():
                                                 ]),
                                                 # ══ Section 1: Rethinking the AQI ════════════════
                                                 dbc.Row([dbc.Col(sectionTitle("Rethinking the AQI", align='left'))]),
+                                                dbc.Row(textCard("Why it matters", analysis.PANEL_EXPLORE_SUMAQI)),
                                                 dbc.Row([
-                                                    dbc.Col([
-                                                        textCard("Why it matters", analysis.PANEL_EXPLORE_SUMAQI),
-                                                        epaReportCard(113, "Unhealthy for Sensitive Groups", analysis.PANEL_EXPLORE_EPA),
-                                                        ] ,width=4),
-                                                    dbc.Col(graphCard("explore-sum-aqi-graph", explore_sum_aqi, height='360px'), width=8),
+                                                    dbc.Col(epaReportCard(113, "Unhealthy for Sensitive Groups (SG)", analysis.PANEL_EXPLORE_EPA_CARD, "var(--stat-problem-3)"),width=3),
+                                                    dbc.Col(graphCard("explore-sum-aqi-graph", explore_sum_aqi, height='360px'), width=9),
                                                 ], align="start"),
                                                 dbc.Row([
                                                     dbc.Col(graphCard("explore-pie-graph", explore_pie, height='360px'), width=8),
