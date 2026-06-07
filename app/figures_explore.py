@@ -46,19 +46,21 @@ def make_fire_category_repartition(df, df_cleaned, dark_mode=True):
 
     fig.update_traces(showlegend=False)
 
-    for idx, name in enumerate(FIRE_CAT_NAMES):
-        fig.add_trace(go.Scatter(
-            x=[None], y=[None],
-            mode='markers',
-            marker=dict(size=12, color=green_colors[idx + 1], symbol='square',
-                        line_width=1, line_color=line_greens[idx + 1]),
-            name=name,
-        ))
+    # for idx, name in enumerate(FIRE_CAT_NAMES):
+    #     fig.add_trace(go.Scatter(
+    #         x=[None], y=[None],
+    #         mode='markers',
+    #         marker=dict(size=12, color=green_colors[idx + 1], symbol='square',
+    #                     line_width=1, line_color=line_greens[idx + 1]),
+    #         name=name,
+    #     ))
 
     fig.update_layout(
         template='plotly_dark' if dark_mode else 'ggplot2',
         title_text='Fire Repartition by Category and FRP',
         height=500,
+        margin = dict(t=75, l=10, r=10, b=10) ,
+
     )
     fig.update_yaxes(title_text='FRP (MW)', col=1)
     return fig
@@ -67,7 +69,7 @@ def make_fire_category_repartition(df, df_cleaned, dark_mode=True):
 def make_fire_data_entry_analysis(df, dark_mode=True):
     fig = make_subplots(
         rows=1, cols=3,
-        column_widths=[0.33, 0.33, 0.33],
+        column_widths=[0.3, 0.4, 0.3],
         subplot_titles=['Fire pixels by Day/Night', 'Fires Types', 'Confidence Levels'],
         shared_yaxes=False,
     )
@@ -117,17 +119,17 @@ def make_fire_data_entry_analysis(df, dark_mode=True):
     fig.update_layout(
         template='plotly_dark' if dark_mode else 'ggplot2',
         title_text='Data Entries and filtering decisions',
-        # margin = dict(t=40, l=0, r=0, b=0) ,
+        margin = dict(t=40, l=0, r=10, b=40) ,
         barmode='overlay',
-        height=450, bargap=0.2,
+        bargap=0.2,
         yaxis_title='Number of pixels',
-        legend =dict(orientation='h', x=0.90, y=1.30, xanchor='left', bgcolor='rgba(0,0,0,0)'),
-        legend2=dict(orientation='h', yanchor='bottom', xanchor='left',   y=-0.25, x=0,
-                     bgcolor='rgba(0,0,0,0.3)', borderwidth=0),
-        legend3=dict(orientation='h', yanchor='bottom', xanchor='center', y=-0.25, x=0.5,
-                     bgcolor='rgba(0,0,0,0.3)', borderwidth=0),
-        legend4=dict(orientation='h', yanchor='bottom', xanchor='left',   y=-0.25, x=0.7,
-                     bgcolor='rgba(0,0,0,0.3)', borderwidth=0),
+        legend =dict(orientation='v', x=1.0, y=1.30, xanchor='right', bgcolor='rgba(0,0,0,0)'),
+        legend2=dict(orientation='v', yanchor='top', xanchor='left',   y=-0.1, x=0,
+                     bgcolor='rgba(0,0,0,0.0)', borderwidth=0),
+        legend3=dict(orientation='v', yanchor='top', xanchor='center', y=-0.1, x=0.5,
+                     bgcolor='rgba(0,0,0,0.0)', borderwidth=0),
+        legend4=dict(orientation='v', yanchor='top', xanchor='left',   y=-0.1, x=0.75,
+                     bgcolor='rgba(0,0,0,0.0)', borderwidth=0),
     )
     return fig
 
@@ -143,6 +145,8 @@ def make_scan_track_distribution(df, dark_mode=True):
         template='plotly_dark' if dark_mode else 'ggplot2',
         title_text='Scan and Track distribution',
         bargap=0.3, bargroupgap=0,
+        margin = dict(t=50, l=0, r=10, b=40) ,
+        legend =dict(orientation='v', x=.99, y=.99, xanchor='right', bgcolor='rgba(0,0,0,0)'),
     )
     fig.update_yaxes(title_text='Number of pixels')
     fig.update_xaxes(title_text='pixel size')
@@ -167,9 +171,9 @@ def make_pollutant_number_pie_chart(df_aqi, dark_mode=True):
     fig.update_layout(
         template='plotly_dark' if dark_mode else 'ggplot2',
         margin = dict(t=40, l=0, r=0, b=0) ,
-        # title_text="Number of pollutant per monitor",
+        title_text="Number of pollutant per datapoint",
         legend=dict(
-                xanchor='right', y=.5, x=.75,
+                xanchor='left', y=.5, x=0.7,
                 title='Number of pollutants'
             ),
         )
@@ -190,7 +194,7 @@ def make_wrong_guidance_plot(df_aqi, dark_mode=True):
         df_threshold = df_aqi.loc[ (df_aqi['max_AQI'] <= threshold) & (df_aqi['composite_penalty'] > threshold) ]
         values.append(len(df_threshold))
 
-    colors = [green_colors[-2], red_colors[-2], red_colors[-2] , red_colors[-3]]
+    colors = [ red_colors[-3], red_colors[-1], red_colors[-1], green_colors[-2] ]
 
     fig = go.Figure(go.Bar(
             x=values,
@@ -278,7 +282,7 @@ def make_barplot_sum_aqi(df_aqi, dark_mode=True):
     )
     fig.add_vline(x=50,
                 line_width=2, line_dash='dash',
-                line_color='black',
+                line_color=line_reds[-1],
                 name='guideline threshold',
                 annotation_text=f'Threshold for Good Air (AQI=50)',
                 annotation_position='top',row=1, col=1)
@@ -306,11 +310,10 @@ def make_barplot_sum_aqi(df_aqi, dark_mode=True):
     fig.update_layout(  barmode='stack',
                         legend1=dict(
                             orientation='v',
-                            yanchor='bottom', 
-                            xanchor='right',   
+                            xanchor='left',   
                             y=.5, 
-                            x=1.05,),
-                        margin = dict(t=100, l=0, r=30, b=0) ,
+                            x=1.,),
+                        margin = dict(t=75, l=0, r=50, b=0) ,
 
     )
     fig.layout.annotations[0].update(y=1.15)  # left title
