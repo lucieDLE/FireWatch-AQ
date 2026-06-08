@@ -226,6 +226,13 @@ body {
   margin-bottom: 16px;
 }
 
+/* Square box for the pie chart (Behind the Data tab) */
+.chart-card.square-chart {
+  aspect-ratio: 1 / 1;
+  max-width: 440px;
+  margin: 0 auto 16px;
+}
+
 /* ============================================================
    Text cards (dbc.Card)
    ============================================================ */
@@ -472,6 +479,24 @@ body {
   .sources-card .card-body {
     column-count: 1;
   }
+}
+
+/* Themed reference / citation links (replace default browser blue) */
+.card a,
+.intro-card a,
+.sources-card a,
+.hero-block a,
+sup a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.card a:hover,
+.intro-card a:hover,
+.sources-card a:hover,
+.hero-block a:hover,
+sup a:hover {
+  text-decoration: underline;
 }
 
 /* ============================================================
