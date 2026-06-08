@@ -712,7 +712,7 @@ def build_layout():
                                                 dbc.Row([
                                                     dbc.Col(epaReportCard(113, "Unhealthy for Sensitive Groups (SG)", analysis.PANEL_EXPLORE_EPA_CARD, "var(--stat-problem-3)"),width=3),
                                                     dbc.Col(graphCard("explore-sum-aqi-graph", explore_sum_aqi, height='360px'), width=9),
-                                                ], align="start"),
+                                                ], align="center"),
                                                 dbc.Row([
                                                     dbc.Col(graphCard("explore-pie-graph", explore_pie, height='360px'), width=8),
                                                     dbc.Col(textCard("Monitor coverage", analysis.PANEL_EXPLORE_PIE), width=4),
