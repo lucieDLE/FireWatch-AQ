@@ -126,7 +126,7 @@ df_annual_stats = df_aqr_annual[[
     'Arithmetic Mean', 'Arithmetic Standard Dev',
     '90th Percentile', '75th Percentile', '50th Percentile', '10th Percentile',
     'State Name', 'Parameter Name',
-]]
+]].copy()
 df_annual_stats['q1'] = (
     df_annual_stats['10th Percentile']
     + 0.375 * (df_annual_stats['50th Percentile'] - df_annual_stats['10th Percentile'])
