@@ -295,6 +295,38 @@ body {
   color: var(--text-card-body) !important;
   font-size: var(--fs-md);
   padding: 12px 14px 6px;
+  text-align: justify;
+}
+
+/* ============================================================
+   Flat text block — lightened text_card that sits on the page
+   background (no border/fill), so charts and the solid "Overview"
+   cards keep the visual emphasis.
+   ============================================================ */
+.flat-block {
+  margin-bottom: var(--space-4);
+}
+
+.flat-block-title {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: var(--fs-base);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-bottom: var(--space-1);
+  margin-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.flat-block-body {
+  color: var(--text-card-body);
+  font-size: var(--fs-md);
+  text-align: justify;
+  margin-bottom: var(--space-4);
+}
+
+.flat-block-body > :last-child {
+  margin-bottom: var(--space-4);
 }
 
 
@@ -521,6 +553,7 @@ body {
 .intro-card a,
 .sources-card a,
 .hero-block a,
+.flat-block a,
 sup a {
   color: var(--accent);
   text-decoration: none;
@@ -530,6 +563,7 @@ sup a {
 .intro-card a:hover,
 .sources-card a:hover,
 .hero-block a:hover,
+.flat-block a:hover,
 sup a:hover {
   text-decoration: underline;
 }
