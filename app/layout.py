@@ -47,12 +47,12 @@ def text_card(title="TITLE", text='some text', solid=False):
         return html.Div(
             dbc.Card([
                 dbc.CardHeader(title),
-                dbc.CardBody(dcc.Markdown(text)),
+                dbc.CardBody(dcc.Markdown(_fmt_refs(text), dangerously_allow_html=True)),
             ]),
         )
     return html.Div([
         html.Div(title, className="flat-block-title"),
-        dcc.Markdown(text, className="flat-block-body"),
+        dcc.Markdown(_fmt_refs(text), dangerously_allow_html=True, className="flat-block-body"),
     ], className="flat-block")
 
 
@@ -705,18 +705,17 @@ def build_behind_data():
     explore_pie          = make_pollutant_number_pie_chart(df_aqi)
     explore_wrong_guide  = make_wrong_guidance_plot(df_aqi)
     explore_scan_track   = make_scan_track_distribution(df_fire_raw)
-    explore_data_entries = make_fire_data_entry_analysis(df_fire_raw)
+    # explore_data_entries = make_fire_data_entry_analysis(df_fire_raw)
     explore_category     = make_fire_category_repartition(df_fire_raw, df_fire)
 
     behind_data_tab = dcc.Tab(
-    label='Behind the Data',
-    value='behind-the-data',
+    label='Beyond the AQI',
     children=[
-        dbc.Row([
-            dbc.Col(
-                text_card("Overview", analysis.PANEL_EXPLORE_OVERVIEW, solid=True),
-            ),
-        ]),
+        # dbc.Row([
+        #     dbc.Col(
+        #         text_card("Overview", analysis.PANEL_EXPLORE_OVERVIEW, solid=True),
+        #     ),
+        # ]),
         # ══ Section 1: Rethinking the AQI ════════════════
         dbc.Row([dbc.Col(section_title("Rethinking the AQI", align='center'))]),
         dbc.Row([
@@ -746,19 +745,19 @@ def build_behind_data():
 
 
         # ══ Section 2: Fire Data Cleaning ════════════════
-        dbc.Row([dbc.Col(section_title("Fire Data Cleaning", align='center'))]),
-        dbc.Row([
-            dbc.Col(text_card("Pixel-size filter", analysis.PANEL_EXPLORE_SCANTRACK), width=4),
-            dbc.Col(graph_card("explore-scan-track-graph", explore_scan_track, height='420px'), width=8),
-        ], align="start"),
-        dbc.Row([
-            dbc.Col(graph_card("explore-data-entries-graph", explore_data_entries, height='450px'), width=8),
-            dbc.Col(text_card("Filtering decisions", analysis.PANEL_EXPLORE_ENTRIES), width=4),
-        ], align="start"),
-        dbc.Row([
-            dbc.Col(text_card("Fire categories", analysis.PANEL_EXPLORE_CATEGORY), width=4),
-            dbc.Col(graph_card("explore-category-graph", explore_category, height='500px'), width=8),
-        ], align="start"),
+    #     dbc.Row([dbc.Col(section_title("Fire Data Cleaning", align='center'))]),
+    #     # dbc.Row([
+    #     #     dbc.Col(text_card("Pixel-size filter", analysis.PANEL_EXPLORE_SCANTRACK), width=4),
+    #     #     dbc.Col(graph_card("explore-scan-track-graph", explore_scan_track, height='420px'), width=8),
+    #     # ], align="start"),
+    #     dbc.Row([
+    #         dbc.Col(graph_card("explore-data-entries-graph", explore_data_entries, height='450px'), width=8),
+    #         dbc.Col(text_card("Filtering decisions", analysis.PANEL_EXPLORE_ENTRIES), width=4),
+    #     ], align="start"),
+    #     dbc.Row([
+    #         dbc.Col(text_card("Fire categories", analysis.PANEL_EXPLORE_CATEGORY), width=4),
+    #         dbc.Col(graph_card("explore-category-graph", explore_category, height='500px'), width=8),
+    #     ], align="start"),
     ])
 
     return behind_data_tab

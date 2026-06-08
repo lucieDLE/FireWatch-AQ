@@ -50,9 +50,9 @@ def change_theme(value):
     Output("top-counties-graph",          "figure"),
     Output("top-fire-graph",              "figure"),
     # Behind the Data — methodology / cleaning figures
-    Output("explore-scan-track-graph",    "figure"),
-    Output("explore-data-entries-graph",  "figure"),
-    Output("explore-category-graph",      "figure"),
+    # Output("explore-scan-track-graph",    "figure"),
+    # Output("explore-data-entries-graph",  "figure"),
+    # Output("explore-category-graph",      "figure"),
     Output("explore-sum-aqi-graph",       "figure"),
     Output("explore-pie-graph",           "figure"),
     Output("explore-wrong-guide-graph",   "figure"),
@@ -75,16 +75,16 @@ def update_figure_theme(dark_mode):
 
     # Behind the Data — these handle their own template via dark_mode
     df_fire_raw = get_fire_raw()
-    fig_scan_track   = make_scan_track_distribution(df_fire_raw, dark_mode)
-    fig_data_entries = make_fire_data_entry_analysis(df_fire_raw, dark_mode)
-    fig_category     = make_fire_category_repartition(df_fire_raw, df_fire, dark_mode)
+    # fig_scan_track   = make_scan_track_distribution(df_fire_raw, dark_mode)
+    # fig_data_entries = make_fire_data_entry_analysis(df_fire_raw, dark_mode)
+    # fig_category     = make_fire_category_repartition(df_fire_raw, df_fire, dark_mode)
     fig_sum_aqi      = make_barplot_sum_aqi(df_aqi, dark_mode)
     fig_pie          = make_pollutant_number_pie_chart(df_aqi, dark_mode)
     fig_wrong_guide  = make_wrong_guidance_plot(df_aqi, dark_mode)
 
     return (
         fig_pollutant_dist, fig_us_map, fig_boxplot, fig_counties, fig_top_fires,
-        fig_scan_track, fig_data_entries, fig_category, fig_sum_aqi, fig_pie, fig_wrong_guide,
+        fig_sum_aqi, fig_pie, fig_wrong_guide,
     )
 
 

@@ -68,22 +68,11 @@ def make_fire_category_repartition(df, df_cleaned, dark_mode=True):
 
 def make_fire_data_entry_analysis(df, dark_mode=True):
     fig = make_subplots(
-        rows=1, cols=3,
-        column_widths=[0.3, 0.4, 0.3],
-        subplot_titles=['Fire pixels by Day/Night', 'Fires Types', 'Confidence Levels'],
+        rows=1, cols=2,
+        column_widths=[0.5, 0.5],
+        subplot_titles=['Fires Types', 'Confidence Levels'],
         shared_yaxes=False,
     )
-
-    for label, mask, color in [
-        ('True Fire (isFire=1)',     df['isFire'] == 1, red_colors[-1]),
-        ('Misclassified (isFire=0)', df['isFire'] == 0, red_colors[2]),
-    ]:
-        fig.add_trace(go.Histogram(
-            x=df.loc[mask, 'daynight'], name=label,
-            marker_color=color, opacity=0.85,
-            legend='legend2',
-        ), row=1, col=1)
-
     for type_val, label, color in [
         (0, '0: Vegetation Fire', red_colors[-1]),
         (1, '1: Volcano',         red_colors[2]),
@@ -96,7 +85,7 @@ def make_fire_data_entry_analysis(df, dark_mode=True):
                 x=subset, name=label,
                 marker_color=color, opacity=0.85,
                 legend='legend3',
-            ), row=1, col=2)
+            ), row=1, col=1)
 
     for conf_val, label, color in [
         ('l', 'l: low confidence',     red_colors[2]),
@@ -107,7 +96,7 @@ def make_fire_data_entry_analysis(df, dark_mode=True):
             x=df.loc[df['confidence'] == conf_val, 'confidence'], name=label,
             marker_color=color, opacity=0.85,
             legend='legend4',
-        ), row=1, col=3)
+        ), row=1, col=2)
 
     for label, color in [('Kept in dataset', red_colors[-1]), ('Removed from dataset', red_colors[2])]:
         fig.add_trace(go.Scatter(
@@ -124,8 +113,8 @@ def make_fire_data_entry_analysis(df, dark_mode=True):
         bargap=0.2,
         yaxis_title='Number of pixels',
         legend =dict(orientation='v', x=1.0, y=1.30, xanchor='right', bgcolor='rgba(0,0,0,0)'),
-        legend2=dict(orientation='v', yanchor='top', xanchor='left',   y=-0.1, x=0,
-                     bgcolor='rgba(0,0,0,0.0)', borderwidth=0),
+        # legend2=dict(orientation='v', yanchor='top', xanchor='left',   y=-0.1, x=0,
+        #              bgcolor='rgba(0,0,0,0.0)', borderwidth=0),
         legend3=dict(orientation='v', yanchor='top', xanchor='center', y=-0.1, x=0.5,
                      bgcolor='rgba(0,0,0,0.0)', borderwidth=0),
         legend4=dict(orientation='v', yanchor='top', xanchor='left',   y=-0.1, x=0.75,
