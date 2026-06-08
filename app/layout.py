@@ -718,39 +718,46 @@ def build_behind_data():
             ),
         ]),
         # ══ Section 1: Rethinking the AQI ════════════════
-        dbc.Row([dbc.Col(section_title("Rethinking the AQI", align='left'))]),
-        dbc.Row(text_card("Why it matters", analysis.PANEL_EXPLORE_SUMAQI)),
+        dbc.Row([dbc.Col(section_title("Rethinking the AQI", align='center'))]),
+        dbc.Row([
+            dbc.Col(text_card("Why it matters", analysis.PANEL_EXPLORE_EPA),width=4),
+            dbc.Col(text_card("Approach", analysis.PANEL_EXPLORE_SUMAQI),width=4),
+            dbc.Col(text_card("Example", analysis.PANEL_EXPLORE_SUMAQI_EXAMPLE),width=4),
+
+        ]),
         dbc.Row([
             dbc.Col(epa_report_card(113, "Unhealthy for Sensitive Groups (SG)", analysis.PANEL_EXPLORE_EPA_CARD, "var(--stat-problem-3)"),width=3),
             dbc.Col(graph_card("explore-sum-aqi-graph", explore_sum_aqi, height='360px'), width=9),
         ], align="center"),
         dbc.Row([
-            dbc.Col(graph_card("explore-pie-graph", explore_pie, height='360px'), width=8),
             dbc.Col(text_card("Monitor coverage", analysis.PANEL_EXPLORE_PIE), width=4),
+            dbc.Col(graph_card("explore-pie-graph", explore_pie, height='360px'), width=8),
         ], align="start"),
         dbc.Row([
             dbc.Col(graph_card("explore-wrong-guide-graph", explore_wrong_guide, height='360px'), width=8),
             dbc.Col(text_card("Reading the examples", analysis.PANEL_EXPLORE_MISCLASS), width=4),
         ], align="start"),
         dbc.Row([
-            dbc.Col(misclass_example_card(ex), width=6)
-            for ex in misclassification_examples[:2]
+            dbc.Col(text_card("Worst missclassification", analysis.PANEL_WORST_MISSCLASS),width=3),
+            dbc.Col(misclass_example_card(misclassification_examples[0]), width=4),
+            dbc.Col(misclass_example_card(misclassification_examples[1]), width=5),
+
         ], className="g-3"),
 
 
         # ══ Section 2: Fire Data Cleaning ════════════════
-        dbc.Row([dbc.Col(section_title("Fire Data Cleaning", align='left'))]),
+        dbc.Row([dbc.Col(section_title("Fire Data Cleaning", align='center'))]),
         dbc.Row([
-            dbc.Col(graph_card("explore-scan-track-graph", explore_scan_track, height='420px'), width=8),
             dbc.Col(text_card("Pixel-size filter", analysis.PANEL_EXPLORE_SCANTRACK), width=4),
+            dbc.Col(graph_card("explore-scan-track-graph", explore_scan_track, height='420px'), width=8),
         ], align="start"),
         dbc.Row([
             dbc.Col(graph_card("explore-data-entries-graph", explore_data_entries, height='450px'), width=8),
             dbc.Col(text_card("Filtering decisions", analysis.PANEL_EXPLORE_ENTRIES), width=4),
         ], align="start"),
         dbc.Row([
-            dbc.Col(graph_card("explore-category-graph", explore_category, height='500px'), width=8),
             dbc.Col(text_card("Fire categories", analysis.PANEL_EXPLORE_CATEGORY), width=4),
+            dbc.Col(graph_card("explore-category-graph", explore_category, height='500px'), width=8),
         ], align="start"),
     ])
 
