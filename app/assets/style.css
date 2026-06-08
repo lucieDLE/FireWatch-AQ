@@ -117,6 +117,38 @@
 
 }
 
+/* ============================================================
+   Typography & spacing scales (theme-independent)
+   ============================================================ */
+:root {
+  /* Cross-platform system font stack */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               Helvetica, Arial, sans-serif;
+
+  /* Type scale */
+  --fs-2xs:  0.7rem;
+  --fs-xs:   0.75rem;
+  --fs-sm:   0.8rem;
+  --fs-md:   0.9rem;
+  --fs-base: 0.95rem;
+  --fs-lg:   1.05rem;
+  --fs-xl:   1.25rem;
+  --fs-2xl:  1.5rem;
+  --fs-3xl:  2rem;
+  --fs-4xl:  2.5rem;
+  --fs-5xl:  3rem;
+  --fs-hero: 3.6rem;
+
+  /* Spacing scale (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+}
+
 .dark {
   /* Surfaces */
   --bg-page:          var(--md-surface);
@@ -156,11 +188,13 @@
    Base
    ============================================================ */
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: 1.55;
   margin: 0;
 }
 
-.row{margin-bottom: 48px;}
+.row{margin-bottom: var(--space-7);}
 
 #page-wrapper {
   color: var(--text-main);
@@ -177,7 +211,7 @@ body {
   background-color: var(--bg-header);
   padding: 14px 24px;
   color: var(--text-header);
-  font-size: 20px;
+  font-size: var(--fs-xl);
   font-weight: 600;
   letter-spacing: 0.5px;
 }
@@ -186,7 +220,7 @@ body {
    Tabs
    ============================================================ */
 .tab {
-  font-size: 0.9rem;
+  font-size: var(--fs-md);
   font-weight: 500;
   color: var(--text-tab) !important;
   background-color: var(--bg-tab) !important;
@@ -222,22 +256,22 @@ body {
   border-radius: 12px;
   border: 1px solid var(--border-color);
   box-shadow: 0 1px 4px var(--shadow);
-  padding: 8px;
-  margin-bottom: 16px;
+  padding: var(--space-2);
+  margin-bottom: var(--space-4);
 }
 
 /* Square box for the pie chart (Behind the Data tab) */
 .chart-card.square-chart {
   aspect-ratio: 1 / 1;
   max-width: 440px;
-  margin: 0 auto 16px;
+  margin: 0 auto var(--space-4);
 }
 
 /* ============================================================
    Text cards (dbc.Card)
    ============================================================ */
 .card {
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
   /* margin-top: 16px; */
   border: 1px solid var(--border-color) !important;
   border-radius: 12px;
@@ -249,7 +283,7 @@ body {
   background-color: var(--bg-card-header) !important;
   color: var(--text-card-header) !important;
   font-weight: 600;
-  font-size: 0.98rem;
+  font-size: var(--fs-base);
   padding: 7px 14px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -258,7 +292,7 @@ body {
 .card-body {
   background-color: var(--bg-card-body) !important;
   color: var(--text-card-body) !important;
-  font-size: 0.92rem;
+  font-size: var(--fs-md);
   padding: 12px 14px 6px;
 }
 
@@ -275,11 +309,11 @@ body {
    Date slider
    ============================================================ */
    .dash-slider-container {
-    padding: 8px 16px 32px;
+    padding: var(--space-2) var(--space-4) var(--space-6);
     background-color: var(--bg-card);
     border-radius: 12px;
     border: 1px solid var(--border-color);
-    margin-bottom: 16px;
+    margin-bottom: var(--space-4);
   }
   
   /* Rail (unselected portion, after the handle) */
@@ -323,26 +357,26 @@ body {
   ============================================================ */
 
 .dash-dropdown-wrapper{
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
 }
 .dash-dropdown,
 .dash-dropdown-content {
     color: var(--Dash-Text-Strong);
-    font-size: 1.1rem;
+    font-size: var(--fs-lg);
     font-weight: 400;
     border-color: var(--border-color);
 }
 .slider-track {
     background-color: var(--accent);
     border-color: var(--border-color);
-    font-size: 0.85rem;
+    font-size: var(--fs-md);
     font-weight: 400;
 
 }
 .dash-dropdown-value{
   color: var(--Dash-Text-Strong);
   border-color: var(--border-color);
-  /* margin-bottom: 16px; */
+  /* margin-bottom: var(--space-4); */
 }
 
 .slider-handle {
@@ -358,13 +392,13 @@ body {
    ============================================================ */
 
 .section-title {
-  font-size: 1.05rem;
+  font-size: var(--fs-lg);
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-main);
-  margin-bottom: 16px;
-  margin-top: 8px;
+  margin-bottom: var(--space-4);
+  margin-top: var(--space-2);
   padding-bottom: 6px;
   border-bottom: 2px solid var(--accent);
   display: inline-block;
@@ -375,35 +409,35 @@ body {
 .hero-block {
   border-left: 4px solid var(--accent);
   padding: 28px 0 28px 28px;
-  margin-bottom: 48px;
+  margin-bottom: var(--space-7);
 }
 
 .hero-eyebrow {
-  font-size: 0.78rem;
+  font-size: var(--fs-sm);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2);
 }
 
 .hero-title {
-  font-size: 3.6rem;
+  font-size: var(--fs-hero);
   font-weight: 800;
   line-height: 1.05;
   color: var(--text-main);
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
 }
 
 .hero-stats {
-  font-size: 2rem;
+  font-size: var(--fs-3xl);
   font-weight: 400;
   color: var(--text-main);
   margin-bottom: 20px;
 }
 
 .hero-stat {
-  font-size: 2.4rem;
+  font-size: var(--fs-4xl);
   font-weight: 700;
   color: var(--accent);
 }
@@ -415,7 +449,7 @@ body {
 }
 
 .hero-desc {
-  font-size: 1.15rem;
+  font-size: var(--fs-lg);
   color: var(--text-main);
   max-width: 780px;
   line-height: 1.6;
@@ -424,15 +458,15 @@ body {
 
 .intro-presentation {
   text-align: left;
-  font-size: 1.25rem;
+  font-size: var(--fs-xl);
   font-style: italic;
   color: var(--text-main);
   background-color: transparent;
   border-left: 4px solid var(--accent);
   border-radius: 0;
   padding: 6px 0 6px 20px;
-  margin-bottom: 16px;
-  margin-top: 48px;
+  margin-bottom: var(--space-4);
+  margin-top: var(--space-7);
 }
 
 /* AQI + NAAQS tables */
@@ -441,19 +475,19 @@ body {
   /* border: 1px solid var(--border-color); */
   /* border-radius: 12px; */
   overflow: hidden;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
 }
 
 .aqi-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 4px;
-  font-size: 0.88rem;
-  padding: 8px;
+  font-size: var(--fs-md);
+  padding: var(--space-2);
 }
 
 .aqi-table-head th {
-  font-size: 0.78rem;
+  font-size: var(--fs-sm);
   text-transform: uppercase;
   letter-spacing: 0.07em;
   color: var(--text-card-header);
@@ -470,9 +504,9 @@ body {
 }
 
 .sources-card .card-body {
-  font-size: 0.85rem;
+  font-size: var(--fs-md);
   column-count: 2;
-  column-gap: 32px;
+  column-gap: var(--space-6);
 }
 
 @media (max-width: 768px) {
@@ -506,7 +540,7 @@ sup a:hover {
 .hook-card-wrapper {
   position: relative;
   padding-top: 52px;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
   overflow: visible;
 }
 
@@ -528,7 +562,7 @@ sup a:hover {
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  font-size: 0.78rem;
+  font-size: var(--fs-sm);
   font-weight: 600;
   line-height: 1.3;
 }
@@ -539,12 +573,12 @@ sup a:hover {
 }
 
 .hook-badge .fa {
-  font-size: 3rem;
+  font-size: var(--fs-5xl);
 }
 
 .hook-card-wrapper .card {
   border-radius: 16px !important;
-  padding:  16px 16px 16px 16px;
+  padding: var(--space-4);
   margin-top: 16px;
   background-color: var(--bg-card-body);
 }
@@ -558,7 +592,7 @@ sup a:hover {
    ============================================================ */
 
 .poll-group-label {
-  font-size: 1.0rem;
+  font-size: var(--fs-base);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -570,7 +604,7 @@ sup a:hover {
   background-color: var(--bg-card-body);
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  padding: 16px;
+  padding: var(--space-4);
   margin-bottom: 10px;
 }
 
@@ -579,7 +613,7 @@ sup a:hover {
 }
 
 .poll-pm-intro {
-  font-size: 0.80rem;
+  font-size: var(--fs-sm);
   color: var(--md-on-surface-variant);
   margin: 0;
   line-height: 1.5;
@@ -600,20 +634,20 @@ sup a:hover {
 }
 
 .poll-sym-text {
-  font-size: 1.5rem;
+  font-size: var(--fs-2xl);
   font-weight: 700;
   line-height: 1;
 }
 
 .poll-sym-sub {
-  font-size: 0.8rem;
+  font-size: var(--fs-sm);
   font-weight: 600;
 }
 
 .poll-source-badge {
   display: flex;
   align-items: center;
-  font-size: 0.7rem;
+  font-size: var(--fs-2xs);
   font-weight: 500;
   color: var(--md-on-surface-variant);
   border-radius: 20px;
@@ -622,17 +656,17 @@ sup a:hover {
 }
 
 .poll-title {
-  font-size: 0.95rem;
+  font-size: var(--fs-base);
   font-weight: 700;
   color: var(--text-main);
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 
 .poll-desc {
-  font-size: 0.80rem;
+  font-size: var(--fs-sm);
   color: var(--md-on-surface-variant);
   line-height: 1.45;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
 }
 
 .poll-risk-section {
@@ -643,16 +677,16 @@ sup a:hover {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
 }
 
 .poll-risk-label {
-  font-size: 0.75rem;
+  font-size: var(--fs-xs);
   color: var(--md-on-surface-variant);
 }
 
 .poll-risk-value {
-  font-size: 0.75rem;
+  font-size: var(--fs-xs);
   font-weight: 600;
 }
 
@@ -665,18 +699,18 @@ sup a:hover {
 
 .stat-section-subtitle {
   text-align: center;
-  font-size: 1.35rem;
+  font-size: var(--fs-xl);
   font-weight: 500;
   color: var(--md-on-surface-variant);
   letter-spacing: 0.02em;
   margin-bottom: 14px;
-  margin-top: 4px;
+  margin-top: var(--space-1);
 }
 
 .stat-card {
   border-radius: 20px;
   padding: 30px 20px;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
   color: white;
   justify-content: space-between;
   position: relative;
@@ -707,28 +741,28 @@ sup a:hover {
 .stat-top {
   display: flex;
   align-items: baseline;
-  gap: 4px;
+  gap: var(--space-1);
   flex-wrap: wrap;
   line-height: 1;
   margin-bottom: 0px;
 }
 
 .stat-big {
-  font-size: 2.5rem;
+  font-size: var(--fs-4xl);
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.4;
   color: white;
 }
 
 .stat-context {
-  font-size: 0.8rem;
+  font-size: var(--fs-lg);
   font-weight: 400;
   color: white;
   align-self: bottom;
 }
 
 .stat-desc {
-  font-size: 0.7rem;
+  font-size: var(--fs-sm);
   margin: 0;
   color: white;
   line-height: 1.6;
@@ -740,14 +774,14 @@ sup a:hover {
   border: 1px solid var(--border-color);
   border-radius: 14px;
   padding: 18px 20px;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
 }
 
 .misclass-title {
-  font-size: 0.95rem;
+  font-size: var(--fs-base);
   font-weight: 800;
   color: var(--md-on-surface);
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
 }
 
 .misclass-polls {
@@ -755,11 +789,11 @@ sup a:hover {
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
 }
 
 .misclass-poll {
-  font-size: 0.80rem;
+  font-size: var(--fs-sm);
   font-weight: 700;
   padding: 5px 14px;
   border-radius: 999px;
@@ -784,7 +818,7 @@ sup a:hover {
 .misclass-site-block { margin-bottom: 10px; }
 
 .misclass-site {
-  font-size: 0.8rem;
+  font-size: var(--fs-sm);
   color: var(--md-on-surface);
   margin: 8px 0 6px;
 }
@@ -792,12 +826,12 @@ sup a:hover {
 .misclass-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-2);
   margin-bottom: 6px;
 }
 
 .misclass-badge {
-  font-size: 0.8rem;
+  font-size: var(--fs-sm);
   font-weight: 600;
   padding: 4px 14px;
   border-radius: 999px;
