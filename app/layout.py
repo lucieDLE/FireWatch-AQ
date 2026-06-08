@@ -40,13 +40,20 @@ def graph_card(fig_id, figure, height='400px'):
     )
 
 
-def text_card(title="TITLE", text='some text'):
-    return html.Div(
-        dbc.Card([
-            dbc.CardHeader(title),
-            dbc.CardBody(dcc.Markdown(text)),
-        ]),
-    )
+def text_card(title="TITLE", text='some text', solid=False):
+    # solid -> emphasized card (used for the orienting "Overview" blocks);
+    # default -> lightened block that sits on the page background.
+    if solid:
+        return html.Div(
+            dbc.Card([
+                dbc.CardHeader(title),
+                dbc.CardBody(dcc.Markdown(text)),
+            ]),
+        )
+    return html.Div([
+        html.Div(title, className="flat-block-title"),
+        dcc.Markdown(text, className="flat-block-body"),
+    ], className="flat-block")
 
 
 def body_card(text):
@@ -488,7 +495,7 @@ def build_air_quality_tab():
         children=[
             # ── Top row: 2 charts side by side ──────────────────
             dbc.Row([
-                    text_card("Overview", analysis.PANEL_AIR_OVERVIEW),
+                    text_card("Overview", analysis.PANEL_AIR_OVERVIEW, solid=True),
             ]),
             dbc.Row([
                 dbc.Col(
@@ -548,7 +555,7 @@ def build_fire_data_tab():
 
             dbc.Row([
                 dbc.Col(
-                    text_card("Overview", analysis.PANEL_FIRE_OVERVIEW),
+                    text_card("Overview", analysis.PANEL_FIRE_OVERVIEW, solid=True),
                 ),
             ]),
             dbc.Row([
@@ -580,7 +587,7 @@ def build_fire_data_tab():
                 
                 # Right Col
                 dbc.Col([
-                    text_card("Overview", "Select a pollutant to visualize its impact on public health and its relationship with fire onset."),
+                    text_card("Overview", "Select a pollutant to visualize its impact on public health and its relationship with fire onset.", solid=True),
                     dcc.Dropdown(
                         id='pollutant-dropdown',
                         options=[{'label': name, 'value': name} for name in POLLUTANT_COL_MAP if name != 'NO2'],
@@ -588,10 +595,10 @@ def build_fire_data_tab():
                         clearable=False,
                         className='mb-3',
                     ),
-                    dbc.Card([
-                        dbc.CardHeader(id="pollutant-card-header", children=analysis.PANEL_FIRE_BOXPLOT_PM25[0]),
-                        dbc.CardBody(dcc.Markdown(id="pollutant-card-body", children=analysis.PANEL_FIRE_BOXPLOT_PM25[1])),
-                    ]),
+                    html.Div([
+                        html.Div(id="pollutant-card-header", children=analysis.PANEL_FIRE_BOXPLOT_PM25[0], className="flat-block-title"),
+                        dcc.Markdown(id="pollutant-card-body", children=analysis.PANEL_FIRE_BOXPLOT_PM25[1], className="flat-block-body"),
+                    ], className="flat-block"),
                 ], width=3),
             ], align="start"),
         ])
@@ -676,16 +683,16 @@ def build_time_serie_event():
         ]),
         dbc.Row([
             dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader(id="event-site1-header", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_1[0]),
-                    dbc.CardBody(dcc.Markdown(id="event-site1-body", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_1[1])),
-                ]),
+                html.Div([
+                    html.Div(id="event-site1-header", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_1[0], className="flat-block-title"),
+                    dcc.Markdown(id="event-site1-body", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_1[1], className="flat-block-body"),
+                ], className="flat-block"),
             ],width=6),
             dbc.Col([
-                dbc.Card([
-                    dbc.CardHeader(id="event-site2-header", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_2[0]),
-                    dbc.CardBody(dcc.Markdown(id="event-site2-body", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_2[1])),
-                ]),
+                html.Div([
+                    html.Div(id="event-site2-header", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_2[0], className="flat-block-title"),
+                    dcc.Markdown(id="event-site2-body", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_2[1], className="flat-block-body"),
+                ], className="flat-block"),
             ],width=6),
         ])
     ])
@@ -707,7 +714,7 @@ def build_behind_data():
     children=[
         dbc.Row([
             dbc.Col(
-                text_card("Overview", analysis.PANEL_EXPLORE_OVERVIEW),
+                text_card("Overview", analysis.PANEL_EXPLORE_OVERVIEW, solid=True),
             ),
         ]),
         # ══ Section 1: Rethinking the AQI ════════════════
