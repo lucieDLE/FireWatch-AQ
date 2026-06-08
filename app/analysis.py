@@ -134,8 +134,8 @@ PANEL_AIR_CARD_MONITORS_1 = [ """Monitoring density is highly uneven across the 
 """
 California alone accounts for the largest share of daily monitoring records in 2025, and lower-coverage
 states like Vermont, Rhode Island, or Puerto Rico. This reflects two factors: 1) California is one of
-the most polluted states in the US [[1](https://en.wikipedia.org/wiki/Pollution_in_California)] and 2) invested heavily in monitoring
-infrastructure to track and improve its air quality. 
+the most polluted states in the US[11](https://en.wikipedia.org/wiki/Pollution_in_California) and 2) invested heavily in monitoring
+infrastructure to track and improve its air quality.
 """
 ]
 
@@ -143,8 +143,7 @@ infrastructure to track and improve its air quality.
 PANEL_AIR_CARD_MONITORS_2 = [ """Ozone and PM2.5 are the most monitored pollutant""", 
 """
 They are known to be the deadliest and most widespread air pollutants in the US, driving the majority
-of pollution-attributable disease and premature mortality[[2]
-(https://www.stateofglobalair.org/sites/default/files/documents/2024-06/soga-2024-report_0.pdf)].
+of pollution-attributable disease and premature mortality[13](https://www.stateofglobalair.org/sites/default/files/documents/2024-06/soga-2024-report_0.pdf).
 """
 ]
 
@@ -308,8 +307,7 @@ AQI ("unhealthy for all" category), before returning rapidly to baseline levels 
 Pasadena and LA-North Main Street recorded the highest values. Coastal sites like Signal Hill and 
 West Los Angeles peaked lower (~100-125).
 
-It has been reported that the very high PM2.5, were mostly coming from lead
-[2][https://www.cdc.gov/mmwr/volumes/74/wr/mm7405a4.htm?s_cid=mm7405a4_w] due to building, pipes, 
+It has been reported that the very high PM2.5, were mostly coming from lead[14](https://www.cdc.gov/mmwr/volumes/74/wr/mm7405a4.htm?s_cid=mm7405a4_w) due to building, pipes,
 electronic equipment having lead paint.
 """
 ]
@@ -504,11 +502,6 @@ the importance of revisiting the AQI methodology for high-pollution areas: Baker
 ranked among the worst cities for ozone[9](https://www.lung.org/getmedia/3575a218-b54e-4dfe-8d91-892276870a14/california-sota-2025-fact-sheet.pdf),
 and Calexico appears in 3 of these 4 most severely misclassified days.
 """
-# --- fire-pixel cleaning ---
-PANEL_EXPLORE_SCANTRACK = """_TODO: explain the scan/track pixel-size filter and the 0.6 threshold._"""
-PANEL_EXPLORE_ENTRIES   = """_TODO: explain the day/night, fire-type and confidence filtering decisions._"""
-PANEL_EXPLORE_CATEGORY  = """_TODO: explain FRP-based fire categories, raw vs cleaned._"""
-
 
 
 
@@ -540,4 +533,8 @@ SOURCES_MD = """
 **[11]** Wikipedia — Pollution in California — [wikipedia.org](https://en.wikipedia.org/wiki/Pollution_in_California)
 
 **[12]** Wikipedia — San Joaquin Valley — [wikipedia.org](https://en.wikipedia.org/wiki/San_Joaquin_Valley)
+
+**[13]** Health Effects Institute — State of Global Air 2024 — [stateofglobalair.org](https://www.stateofglobalair.org/sites/default/files/documents/2024-06/soga-2024-report_0.pdf)
+
+**[14]** CDC MMWR — Lead exposure during the 2025 Los Angeles wildfires — [cdc.gov](https://www.cdc.gov/mmwr/volumes/74/wr/mm7405a4.htm?s_cid=mm7405a4_w)
 """
