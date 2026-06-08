@@ -2,6 +2,7 @@ import path_setup  # noqa: F401
 
 import os
 import json
+from functools import lru_cache
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
@@ -16,9 +17,12 @@ from src.config import (
 from src.display import WATCH_SITES, FIRE_WATCH_SITES, STATE_NAME_TO_CODE
 from data_loaders import df_aqi, df_fire, df_aqr_annual, ca_geojson
 
-# Raw (unfiltered) fire pixels — keeps the isFire==0 rows the cleaned file drops,
-# needed for the "kept vs removed" data-cleaning figures on the Behind the Data tab.
-df_fire_raw = pd.read_csv(FIRE_RAW_PATH)
+
+@lru_cache(maxsize=1)
+def get_fire_raw():
+    """Load the full raw fire archive (~6.7 MB).
+    """
+    return pd.read_csv(FIRE_RAW_PATH)
 
 import numpy as np
 # ============================================================================

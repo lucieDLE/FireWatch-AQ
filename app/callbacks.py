@@ -69,6 +69,7 @@ def update_figure_theme(dark_mode):
         fig.update_layout(template='plotly_dark' if dark_mode else 'ggplot2')
 
     # Behind the Data — these handle their own template via dark_mode
+    df_fire_raw = get_fire_raw()
     fig_scan_track   = make_scan_track_distribution(df_fire_raw, dark_mode)
     fig_data_entries = make_fire_data_entry_analysis(df_fire_raw, dark_mode)
     fig_category     = make_fire_category_repartition(df_fire_raw, df_fire, dark_mode)
