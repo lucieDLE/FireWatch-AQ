@@ -434,22 +434,81 @@ FIRE_EVENT_PANEL_MAP = {
 # ============================================================================
 # Placeholder #TODO: do the analysis
 
-PANEL_EXPLORE_OVERVIEW = """_TODO: overview of the data-cleaning and AQI-methodology tab._"""
-
-# --- fire-pixel cleaning ---
-PANEL_EXPLORE_SCANTRACK = """_TODO: explain the scan/track pixel-size filter and the 0.6 threshold._"""
-PANEL_EXPLORE_ENTRIES   = """_TODO: explain the day/night, fire-type and confidence filtering decisions._"""
-PANEL_EXPLORE_CATEGORY  = """_TODO: explain FRP-based fire categories, raw vs cleaned._"""
-
+PANEL_EXPLORE_OVERVIEW = """
+This tab is an optional but important part of the analysis. The first section examines the methodology
+and limitations of the current US AQI. The second section explores the original fire satellite dataset
+categories and walks through the key data cleaning steps.
+"""
 # --- rethinking the AQI ---
 PANEL_EXPLORE_EPA_CARD = """ 
 - One number: the **highest** individual pollutant AQI
 - All other pollutants are **discarded**
 """
-PANEL_EXPLORE_EPA       = """_TODO: explain why a single-pollutant AQI understates exposure._"""
-PANEL_EXPLORE_SUMAQI    = """_TODO: explain the composite/sum AQI and exceedance accumulation._"""
-PANEL_EXPLORE_PIE       = """_TODO: explain how many pollutants each monitor measures._"""
-PANEL_EXPLORE_MISCLASS  = """_TODO: explain the misclassified-day examples below._"""
+
+PANEL_EXPLORE_EPA       = """
+The AQI used in public health reporting is fundamentally flawed. By definition, it reports only the maximum 
+AQI value across all pollutants. However, the air quality is significantly different when PM2.5 = 177 and 
+O3 = 35 compared to PM2.5 = 177 and O3 = 140 (values from the Palisades event). The Ozone levels are 
+substantially higher with serious health consequences, but remain hidden behind the dominant PM2.5 reading.
+
+This is known as the **co-exposure effect**, and it is a well-documented limitation of the AQI.
+A more complete approach would report all pollutants simultaneously, but this sacrifices the simplicity
+that makes the AQI useful to the general public.
+
+"""
+
+PANEL_EXPLORE_SUMAQI    = """
+In this project, we build on the maximum-pollutant AQI (primary exceedance) by adding all secondary
+exceedances, AQI values above the threshold of 50. To avoid inflating the score,
+we subtract the baseline value of 50 from each secondary exceedance. 
+
+For most days and most locations, a single pollutant dominates and the maximum is a reasonable metric for air quality.
+Co-exposure is relatively rare under normal conditions, which suggests the AQI is a good methodology
+overall. However, wildfires and other adverse events make co-exposure more frequent, and that is 
+precisely showing the importance of revising the AQI.
+"""
+
+PANEL_EXPLORE_SUMAQI_EXAMPLE    = """
+In the example below: The EPA maximum reported is 113, corresponding to the PM2.5 levels. Using the sum AQI, 
+we add to the PM25 the PM10 exceedance of 6 (56 - 50) and the O3 exceedance of 51 (101 - 50), giving
+a composite score of 170 ("Unhealthy for All") instead of the original 113 ("Unhealthy for Sensitive Groups").
+
+"""
+
+PANEL_EXPLORE_PIE       = """
+A second issue, introduced in the previous panel, is the problem of monitoring coverage. 
+This graph shows the number of pollutants captured by each monitor on each day. 
+About a third of monitors record only a single pollutant, which has two important implications:
+The true air quality at that location on that day cannot be fully assessed and the co-exposure 
+effects cannot be adequately detected or reported.
+"""
+PANEL_EXPLORE_MISCLASS  = """
+These three plots investigate the differences between the two methods across the dataset.
+
+The bar chart shows that the sum AQI pushed readings into a higher category in a meaningful
+number of cases. The two most impactful reclassifications are **Moderate → Unhealthy for Sensitive Groups**
+and **Unhealthy for Sensitive Groups → Unhealthy for All**. These are cases where people were told conditions 
+were  safe to go outside when they should have stayed indoors. The **Unhealthy → Very Unhealthy** shift 
+is less critical in practice, as both categories recommend remaining inside.
+
+It should be noted that these counts span all monitored locations in California over an entire year,
+so the absolute number of affected days remains relatively small. This confirms that the current EPA 
+AQI is, in general, a reliable metric for communicating air quality to the public.
+
+"""
+
+PANEL_WORST_MISSCLASS = """
+The two figures display 4 days where the sum AQI pushed a site two full categories higher, 
+with 3 out of 4 pollutants simultaneously exceeding recommended thresholds. These cases highlight 
+the importance of revisiting the AQI methodology for high-pollution areas: Bakersfield is consistently
+ranked among the worst cities for ozone[9](https://www.lung.org/getmedia/3575a218-b54e-4dfe-8d91-892276870a14/california-sota-2025-fact-sheet.pdf),
+and Calexico appears in 3 of these 4 most severely misclassified days.
+"""
+# --- fire-pixel cleaning ---
+PANEL_EXPLORE_SCANTRACK = """_TODO: explain the scan/track pixel-size filter and the 0.6 threshold._"""
+PANEL_EXPLORE_ENTRIES   = """_TODO: explain the day/night, fire-type and confidence filtering decisions._"""
+PANEL_EXPLORE_CATEGORY  = """_TODO: explain FRP-based fire categories, raw vs cleaned._"""
+
 
 
 
