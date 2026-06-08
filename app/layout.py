@@ -16,33 +16,8 @@ from figures_explore import (
     make_barplot_sum_aqi, make_pollutant_number_pie_chart, make_wrong_guidance_plot,
 )
 import analysis
-
-annual_pollutant_distribution = make_pollutant_distribution(df_aqr_annual)
-pollutant_exceedances_us_map = make_aq_us_plot(df_county_aqr_annual, list_best=list_best_codes, list_worst=list_worst_codes)
-pollutant_distribution_us_barplot = compute_max_boxplot(df_annual_stats, state_list)
-
-# Behind the Data tab — fire-pixel cleaning + AQI methodology figures
-explore_scan_track   = make_scan_track_distribution(df_fire_raw)
-explore_data_entries = make_fire_data_entry_analysis(df_fire_raw)
-explore_category     = make_fire_category_repartition(df_fire_raw, df_fire)
-explore_sum_aqi      = make_barplot_sum_aqi(df_aqi)
-explore_pie          = make_pollutant_number_pie_chart(df_aqi)
-explore_wrong_guide  = make_wrong_guidance_plot(df_aqi)
-
-top_counties = make_cloropleth_fire_counties(df_fire, ca_geojson)
-top_fires = make_bar_fire_event(df_biggest_fire)
-overlay_fire_aqi = make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire)
-
-# timeseries plots
-ts_site_1 = make_aq_time_series(df_event_site_1, site_1, site_name=site_name_1, colors=COLORS_MAP['FRESNO'])
-ts_site_2 = make_aq_time_series(df_event_site_2, site_2, site_name=site_name_2, colors=COLORS_MAP['SIERRA'])
-burning_area = make_burning_area_plot(gdf, event_start=EVENT_START, event_end=EVENT_END)
-aq_fire_overlay = make_overlay_aq_fire(
-    df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict, gdf_burnt_area, geojson_burnt_dict,
-    selected_day=SELECTED_DAY,
-    site_name_1=site_name_1, site_name_2=site_name_2,
-    center_lat=map_center_lat, center_lon=map_center_lon,
-)
+# NOTE: figures are built inside each build_*_tab() function (not at module import)
+# so that importing this module stays cheap; build_layout() triggers the work once.
 
 
 # ============================================================================
@@ -494,6 +469,10 @@ def build_intro_tab():
 
 
 def build_air_quality_tab():
+    annual_pollutant_distribution = make_pollutant_distribution(df_aqr_annual)
+    pollutant_exceedances_us_map = make_aq_us_plot(df_county_aqr_annual, list_best=list_best_codes, list_worst=list_worst_codes)
+    pollutant_distribution_us_barplot = compute_max_boxplot(df_annual_stats, state_list)
+
     air_quality_tab = dcc.Tab(
         label='Air Quality Data Exploration',
         children=[
@@ -549,6 +528,10 @@ def build_air_quality_tab():
 
 
 def build_fire_data_tab():
+    top_counties = make_cloropleth_fire_counties(df_fire, ca_geojson)
+    top_fires = make_bar_fire_event(df_biggest_fire)
+    overlay_fire_aqi = make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire)
+
     fire_data_tab = dcc.Tab(
         label='Fire Data Exploration', 
         children=[ 
@@ -606,6 +589,16 @@ def build_fire_data_tab():
 
 
 def build_time_serie_event():
+    ts_site_1 = make_aq_time_series(df_event_site_1, site_1, site_name=site_name_1, colors=COLORS_MAP['FRESNO'])
+    ts_site_2 = make_aq_time_series(df_event_site_2, site_2, site_name=site_name_2, colors=COLORS_MAP['SIERRA'])
+    burning_area = make_burning_area_plot(gdf, event_start=EVENT_START, event_end=EVENT_END)
+    aq_fire_overlay = make_overlay_aq_fire(
+        df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fire_dict, gdf_burnt_area, geojson_burnt_dict,
+        selected_day=SELECTED_DAY,
+        site_name_1=site_name_1, site_name_2=site_name_2,
+        center_lat=map_center_lat, center_lon=map_center_lon,
+    )
+
     time_serie_event = dcc.Tab(
     label='Event Time Series Visualization',
     children=[
@@ -690,6 +683,14 @@ def build_time_serie_event():
 
 
 def build_behind_data():
+    df_fire_raw = get_fire_raw()
+    explore_sum_aqi      = make_barplot_sum_aqi(df_aqi)
+    explore_pie          = make_pollutant_number_pie_chart(df_aqi)
+    explore_wrong_guide  = make_wrong_guidance_plot(df_aqi)
+    explore_scan_track   = make_scan_track_distribution(df_fire_raw)
+    explore_data_entries = make_fire_data_entry_analysis(df_fire_raw)
+    explore_category     = make_fire_category_repartition(df_fire_raw, df_fire)
+
     behind_data_tab = dcc.Tab(
     label='Behind the Data',
     value='behind-the-data',
