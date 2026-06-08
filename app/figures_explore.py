@@ -57,7 +57,7 @@ def make_fire_category_repartition(df, df_cleaned, dark_mode=True):
 
     fig.update_layout(
         template='plotly_dark' if dark_mode else 'ggplot2',
-        title_text='Fire Repartition by Category and FRP',
+        title_text='Fire intensity (FRP) by size category — raw vs cleaned pixels',
         height=500,
         margin = dict(t=75, l=10, r=10, b=10) ,
 
@@ -118,7 +118,7 @@ def make_fire_data_entry_analysis(df, dark_mode=True):
 
     fig.update_layout(
         template='plotly_dark' if dark_mode else 'ggplot2',
-        title_text='Data Entries and filtering decisions',
+        title_text='Which pixels we keep vs. remove — by day/night, type and confidence',
         margin = dict(t=40, l=0, r=10, b=40) ,
         barmode='overlay',
         bargap=0.2,
@@ -143,7 +143,7 @@ def make_scan_track_distribution(df, dark_mode=True):
                   line_color=line_reds[-1], annotation_text='threshold')
     fig.update_layout(
         template='plotly_dark' if dark_mode else 'ggplot2',
-        title_text='Scan and Track distribution',
+        title_text='Pixel footprint size (scan & track) — dropping oversized, low-resolution pixels',
         bargap=0.3, bargroupgap=0,
         margin = dict(t=50, l=0, r=10, b=40) ,
         legend =dict(orientation='v', x=.99, y=.99, xanchor='right', bgcolor='rgba(0,0,0,0)'),
@@ -165,13 +165,14 @@ def make_pollutant_number_pie_chart(df_aqi, dark_mode=True):
             name='Number of pollutants per monitor'
         )])
     fig.update_traces(
-        textinfo='text+percent+label', 
+        textinfo='percent+label',
+        textfont=dict(size=16, color=line_greens[-1]),
         marker=dict(colors=green_colors[::-1], line=dict(color=line_greens[-1], width=1)))
 
     fig.update_layout(
         template='plotly_dark' if dark_mode else 'ggplot2',
-        margin = dict(t=40, l=0, r=0, b=0) ,
-        title_text="Number of pollutant per datapoint",
+        margin = dict(t=60, l=10, r=10, b=10) ,
+        title_text="How many pollutants does each monitor actually measure?",
         legend=dict(
                 xanchor='left', y=.5, x=0.7,
                 title='Number of pollutants'
@@ -252,8 +253,8 @@ def make_barplot_sum_aqi(df_aqi, dark_mode=True):
     list_values[0]+=50
 
 
-    title_2 = 'Exceedance sum: ' + str(sum(list_values))
-    title_1='Air composition and AQI corresponding value'
+    title_2 = 'Composite (sum) AQI: ' + str(round(sum(list_values)))
+    title_1 = 'One day at one site: each pollutant\'s AQI vs. the Good-air threshold'
 
 
     fig = make_subplots(
@@ -293,18 +294,21 @@ def make_barplot_sum_aqi(df_aqi, dark_mode=True):
 
     for idx, row in small_df_sorted.iterrows():
         value = list_values[idx]
-        text = row['pollutant']
-        if idx != 0:
-            text = "Excess " + row['pollutant'],
-
+        text = row['pollutant'] if idx == 0 else "Excess " + row['pollutant']
+        text_color = 'white' if idx <= 1 else 'black'
 
         fig.add_trace(go.Bar(
-            name=row['pollutant'], 
-            x=['Sum AQI'], 
+            name=row['pollutant'],
+            x=['Sum AQI'],
             y=[value],
             marker_color=red_colors[::-1][idx],
             legend='legend1',
             text=text,
+            textposition='inside',
+            insidetextanchor='middle',
+            constraintext='none',
+            cliponaxis=False,
+            textfont=dict(color=text_color, size=12),
         ), row=1, col=2)
 
     fig.update_layout(  barmode='stack',
