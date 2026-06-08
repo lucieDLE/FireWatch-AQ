@@ -219,28 +219,29 @@ body {
 /* ============================================================
    Tabs
    ============================================================ */
-.tab {
+/* Scoped under #page-wrapper so these win over Dash's `.tab` rules
+   by specificity (id + class) instead of !important. */
+#page-wrapper .tab {
   font-size: var(--fs-md);
   font-weight: 500;
-  color: var(--text-tab) !important;
-  background-color: var(--bg-tab) !important;
-  border: none !important;
-  border-top: 3px solid transparent !important; 
-  border-bottom: none !important;
-  /* border-bottom: 2px solid var(--border-color) !important; */
+  color: var(--text-tab);
+  background-color: var(--bg-tab);
+  border: none;
+  border-top: 3px solid transparent;
+  border-bottom: none;
   transition: background-color 0.2s, color 0.2s;
 }
 
-.tab:hover {
-  background-color: var(--md-surface-container) !important;
-  color: var(--text-tab-selected) !important;
+#page-wrapper .tab:hover {
+  background-color: var(--md-surface-container);
+  color: var(--text-tab-selected);
 }
 
-.tab--selected {
-  color: var(--text-tab-selected) !important;
+#page-wrapper .tab--selected {
+  color: var(--text-tab-selected);
   font-weight: 700;
-  background-color: var(--bg-tab-selected) !important;
-  border-top: 3px solid var(--accent) !important;
+  background-color: var(--bg-tab-selected);
+  border-top: 3px solid var(--accent);
 }
 
 .tab-content {
