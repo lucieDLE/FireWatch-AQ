@@ -7,7 +7,19 @@ import dash_bootstrap_components as dbc
 
 from src.display import COLORS_MAP, red_colors, green_colors, line_greens, line_reds
 
-from data_transforms import *
+from data_transforms import (
+    # prepared dataframes / lookups
+    df_aqi, df_fire, df_aqr_annual, df_county_aqr_annual, df_annual_stats,
+    df_biggest_fire, df_aq_quantile, ca_geojson,
+    state_list, list_best_codes, list_worst_codes, POLLUTANT_COL_MAP,
+    misclassification_examples, get_fire_raw,
+    # event panel (initial render for DEFAULT_FIRE)
+    FIRE_OPTIONS, DEFAULT_FIRE, EVENT_START, EVENT_END, SELECTED_DAY, event_dates,
+    site_1, site_2, site_name_1, site_name_2,
+    df_event_site_1, df_event_site_2, df_day_site_1, df_day_site_2,
+    gdf, gdf_fire_day, gdf_burnt_area, geojson_fire_dict, geojson_burnt_dict,
+    map_center_lat, map_center_lon,
+)
 from figures_aq import make_pollutant_distribution, make_aq_us_plot, compute_max_boxplot
 from figures_fire import make_cloropleth_fire_counties, make_bar_fire_event, make_fire_aqi_overlay
 from figures_event import make_aq_time_series, make_burning_area_plot, make_overlay_aq_fire
@@ -16,8 +28,6 @@ from figures_explore import (
     make_barplot_sum_aqi, make_pollutant_number_pie_chart, make_wrong_guidance_plot,
 )
 import analysis
-# NOTE: figures are built inside each build_*_tab() function (not at module import)
-# so that importing this module stays cheap; build_layout() triggers the work once.
 
 
 # ============================================================================

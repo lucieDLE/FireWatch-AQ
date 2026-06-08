@@ -5,7 +5,12 @@ from dash import Input, Output, callback, Patch, callback_context
 
 from src.display import COLORS_MAP
 
-from data_transforms import *
+from data_transforms import (
+    df_aqi, df_fire, df_aqr_annual, df_county_aqr_annual, df_annual_stats,
+    df_biggest_fire, ca_geojson,
+    state_list, list_best_codes, list_worst_codes, POLLUTANT_COL_MAP,
+    get_fire_raw, get_event_data, compute_aqi_quantiles, compute_burnt_area_gdf,
+)
 from figures_aq import make_pollutant_distribution, make_aq_us_plot, compute_max_boxplot
 from figures_fire import make_cloropleth_fire_counties, make_bar_fire_event, make_fire_aqi_overlay
 from figures_event import (make_aq_time_series, make_burning_area_plot, make_overlay_aq_fire,
