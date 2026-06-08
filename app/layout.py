@@ -301,9 +301,446 @@ def sources_card():
 
 
 # ============================================================================
-#  APP LAYOUT
+#  TABS LAYOUT
 # ============================================================================
 
+def build_intro_tab():
+
+    intro_tab =  dcc.Tab(
+        label='Introduction',
+        children=[
+            # ── Hero ───────────────────────────────────────────
+            html.Div([
+                html.Div("2025 FIRE SEASON", className="hero-eyebrow"),
+                html.H1("California.", className="hero-title"),
+                html.P([
+                    html.Span("8,036", className="hero-stat"), " fires.  ",
+                    html.Span("525,223", className="hero-stat"), " acres burned.",
+                ], className="hero-stats"),
+                html.Hr(className="hero-divider"),
+                html.P([
+                    html.Em("This dashboard examines the air quality consequences of the 2025 California fire season: "),
+                    html.Strong("tracing the link between fire activity and pollutant exposure across the state."),
+                ], className="hero-desc"),
+            ], className="hero-block"),
+
+            # ── Section 1: Three hooks ─────────────────────────
+            dbc.Row([
+                dbc.Col(hookCard("fa-fire",      analysis.INTRO_SECTION_1_HOOK_1), width=3),
+                dbc.Col(hookCard("fa-line-chart", analysis.INTRO_SECTION_1_HOOK_2), width=3),
+                dbc.Col(hookCard("fa-wind",      analysis.INTRO_SECTION_1_HOOK_3), width=3),
+            ], className="justify-content-center", style={"marginTop": "60px"}),
+
+            # ── Section 2: What is AQI? ────────────────────────
+            dbc.Row([dbc.Col(sectionTitle("What is Air Quality Index (AQI)?", align='right'))]),
+            dbc.Row([
+                dbc.Col(aqi_table(), width=6),
+                dbc.Col(introBodyCard(analysis.INTRO_SECTION_2_CARD_1), width=6),
+            ], align="start"),
+
+
+            # ── Section 4: NAAQS / WHO table ──────────────────
+            dbc.Row([dbc.Col(sectionTitle("Legal Thresholds and WHO Guidelines", align='left'))]),
+            dbc.Row([
+                dbc.Col(naaqs_table(), width=8),
+            ]),
+            dbc.Row([dbc.Col(sectionTitle("Pollutants Covered in This Dashboard", align='right'))]),
+            dbc.Row(
+                className="justify-content-center g-4",
+                children=[
+                # ── Particulate Matter panel ───────────────────
+                dbc.Col(html.Div([
+                    html.Div("PARTICULATE MATTER", className="poll-group-label"),
+                    dbc.Row([
+                        dbc.Col(pollutantCard(
+                            symbol_children=[html.Span("PM", className="poll-sym-text") ],
+                            source_icon="fa-fire", source_text="various sources", source_bg="rgba(220,50,50,0.1)",
+                            title="Particulate Matter",
+                            desc=analysis.INTRO_SECTION_3_PM,
+                            risk_level="Very high", risk_pct=90, color="var(--md-on-surface-variant)"
+                        ),width=12),
+                    ],className="mb-2"),
+                    dbc.Row([
+
+                        dbc.Col(pollutantCard(
+                            symbol_children=[html.Span("PM", className="poll-sym-text"), html.Sub("2.5", className="poll-sym-sub")],
+                            source_icon="fa-fire", source_text="Wildfires · combustion", source_bg="rgba(220,50,50,0.1)",
+                            title="Fine particles",
+                            desc=analysis.INTRO_SECTION_3_PM25,
+                            risk_level="Very high", risk_pct=90, color="#5B5BD6"
+                        ),width=6),
+                        dbc.Col(pollutantCard(
+                            symbol_children=[html.Span("PM", className="poll-sym-text"), html.Sub("10", className="poll-sym-sub")],
+                            source_icon="fa-road", source_text="Dust · construction", source_bg="rgba(180,140,80,0.1)",
+                            title="Coarse particles",
+                            desc=analysis.INTRO_SECTION_3_PM10,
+                            risk_level="Moderate", risk_pct=50, color="#8B7355"
+                        ),width=6),
+                    ],className="mb-2")
+                ], className="poll-group-wrapper"), width=5),
+                # ── Gaseous Pollutants panel ───────────────────
+                dbc.Col(html.Div([
+                    html.Div("GASEOUS POLLUTANTS", className="poll-group-label"),
+                    dbc.Row([
+                        dbc.Col(pollutantCard(
+                            symbol_children=[html.Span("O", className="poll-sym-text"), html.Sub("3", className="poll-sym-sub")],
+                            source_icon="fa-sun", source_text="Sunlight · smog", source_bg="rgba(220,50,50,0.1)",
+                            title="Ground-level ozone",
+                            desc=analysis.INTRO_SECTION_3_O3,
+                            risk_level="Very high", risk_pct=90, color="#9B1C1C"
+                        ), width=6),
+                        dbc.Col(pollutantCard(
+                            symbol_children=[html.Span("NO", className="poll-sym-text"), html.Sub("2", className="poll-sym-sub")],
+                            source_icon="fa-bus", source_text="Transport · industry", source_bg="rgba(30,58,138,0.1)",
+                            title="Nitrogen dioxide",
+                            desc=analysis.INTRO_SECTION_3_NO2,
+                            risk_level="High", risk_pct=70, color="#1E3A8A"
+                        ), width=6),
+                    ], className="mb-2"),
+                    dbc.Row([
+                        dbc.Col(pollutantCard(
+                            symbol_children=[html.Span("CO", className="poll-sym-text")],
+                            source_icon="fa-car", source_text="Motor vehicles", source_bg="rgba(55,65,81,0.1)",
+                            title="Carbon monoxide",
+                            desc=analysis.INTRO_SECTION_3_CO,
+                            risk_level="Moderate", risk_pct=50, color="#374151"
+                        ), width=6),
+                        dbc.Col(pollutantCard(
+                            symbol_children=[html.Span("SO", className="poll-sym-text"), html.Sub("2", className="poll-sym-sub")],
+                            source_icon="fa-industry", source_text="Power · industry", source_bg="rgba(6,95,70,0.1)",
+                            title="Sulfur dioxide",
+                            desc=analysis.INTRO_SECTION_3_SO2,
+                            risk_level="Moderate", risk_pct=50, color="#065F46"
+                        ), width=6),
+                    ],className="mb-2"),
+                ], className="poll-group-wrapper"), width=5),
+            ]),
+            # ── Section 5: Why California? ─────────────────────
+            dbc.Row([dbc.Col(sectionTitle("Why California?", align='left'))]),
+
+            dbc.Row(
+                className="justify-content-center g-4",
+                children=[
+                dbc.Col(html.Div([
+                    html.Div("Public Health Concerns", className="poll-group-label"),
+                    dbc.Row([
+                        dbc.Col(statCard(
+                            [html.Span("88%", className="stat-big")],
+                            "Of Californians live in a community with unhealthy air",
+                            "var(--stat-problem-1)"
+                        ), width=6),
+                        dbc.Col(statCard(
+                            [html.Span("5", className="stat-big"), html.Span(" of the ", className="stat-context"), html.Span("10", className="stat-big")],
+                            "US cities most polluted are in California",
+                            "var(--stat-problem-2)"
+                        ), width=6),
+                    ],className="g-4 mb-2"),
+                    dbc.Row([
+                        dbc.Col(statCard(
+                            [html.Span("26", className="stat-big"), html.Span(" of the ", className="stat-context"), html.Span("27", className="stat-big")],
+                            "years Los Angeles has ranked as the most ozone-polluted city",
+                            "var(--stat-problem-3)"
+                        ), width=6),
+                        dbc.Col(statCard(
+                            [html.Span("2", className="stat-big")],
+                            "cities ranked 1st place in worst ozone and particle pollutions",
+                            "var(--stat-problem-4)"
+                        ), width=6),
+                    ],className="g-4 mb-2",),
+                ]),width=4),
+
+                dbc.Col(html.Div([
+                    html.Div("Signs of Progress", className="poll-group-label"),
+                    dbc.Row([
+                        dbc.Col(statCard(
+                            [html.Span("18.1", className="stat-big")],
+                            "Fewer bad days for short-term particle pollution in Bakerfield",
+                            "var(--stat-progress-1)"
+                        ), width=6),
+                        dbc.Col(statCard(
+                            [html.Span("#1", className="stat-big")],
+                            "US state on zero-emission vehicle adoption",
+                            "var(--stat-progress-2)"
+                        ), width=6),
+                    ],className="g-4 mb-2",),
+                    dbc.Row([
+                        dbc.Col(statCard(
+                            [html.Span("6", className="stat-big")],
+                            "metro areas improved enough to leave the Worst 25 list",
+                            "var(--stat-progress-3)"
+                        ), width=6),
+                        dbc.Col(statCard(
+                            [html.Span("18", className="stat-big"), html.Span(" of the ", className="stat-context"), html.Span("25", className="stat-big")],
+                            "worst cities for daily PM2.5 improved vs. last year",
+                            "var(--stat-progress-4)"
+                        ), width=6),
+                    ],className="g-4 mb-2"),
+                ]),width=4),
+            ]),
+            dbc.Row([
+                dbc.Col(html.Div("Causes and Risk Factors", className="poll-group-label", style={"textAlign": "center"})),
+            ],),
+            dbc.Row([
+                dbc.Col(hookCard("fa-car", analysis.INTRO_SECTION_5_FACTOR_1), width=4),
+                dbc.Col(hookCard("fa-thermometer-full", analysis.INTRO_SECTION_5_FACTOR_2), width=4),
+                dbc.Col(hookCard("fa-globe", analysis.INTRO_SECTION_5_FACTOR_3), width=4),
+            ]),
+
+            # ── Sources ────────────────────────────────────────
+            dbc.Row([dbc.Col(sources_card(), width=12)]),
+        ])
+
+    return intro_tab
+
+
+def build_air_quality_tab():
+    air_quality_tab = dcc.Tab(
+        label='Air Quality Data Exploration',
+        children=[
+            # ── Top row: 2 charts side by side ──────────────────
+            dbc.Row([
+                    textCard("Overview", analysis.PANEL_AIR_OVERVIEW),
+            ]),
+            dbc.Row([
+                dbc.Col(
+                    graphCard("annual-pollutant-graph", annual_pollutant_distribution, height='420px'),
+                    width=9,
+                ),
+                dbc.Col([
+                    textCard(analysis.PANEL_AIR_CARD_MONITORS_1[0], analysis.PANEL_AIR_CARD_MONITORS_1[1]),
+                    textCard(analysis.PANEL_AIR_CARD_MONITORS_2[0], analysis.PANEL_AIR_CARD_MONITORS_2[1]),
+                ], width=3,),
+            ], align="start"),
+            dbc.Row([
+                dbc.Col(
+                    graphCard("pollutant-exceedances-graph", pollutant_exceedances_us_map, height='420px'),
+                    width=9
+                ),
+                dbc.Col(
+                    textCard(analysis.PANEL_AIR_CARD_MAP[0], analysis.PANEL_AIR_CARD_MAP[1]),
+                    width=3,
+                ),
+            ], align="start"),
+
+            # ── Bottom row: 1 full-width chart ──────────────────
+            dbc.Row([
+                dbc.Col(
+                    graphCard("pollutant-distribution-graph", pollutant_distribution_us_barplot, height='500px'),
+                    width=12
+                ),
+            ]),
+            dbc.Row([
+                dbc.Col(
+                    textCard(analysis.PANEL_AIR_CARD_BOXPLOT_1[0], analysis.PANEL_AIR_CARD_BOXPLOT_1[1]),
+                    width=4
+                ),
+                dbc.Col(
+                    textCard(analysis.PANEL_AIR_CARD_BOXPLOT_2[0], analysis.PANEL_AIR_CARD_BOXPLOT_2[1]),
+                    width=4
+                ),
+                dbc.Col(
+                    textCard(analysis.PANEL_AIR_CARD_NOTE[0], analysis.PANEL_AIR_CARD_NOTE[1]),
+                    width=4
+                ),
+            ]),
+
+        ])
+    return air_quality_tab
+
+
+def build_fire_data_tab():
+    fire_data_tab = dcc.Tab(
+        label='Fire Data Exploration', 
+        children=[ 
+
+            dbc.Row([
+                dbc.Col(
+                    textCard("Overview", analysis.PANEL_FIRE_OVERVIEW),
+                ),
+            ]),
+            dbc.Row([
+                dbc.Col(
+                    graphCard("top-counties-graph", top_counties, height='420px'),
+                    width=9
+                ),
+                dbc.Col(
+                    textCard(analysis.PANEL_FIRE_CARD_COUNTY[0], analysis.PANEL_FIRE_CARD_COUNTY[1]),
+                    width=3,
+                )
+            ], align="start"),
+            dbc.Row([
+                dbc.Col(
+                    graphCard("top-fire-graph", top_fires, height='420px'),
+                    width=9
+                ),
+                dbc.Col(
+                    textCard(analysis.PANEL_FIRE_CARD_TOP10[0], analysis.PANEL_FIRE_CARD_TOP10[1]),
+                    width=3,
+                )
+            ], align="start"),
+            # ── Bottom row: pollutant selector + overlay chart ──
+            dbc.Row([
+                #Left Col
+                dbc.Col([
+                    graphCard("overlay-fire-aqi-graph", overlay_fire_aqi, height='500px'),
+                ], width=9),
+                
+                # Right Col
+                dbc.Col([
+                    textCard("Overview", "Select a pollutant to visualize its impact on public health and its relationship with fire onset."),
+                    dcc.Dropdown(
+                        id='pollutant-dropdown',
+                        options=[{'label': name, 'value': name} for name in POLLUTANT_COL_MAP if name != 'NO2'],
+                        value='PM2.5',
+                        clearable=False,
+                        className='mb-3',
+                    ),
+                    dbc.Card([
+                        dbc.CardHeader(id="pollutant-card-header", children=analysis.PANEL_FIRE_BOXPLOT_PM25[0]),
+                        dbc.CardBody(dcc.Markdown(id="pollutant-card-body", children=analysis.PANEL_FIRE_BOXPLOT_PM25[1])),
+                    ]),
+                ], width=3),
+            ], align="start"),
+        ])
+    return fire_data_tab
+
+
+def build_time_serie_event():
+    time_serie_event = dcc.Tab(
+    label='Event Time Series Visualization',
+    children=[
+        dbc.Row([
+            dbc.Col([
+                html.Div(
+                    dbc.Card([
+                        dbc.CardHeader("Overview"),
+                        dbc.CardBody([
+                            dcc.Markdown(analysis.PANEL_EVENT_OVERVIEW_PREAMBLE),
+                            dbc.Row([
+                                dbc.Col(dcc.Markdown(analysis.PANEL_EVENT_OVERVIEW_FIRES), width=6),
+                                dbc.Col(dcc.Markdown(analysis.PANEL_EVENT_OVERVIEW_ABBREVIATIONS), width=6),
+                            ], className="mb-0"),
+                        ]),
+                    ])
+                ),
+            ])
+        ]),
+        dbc.Row([
+            # left panel
+            dbc.Col([
+                html.Label("Select Fire Event:", className="fw-bold mt-2"),
+                dcc.Dropdown(
+                    id='fire-dropdown',
+                    options=[{'label': name, 'value': name} for name in FIRE_OPTIONS],
+                    value=DEFAULT_FIRE,
+                    clearable=False,
+                ),
+                dbc.Card([
+                    dbc.CardHeader(id="event-desc-header", children=analysis.PANEL_EVENT_MADRE_DESCRIPTION[0]),
+                    dbc.CardBody(dcc.Markdown(id="event-desc-body", children=analysis.PANEL_EVENT_MADRE_DESCRIPTION[1])),
+                ]),
+                graphCard(fig_id="burning-graph", figure=burning_area, height='300px'),
+            ],width=5),
+
+            dbc.Col([
+                graphCard(fig_id="overlay-map-graph", figure=aq_fire_overlay, height='480px'),
+                html.Div(
+                    dcc.Slider(
+                        id='date-slider',
+                        min=0,
+                        max=len(event_dates) - 1,
+                        step=1,
+                        value=event_dates.index(SELECTED_DAY) if SELECTED_DAY in event_dates else 0,
+                        marks={
+                            i: {'label': event_dates[i][5:],
+                                'style': {'fontSize': '11px'}}
+                            for i in range(0, len(event_dates), 3)
+                        },
+                        included=True,
+                    ),
+                    className='slider-container',
+                ),
+            ],width=7),
+        ]),
+            
+        dbc.Row([
+            dbc.Col([
+                graphCard(fig_id="ts-site1-graph", figure=ts_site_1, height='400px'),
+            ],width=6),
+            dbc.Col([
+                graphCard(fig_id="ts-site2-graph", figure=ts_site_2, height='400px'),
+            ],width=6),
+        ]),
+        dbc.Row([
+            dbc.Col([
+                dbc.Card([
+                    dbc.CardHeader(id="event-site1-header", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_1[0]),
+                    dbc.CardBody(dcc.Markdown(id="event-site1-body", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_1[1])),
+                ]),
+            ],width=6),
+            dbc.Col([
+                dbc.Card([
+                    dbc.CardHeader(id="event-site2-header", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_2[0]),
+                    dbc.CardBody(dcc.Markdown(id="event-site2-body", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_2[1])),
+                ]),
+            ],width=6),
+        ])
+    ])
+    return time_serie_event
+
+
+def build_behind_data():
+    behind_data_tab = dcc.Tab(
+    label='Behind the Data',
+    value='behind-the-data',
+    children=[
+        dbc.Row([
+            dbc.Col(
+                textCard("Overview", analysis.PANEL_EXPLORE_OVERVIEW),
+            ),
+        ]),
+        # ══ Section 1: Rethinking the AQI ════════════════
+        dbc.Row([dbc.Col(sectionTitle("Rethinking the AQI", align='left'))]),
+        dbc.Row(textCard("Why it matters", analysis.PANEL_EXPLORE_SUMAQI)),
+        dbc.Row([
+            dbc.Col(epaReportCard(113, "Unhealthy for Sensitive Groups (SG)", analysis.PANEL_EXPLORE_EPA_CARD, "var(--stat-problem-3)"),width=3),
+            dbc.Col(graphCard("explore-sum-aqi-graph", explore_sum_aqi, height='360px'), width=9),
+        ], align="center"),
+        dbc.Row([
+            dbc.Col(graphCard("explore-pie-graph", explore_pie, height='360px'), width=8),
+            dbc.Col(textCard("Monitor coverage", analysis.PANEL_EXPLORE_PIE), width=4),
+        ], align="start"),
+        dbc.Row([
+            dbc.Col(graphCard("explore-wrong-guide-graph", explore_wrong_guide, height='360px'), width=8),
+            dbc.Col(textCard("Reading the examples", analysis.PANEL_EXPLORE_MISCLASS), width=4),
+        ], align="start"),
+        dbc.Row([
+            dbc.Col(misclassExampleCard(ex), width=6)
+            for ex in misclassification_examples[:2]
+        ], className="g-3"),
+
+
+        # ══ Section 2: Fire Data Cleaning ════════════════
+        dbc.Row([dbc.Col(sectionTitle("Fire Data Cleaning", align='left'))]),
+        dbc.Row([
+            dbc.Col(graphCard("explore-scan-track-graph", explore_scan_track, height='420px'), width=8),
+            dbc.Col(textCard("Pixel-size filter", analysis.PANEL_EXPLORE_SCANTRACK), width=4),
+        ], align="start"),
+        dbc.Row([
+            dbc.Col(graphCard("explore-data-entries-graph", explore_data_entries, height='450px'), width=8),
+            dbc.Col(textCard("Filtering decisions", analysis.PANEL_EXPLORE_ENTRIES), width=4),
+        ], align="start"),
+        dbc.Row([
+            dbc.Col(graphCard("explore-category-graph", explore_category, height='500px'), width=8),
+            dbc.Col(textCard("Fire categories", analysis.PANEL_EXPLORE_CATEGORY), width=4),
+        ], align="start"),
+    ])
+
+    return behind_data_tab
+
+# ============================================================================
+#  APP LAYOUT
+# ============================================================================
 
 def build_layout():
 
@@ -322,432 +759,13 @@ def build_layout():
                                     ],className='app-header'
                                     ),
                                     dcc.Tabs([
-                                        dcc.Tab(
-                                            label='Introduction',
-                                            children=[
-
-                                                # ── Hero ───────────────────────────────────────────
-                                                html.Div([
-                                                    html.Div("2025 FIRE SEASON", className="hero-eyebrow"),
-                                                    html.H1("California.", className="hero-title"),
-                                                    html.P([
-                                                        html.Span("8,036", className="hero-stat"), " fires.  ",
-                                                        html.Span("525,223", className="hero-stat"), " acres burned.",
-                                                    ], className="hero-stats"),
-                                                    html.Hr(className="hero-divider"),
-                                                    html.P([
-                                                        html.Em("This dashboard examines the air quality consequences of the 2025 California fire season: "),
-                                                        html.Strong("tracing the link between fire activity and pollutant exposure across the state."),
-                                                    ], className="hero-desc"),
-                                                ], className="hero-block"),
-
-                                                # ── Section 1: Three hooks ─────────────────────────
-                                                dbc.Row([
-                                                    dbc.Col(hookCard("fa-fire",      analysis.INTRO_SECTION_1_HOOK_1), width=3),
-                                                    dbc.Col(hookCard("fa-line-chart", analysis.INTRO_SECTION_1_HOOK_2), width=3),
-                                                    dbc.Col(hookCard("fa-wind",      analysis.INTRO_SECTION_1_HOOK_3), width=3),
-                                                ], className="justify-content-center", style={"marginTop": "60px"}),
-
-                                                # ── Section 2: What is AQI? ────────────────────────
-                                                dbc.Row([dbc.Col(sectionTitle("What is Air Quality Index (AQI)?", align='right'))]),
-                                                dbc.Row([
-                                                    dbc.Col(aqi_table(), width=6),
-                                                    dbc.Col(introBodyCard(analysis.INTRO_SECTION_2_CARD_1), width=6),
-                                                ], align="start"),
-
-
-                                                # ── Section 4: NAAQS / WHO table ──────────────────
-                                                dbc.Row([dbc.Col(sectionTitle("Legal Thresholds and WHO Guidelines", align='left'))]),
-                                                dbc.Row([
-                                                    # dbc.Col(introBodyCard(analysis.INTRO_SECTION_3_PM), width=4),
-                                                    dbc.Col(naaqs_table(), width=8),
-                                                ]),
-                                                dbc.Row([dbc.Col(sectionTitle("Pollutants Covered in This Dashboard", align='right'))]),
-                                                dbc.Row(
-                                                    className="justify-content-center g-4",
-                                                    children=[
-                                                    # ── Particulate Matter panel ───────────────────
-                                                    dbc.Col(html.Div([
-                                                        html.Div("PARTICULATE MATTER", className="poll-group-label"),
-                                                        dbc.Row([
-                                                            dbc.Col(pollutantCard(
-                                                                symbol_children=[html.Span("PM", className="poll-sym-text") ],
-                                                                source_icon="fa-fire", source_text="various sources", source_bg="rgba(220,50,50,0.1)",
-                                                                title="Particulate Matter",
-                                                                desc=analysis.INTRO_SECTION_3_PM,
-                                                                risk_level="Very high", risk_pct=90, color="var(--md-on-surface-variant)"
-                                                            ),width=12),
-                                                        ],className="mb-2"),
-                                                        dbc.Row([
-
-                                                            dbc.Col(pollutantCard(
-                                                                symbol_children=[html.Span("PM", className="poll-sym-text"), html.Sub("2.5", className="poll-sym-sub")],
-                                                                source_icon="fa-fire", source_text="Wildfires · combustion", source_bg="rgba(220,50,50,0.1)",
-                                                                title="Fine particles",
-                                                                desc=analysis.INTRO_SECTION_3_PM25,
-                                                                risk_level="Very high", risk_pct=90, color="#5B5BD6"
-                                                            ),width=6),
-                                                            dbc.Col(pollutantCard(
-                                                                symbol_children=[html.Span("PM", className="poll-sym-text"), html.Sub("10", className="poll-sym-sub")],
-                                                                source_icon="fa-road", source_text="Dust · construction", source_bg="rgba(180,140,80,0.1)",
-                                                                title="Coarse particles",
-                                                                desc=analysis.INTRO_SECTION_3_PM10,
-                                                                risk_level="Moderate", risk_pct=50, color="#8B7355"
-                                                            ),width=6),
-                                                        ],className="mb-2")
-                                                    ], className="poll-group-wrapper"), width=5),
-                                                    # ── Gaseous Pollutants panel ───────────────────
-                                                    dbc.Col(html.Div([
-                                                        html.Div("GASEOUS POLLUTANTS", className="poll-group-label"),
-                                                        dbc.Row([
-                                                            dbc.Col(pollutantCard(
-                                                                symbol_children=[html.Span("O", className="poll-sym-text"), html.Sub("3", className="poll-sym-sub")],
-                                                                source_icon="fa-sun", source_text="Sunlight · smog", source_bg="rgba(220,50,50,0.1)",
-                                                                title="Ground-level ozone",
-                                                                desc=analysis.INTRO_SECTION_3_O3,
-                                                                risk_level="Very high", risk_pct=90, color="#9B1C1C"
-                                                            ), width=6),
-                                                            dbc.Col(pollutantCard(
-                                                                symbol_children=[html.Span("NO", className="poll-sym-text"), html.Sub("2", className="poll-sym-sub")],
-                                                                source_icon="fa-bus", source_text="Transport · industry", source_bg="rgba(30,58,138,0.1)",
-                                                                title="Nitrogen dioxide",
-                                                                desc=analysis.INTRO_SECTION_3_NO2,
-                                                                risk_level="High", risk_pct=70, color="#1E3A8A"
-                                                            ), width=6),
-                                                        ], className="mb-2"),
-                                                        dbc.Row([
-                                                            dbc.Col(pollutantCard(
-                                                                symbol_children=[html.Span("CO", className="poll-sym-text")],
-                                                                source_icon="fa-car", source_text="Motor vehicles", source_bg="rgba(55,65,81,0.1)",
-                                                                title="Carbon monoxide",
-                                                                desc=analysis.INTRO_SECTION_3_CO,
-                                                                risk_level="Moderate", risk_pct=50, color="#374151"
-                                                            ), width=6),
-                                                            dbc.Col(pollutantCard(
-                                                                symbol_children=[html.Span("SO", className="poll-sym-text"), html.Sub("2", className="poll-sym-sub")],
-                                                                source_icon="fa-industry", source_text="Power · industry", source_bg="rgba(6,95,70,0.1)",
-                                                                title="Sulfur dioxide",
-                                                                desc=analysis.INTRO_SECTION_3_SO2,
-                                                                risk_level="Moderate", risk_pct=50, color="#065F46"
-                                                            ), width=6),
-                                                        ],className="mb-2"),
-                                                    ], className="poll-group-wrapper"), width=5),
-                                                ]),
-
-
-                                                # ── Section 5: Why California? ─────────────────────
-                                                dbc.Row([dbc.Col(sectionTitle("Why California?", align='left'))]),
-
-                                                dbc.Row(
-                                                    className="justify-content-center g-4",
-                                                    children=[
-                                                    dbc.Col(html.Div([
-                                                        html.Div("Public Health Concerns", className="poll-group-label"),
-                                                        dbc.Row([
-                                                            dbc.Col(statCard(
-                                                                [html.Span("88%", className="stat-big")],
-                                                                "Of Californians live in a community with unhealthy air",
-                                                                "var(--stat-problem-1)"
-                                                            ), width=6),
-                                                            dbc.Col(statCard(
-                                                                [html.Span("5", className="stat-big"), html.Span(" of the ", className="stat-context"), html.Span("10", className="stat-big")],
-                                                                "US cities most polluted are in California",
-                                                                "var(--stat-problem-2)"
-                                                            ), width=6),
-                                                        ],className="g-4 mb-2"),
-                                                        dbc.Row([
-                                                            dbc.Col(statCard(
-                                                                [html.Span("26", className="stat-big"), html.Span(" of the ", className="stat-context"), html.Span("27", className="stat-big")],
-                                                                "years Los Angeles has ranked as the most ozone-polluted city",
-                                                                "var(--stat-problem-3)"
-                                                            ), width=6),
-                                                            dbc.Col(statCard(
-                                                                [html.Span("2", className="stat-big")],
-                                                                "cities ranked 1st place in worst ozone and particle pollutions",
-                                                                "var(--stat-problem-4)"
-                                                            ), width=6),
-                                                        ],className="g-4 mb-2",),
-                                                    ]),width=4),
-
-                                                    dbc.Col(html.Div([
-                                                        html.Div("Signs of Progress", className="poll-group-label"),
-                                                        dbc.Row([
-                                                            dbc.Col(statCard(
-                                                                [html.Span("18.1", className="stat-big")],
-                                                                "Fewer bad days for short-term particle pollution in Bakerfield",
-                                                                "var(--stat-progress-1)"
-                                                            ), width=6),
-                                                            dbc.Col(statCard(
-                                                                [html.Span("#1", className="stat-big")],
-                                                                "US state on zero-emission vehicle adoption",
-                                                                "var(--stat-progress-2)"
-                                                            ), width=6),
-                                                        ],className="g-4 mb-2",),
-                                                        dbc.Row([
-                                                            dbc.Col(statCard(
-                                                                [html.Span("6", className="stat-big")],
-                                                                "metro areas improved enough to leave the Worst 25 list",
-                                                                "var(--stat-progress-3)"
-                                                            ), width=6),
-                                                            dbc.Col(statCard(
-                                                                [html.Span("18", className="stat-big"), html.Span(" of the ", className="stat-context"), html.Span("25", className="stat-big")],
-                                                                "worst cities for daily PM2.5 improved vs. last year",
-                                                                "var(--stat-progress-4)"
-                                                            ), width=6),
-                                                        ],className="g-4 mb-2"),
-                                                    ]),width=4),
-                                                ]),
-                                                dbc.Row([
-                                                    dbc.Col(html.Div("Causes and Risk Factors", className="poll-group-label", style={"textAlign": "center"})),
-                                                ],),
-                                                dbc.Row([
-                                                    dbc.Col(hookCard("fa-car", analysis.INTRO_SECTION_5_FACTOR_1), width=4),
-                                                    dbc.Col(hookCard("fa-thermometer-full", analysis.INTRO_SECTION_5_FACTOR_2), width=4),
-                                                    dbc.Col(hookCard("fa-globe", analysis.INTRO_SECTION_5_FACTOR_3), width=4),
-                                                ]),
-
-                                                # ── Sources ────────────────────────────────────────
-                                                dbc.Row([dbc.Col(sources_card(), width=12)]),
-                                            ]),
-
-                                        dcc.Tab(
-                                            label='Air Quality Data Exploration',
-                                            children=[
-                                                # ── Top row: 2 charts side by side ──────────────────
-                                                dbc.Row([
-                                                        textCard("Overview", analysis.PANEL_AIR_OVERVIEW),
-                                                ]),
-                                                dbc.Row([
-                                                    dbc.Col(
-                                                        graphCard("annual-pollutant-graph", annual_pollutant_distribution, height='420px'),
-                                                        width=9,
-                                                    ),
-                                                    dbc.Col([
-                                                        textCard(analysis.PANEL_AIR_CARD_MONITORS_1[0], analysis.PANEL_AIR_CARD_MONITORS_1[1]),
-                                                        textCard(analysis.PANEL_AIR_CARD_MONITORS_2[0], analysis.PANEL_AIR_CARD_MONITORS_2[1]),
-                                                    ], width=3,),
-                                                ], align="start"),
-                                                dbc.Row([
-                                                    dbc.Col(
-                                                        graphCard("pollutant-exceedances-graph", pollutant_exceedances_us_map, height='420px'),
-                                                        width=9
-                                                    ),
-                                                    dbc.Col(
-                                                        textCard(analysis.PANEL_AIR_CARD_MAP[0], analysis.PANEL_AIR_CARD_MAP[1]),
-                                                        width=3,
-                                                    ),
-                                                ], align="start"),
-
-                                                # ── Bottom row: 1 full-width chart ──────────────────
-                                                dbc.Row([
-                                                    dbc.Col(
-                                                        graphCard("pollutant-distribution-graph", pollutant_distribution_us_barplot, height='500px'),
-                                                        width=12
-                                                    ),
-                                                ]),
-                                                dbc.Row([
-                                                    dbc.Col(
-                                                        textCard(analysis.PANEL_AIR_CARD_BOXPLOT_1[0], analysis.PANEL_AIR_CARD_BOXPLOT_1[1]),
-                                                        width=4
-                                                    ),
-                                                    dbc.Col(
-                                                        textCard(analysis.PANEL_AIR_CARD_BOXPLOT_2[0], analysis.PANEL_AIR_CARD_BOXPLOT_2[1]),
-                                                        width=4
-                                                    ),
-                                                    dbc.Col(
-                                                        textCard(analysis.PANEL_AIR_CARD_NOTE[0], analysis.PANEL_AIR_CARD_NOTE[1]),
-                                                        width=4
-                                                    ),
-                                                ]),
-
-                                            ]),
-
-                                        dcc.Tab(
-                                            label='Fire Data Exploration', 
-                                            children=[ 
-
-                                                dbc.Row([
-                                                    dbc.Col(
-                                                        textCard("Overview", analysis.PANEL_FIRE_OVERVIEW),
-                                                    ),
-                                                ]),
-                                                dbc.Row([
-                                                    dbc.Col(
-                                                        graphCard("top-counties-graph", top_counties, height='420px'),
-                                                        width=9
-                                                    ),
-                                                    dbc.Col(
-                                                        textCard(analysis.PANEL_FIRE_CARD_COUNTY[0], analysis.PANEL_FIRE_CARD_COUNTY[1]),
-                                                        width=3,
-                                                    )
-                                                ], align="start"),
-                                                dbc.Row([
-                                                    dbc.Col(
-                                                        graphCard("top-fire-graph", top_fires, height='420px'),
-                                                        width=9
-                                                    ),
-                                                    dbc.Col(
-                                                        textCard(analysis.PANEL_FIRE_CARD_TOP10[0], analysis.PANEL_FIRE_CARD_TOP10[1]),
-                                                        width=3,
-                                                    )
-                                                ], align="start"),
-                                                # ── Bottom row: pollutant selector + overlay chart ──
-                                                dbc.Row([
-                                                    #Left Col
-                                                    dbc.Col([
-                                                        graphCard("overlay-fire-aqi-graph", overlay_fire_aqi, height='500px'),
-                                                    ], width=9),
-                                                    
-                                                    # Right Col
-                                                    dbc.Col([
-                                                        textCard("Overview", "Select a pollutant to visualize its impact on public health and its relationship with fire onset."),
-                                                        dcc.Dropdown(
-                                                            id='pollutant-dropdown',
-                                                            options=[{'label': name, 'value': name} for name in POLLUTANT_COL_MAP if name != 'NO2'],
-                                                            value='PM2.5',
-                                                            clearable=False,
-                                                            className='mb-3',
-                                                        ),
-                                                        dbc.Card([
-                                                            dbc.CardHeader(id="pollutant-card-header", children=analysis.PANEL_FIRE_BOXPLOT_PM25[0]),
-                                                            dbc.CardBody(dcc.Markdown(id="pollutant-card-body", children=analysis.PANEL_FIRE_BOXPLOT_PM25[1])),
-                                                        ]),
-                                                    ], width=3),
-                                                ], align="start"),
-                                            ]),
-
-                                        dcc.Tab(
-                                            label='Event Time Series Visualization',
-                                            children=[
-                                                dbc.Row([
-                                                    dbc.Col([
-                                                        html.Div(
-                                                            dbc.Card([
-                                                                dbc.CardHeader("Overview"),
-                                                                dbc.CardBody([
-                                                                    dcc.Markdown(analysis.PANEL_EVENT_OVERVIEW_PREAMBLE),
-                                                                    dbc.Row([
-                                                                        dbc.Col(dcc.Markdown(analysis.PANEL_EVENT_OVERVIEW_FIRES), width=6),
-                                                                        dbc.Col(dcc.Markdown(analysis.PANEL_EVENT_OVERVIEW_ABBREVIATIONS), width=6),
-                                                                    ], className="mb-0"),
-                                                                ]),
-                                                            ])
-                                                        ),
-                                                    ])
-                                                ]),
-                                                dbc.Row([
-                                                    # left panel
-                                                    dbc.Col([
-                                                        html.Label("Select Fire Event:", className="fw-bold mt-2"),
-                                                        dcc.Dropdown(
-                                                            id='fire-dropdown',
-                                                            options=[{'label': name, 'value': name} for name in FIRE_OPTIONS],
-                                                            value=DEFAULT_FIRE,
-                                                            clearable=False,
-                                                        ),
-                                                        dbc.Card([
-                                                            dbc.CardHeader(id="event-desc-header", children=analysis.PANEL_EVENT_MADRE_DESCRIPTION[0]),
-                                                            dbc.CardBody(dcc.Markdown(id="event-desc-body", children=analysis.PANEL_EVENT_MADRE_DESCRIPTION[1])),
-                                                        ]),
-                                                        graphCard(fig_id="burning-graph", figure=burning_area, height='300px'),
-                                                    ],width=5),
-
-                                                    dbc.Col([
-                                                        graphCard(fig_id="overlay-map-graph", figure=aq_fire_overlay, height='480px'),
-                                                        html.Div(
-                                                            dcc.Slider(
-                                                                id='date-slider',
-                                                                min=0,
-                                                                max=len(event_dates) - 1,
-                                                                step=1,
-                                                                value=event_dates.index(SELECTED_DAY) if SELECTED_DAY in event_dates else 0,
-                                                                marks={
-                                                                    i: {'label': event_dates[i][5:],
-                                                                        'style': {'fontSize': '11px'}}
-                                                                    for i in range(0, len(event_dates), 3)
-                                                                },
-                                                                included=True,
-                                                            ),
-                                                            className='slider-container',
-                                                        ),
-                                                    ],width=7),
-                                                ]),
-                                                    
-                                                dbc.Row([
-                                                    dbc.Col([
-                                                        graphCard(fig_id="ts-site1-graph", figure=ts_site_1, height='400px'),
-                                                    ],width=6),
-                                                    dbc.Col([
-                                                        graphCard(fig_id="ts-site2-graph", figure=ts_site_2, height='400px'),
-                                                    ],width=6),
-                                                ]),
-                                                dbc.Row([
-                                                    dbc.Col([
-                                                        dbc.Card([
-                                                            dbc.CardHeader(id="event-site1-header", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_1[0]),
-                                                            dbc.CardBody(dcc.Markdown(id="event-site1-body", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_1[1])),
-                                                        ]),
-                                                    ],width=6),
-                                                    dbc.Col([
-                                                        dbc.Card([
-                                                            dbc.CardHeader(id="event-site2-header", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_2[0]),
-                                                            dbc.CardBody(dcc.Markdown(id="event-site2-body", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_2[1])),
-                                                        ]),
-                                                    ],width=6),
-                                                ])
-                                            ]),
-
-                                        dcc.Tab(
-                                            label='Behind the Data',
-                                            value='behind-the-data',
-                                            children=[
-                                                dbc.Row([
-                                                    dbc.Col(
-                                                        textCard("Overview", analysis.PANEL_EXPLORE_OVERVIEW),
-                                                    ),
-                                                ]),
-                                                # ══ Section 1: Rethinking the AQI ════════════════
-                                                dbc.Row([dbc.Col(sectionTitle("Rethinking the AQI", align='left'))]),
-                                                dbc.Row(textCard("Why it matters", analysis.PANEL_EXPLORE_SUMAQI)),
-                                                dbc.Row([
-                                                    dbc.Col(epaReportCard(113, "Unhealthy for Sensitive Groups (SG)", analysis.PANEL_EXPLORE_EPA_CARD, "var(--stat-problem-3)"),width=3),
-                                                    dbc.Col(graphCard("explore-sum-aqi-graph", explore_sum_aqi, height='360px'), width=9),
-                                                ], align="center"),
-                                                dbc.Row([
-                                                    dbc.Col(graphCard("explore-pie-graph", explore_pie, height='360px'), width=8),
-                                                    dbc.Col(textCard("Monitor coverage", analysis.PANEL_EXPLORE_PIE), width=4),
-                                                ], align="start"),
-                                                dbc.Row([
-                                                    dbc.Col(graphCard("explore-wrong-guide-graph", explore_wrong_guide, height='360px'), width=8),
-                                                    dbc.Col(textCard("Reading the examples", analysis.PANEL_EXPLORE_MISCLASS), width=4),
-                                                ], align="start"),
-                                                dbc.Row([
-                                                    dbc.Col(misclassExampleCard(ex), width=6)
-                                                    for ex in misclassification_examples[:2]
-                                                ], className="g-3"),
-
-
-                                                # ══ Section 2: Fire Data Cleaning ════════════════
-                                                dbc.Row([dbc.Col(sectionTitle("Fire Data Cleaning", align='left'))]),
-                                                dbc.Row([
-                                                    dbc.Col(graphCard("explore-scan-track-graph", explore_scan_track, height='420px'), width=8),
-                                                    dbc.Col(textCard("Pixel-size filter", analysis.PANEL_EXPLORE_SCANTRACK), width=4),
-                                                ], align="start"),
-                                                dbc.Row([
-                                                    dbc.Col(graphCard("explore-data-entries-graph", explore_data_entries, height='450px'), width=8),
-                                                    dbc.Col(textCard("Filtering decisions", analysis.PANEL_EXPLORE_ENTRIES), width=4),
-                                                ], align="start"),
-                                                dbc.Row([
-                                                    dbc.Col(graphCard("explore-category-graph", explore_category, height='500px'), width=8),
-                                                    dbc.Col(textCard("Fire categories", analysis.PANEL_EXPLORE_CATEGORY), width=4),
-                                                ], align="start"),
-
-
-                                            ]),
+                                        build_intro_tab(),
+                                        build_air_quality_tab(),
+                                        build_fire_data_tab(),
+                                        build_time_serie_event(),
+                                        build_behind_data(),
                                         ]),
-
                                     ],
                                 )
-
 
     return layout
