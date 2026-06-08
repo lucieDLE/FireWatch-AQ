@@ -166,7 +166,7 @@ def make_pollutant_number_pie_chart(df_aqi, dark_mode=True):
         )])
     fig.update_traces(
         textinfo='percent+label',
-        textfont=dict(size=16, color=line_greens[-1]),
+        textfont=dict(size=16, color='white'),
         marker=dict(colors=green_colors[::-1], line=dict(color=line_greens[-1], width=1)))
 
     fig.update_layout(
