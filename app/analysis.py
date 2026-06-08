@@ -5,21 +5,21 @@ INTRO_SECTION_1_HOOK_1 = """
 **California's wildfire season is lengthening.**
 
 Historically, the fire season occurs between May and October, however recent data show the
-season starting sooner and ending later each year.[1](https://wfca.com/wildfire-articles/california-fire-season-in-depth-guide/)
+season starting sooner and ending later each year[1](https://wfca.com/wildfire-articles/california-fire-season-in-depth-guide/).
 """
 
 INTRO_SECTION_1_HOOK_2 ="""
 **The scale of destruction is accelerating.**
 
 According to the California Department of Forestry and Fire Protection, 14 of the 20
-most destructive wildfires occurred in the last decade.[2](https://www.fire.ca.gov/-/media/calfire-website/our-impact/fire-statistics/top-20-destructive-ca-wildfires.pdf)
+most destructive wildfires occurred in the last decade[2](https://www.fire.ca.gov/-/media/calfire-website/our-impact/fire-statistics/top-20-destructive-ca-wildfires.pdf).
 """
 
 INTRO_SECTION_1_HOOK_3 = """
 **The consequences extend far beyond the fire perimeter.**
 
-Smoke can travel hundreds to thousands of miles, and the health risk from
-wildfire smoke can persists for several days after a fire event.[3](https://www.epa.gov/air-research/wildland-fire-research-human-health)
+Wildfire smoke can travel hundreds to thousands of miles, and the health risk can persists for several days
+after a fire event[3](https://www.epa.gov/air-research/wildland-fire-research-human-health).
 """
 INTRO_DASHBOARD_PRESENTATION = """This dashboard examines the air quality consequences of the 2025
 California fire season, tracing the link between fire activity and pollutant exposure across the state.
@@ -102,7 +102,7 @@ Three structural factors drive it:
 INTRO_SECTION_5_FACTOR_1 = """
 **Transportation**
 * Large population generate vehicle emissions
-* Vehicles powered by fossil fuels contributes significantly to pollution
+* Vehicles powered by fossil fuels contributes to pollution
 * Has responded with zero-emission vehicle policy
 """
 
