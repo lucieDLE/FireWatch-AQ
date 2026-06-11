@@ -176,14 +176,14 @@ def misclass_example_card(group):
         html.Div(title, className="misclass-title"),
         html.Div([
             html.Span(
-                f"EPA: {group['epa_label']} ({group['epa_value']})",
+                f"EPA: {group['epa_label']} ({int(group['epa_value'])})",
                 className="misclass-poll misclass-poll-epa",
                 style={"backgroundColor": epa_bg, "color": epa_fg},
                 ),
 
             html.Span("→", className="misclass-arrow"),
             html.Span(
-                f"sum AQI Exceedance: {group['sum_aqi_label']} ({group['sum_aqi_value']})",
+                f"sum AQI Exceedance: {group['sum_aqi_label']} ({int(group['sum_aqi_value'])})",
                 className="misclass-poll misclass-poll-composite",
                 style={"backgroundColor": sum_bg, "color": sum_fg},
                 ),
@@ -734,21 +734,6 @@ def build_behind_data():
 
         ], className="g-3"),
 
-
-        # ══ Section 2: Fire Data Cleaning ════════════════
-    #     dbc.Row([dbc.Col(section_title("Fire Data Cleaning", align='center'))]),
-    #     # dbc.Row([
-    #     #     dbc.Col(text_card("Pixel-size filter", analysis.PANEL_EXPLORE_SCANTRACK), width=4),
-    #     #     dbc.Col(graph_card("explore-scan-track-graph", explore_scan_track, height='420px'), width=8),
-    #     # ], align="start"),
-    #     dbc.Row([
-    #         dbc.Col(graph_card("explore-data-entries-graph", explore_data_entries, height='450px'), width=8),
-    #         dbc.Col(text_card("Filtering decisions", analysis.PANEL_EXPLORE_ENTRIES), width=4),
-    #     ], align="start"),
-    #     dbc.Row([
-    #         dbc.Col(text_card("Fire categories", analysis.PANEL_EXPLORE_CATEGORY), width=4),
-    #         dbc.Col(graph_card("explore-category-graph", explore_category, height='500px'), width=8),
-    #     ], align="start"),
     ])
 
     return behind_data_tab

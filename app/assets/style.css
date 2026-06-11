@@ -126,27 +126,29 @@
                Helvetica, Arial, sans-serif;
 
   /* Type scale */
-  --fs-2xs:  0.7rem;
-  --fs-xs:   0.75rem;
-  --fs-sm:   0.8rem;
-  --fs-md:   0.9rem;
-  --fs-base: 0.95rem;
-  --fs-lg:   1.05rem;
-  --fs-xl:   1.25rem;
-  --fs-2xl:  1.5rem;
-  --fs-3xl:  2rem;
-  --fs-4xl:  2.5rem;
-  --fs-5xl:  3rem;
-  --fs-hero: 3.6rem;
+  --fs-2xs:  0.65rem;
+  --fs-xs:   0.7rem;
+  --fs-sm:   0.75rem;
+  --fs-md:   0.8rem;
+  --fs-base: 0.9rem;
+  --fs-lg:   0.95rem;
+  --fs-xl:   1.05rem;
+  --fs-2xl:  1.25rem;
+  --fs-3xl:  1.5rem;
+  --fs-4xl:  2rem;
+  --fs-5xl:  2.5rem;
+  --fs-hero: 3rem;
+  /* --fs-hero: 3.6rem; */
 
   /* Spacing scale (4px base) */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
-  --space-7: 48px;
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 8px;
+  --space-4: 12px;
+  --space-5: 16px;
+  --space-6: 24px;
+  --space-7: 32px;
+  /* --space-7: 48px; */
 }
 
 .dark {
@@ -587,7 +589,7 @@ sup a:hover {
   background-color: var(--accent);
   color: var(--md-on-secondary);
   border-radius: 16px;
-  padding: 18px 18px;
+  padding: 24px 24px;
   text-align: center;
   z-index: 2;
   min-width: 100px;
@@ -604,7 +606,7 @@ sup a:hover {
 
 /* Shared padding for all intro section cards */
 .intro-card .card-body {
-  padding: 16px 20px !important;
+  padding: 12px 12px !important;
 }
 
 .hook-badge .fa {
@@ -744,7 +746,7 @@ sup a:hover {
 
 .stat-card {
   border-radius: 20px;
-  padding: 30px 20px;
+  padding: 20px 15px;
   margin-bottom: var(--space-1);
   color: white;
   justify-content: space-between;
@@ -797,7 +799,7 @@ sup a:hover {
 }
 
 .stat-desc {
-  font-size: var(--fs-sm);
+  font-size: var(--fs-xs);
   margin: 0;
   color: white;
   line-height: 1.6;
@@ -808,12 +810,12 @@ sup a:hover {
   background-color: var(--bg-card-body);
   border: 1px solid var(--border-color);
   border-radius: 14px;
-  padding: 18px 20px;
+  padding: 4px 8px;
   margin-bottom: var(--space-3);
 }
 
 .misclass-title {
-  font-size: var(--fs-base);
+  font-size: var(--fs-sm);
   font-weight: 800;
   color: var(--md-on-surface);
   margin-bottom: var(--space-3);
