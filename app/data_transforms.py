@@ -18,12 +18,6 @@ from src.display import WATCH_SITES, FIRE_WATCH_SITES, STATE_NAME_TO_CODE
 from data_loaders import df_aqi, df_fire, df_aqr_annual, ca_geojson
 
 
-@lru_cache(maxsize=1)
-def get_fire_raw():
-    """Load the full raw fire archive (~6.7 MB).
-    """
-    return pd.read_csv(FIRE_RAW_PATH)
-
 import numpy as np
 # ============================================================================
 # Geometry helpers

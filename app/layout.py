@@ -12,7 +12,7 @@ from data_transforms import (
     df_aqi, df_fire, df_aqr_annual, df_county_aqr_annual, df_annual_stats,
     df_biggest_fire, df_aq_quantile, ca_geojson,
     state_list, list_best_codes, list_worst_codes, POLLUTANT_COL_MAP,
-    misclassification_examples, get_fire_raw,
+    misclassification_examples,
     # event panel (initial render for DEFAULT_FIRE)
     FIRE_OPTIONS, DEFAULT_FIRE, EVENT_START, EVENT_END, SELECTED_DAY, event_dates,
     site_1, site_2, site_name_1, site_name_2,
@@ -700,22 +700,13 @@ def build_time_serie_event():
 
 
 def build_behind_data():
-    df_fire_raw = get_fire_raw()
     explore_sum_aqi      = make_barplot_sum_aqi(df_aqi)
     explore_pie          = make_pollutant_number_pie_chart(df_aqi)
     explore_wrong_guide  = make_wrong_guidance_plot(df_aqi)
-    explore_scan_track   = make_scan_track_distribution(df_fire_raw)
-    # explore_data_entries = make_fire_data_entry_analysis(df_fire_raw)
-    explore_category     = make_fire_category_repartition(df_fire_raw, df_fire)
 
     behind_data_tab = dcc.Tab(
     label='Beyond the AQI',
     children=[
-        # dbc.Row([
-        #     dbc.Col(
-        #         text_card("Overview", analysis.PANEL_EXPLORE_OVERVIEW, solid=True),
-        #     ),
-        # ]),
         # ══ Section 1: Rethinking the AQI ════════════════
         dbc.Row([dbc.Col(section_title("Rethinking the AQI", align='center'))]),
         dbc.Row([

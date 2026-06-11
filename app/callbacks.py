@@ -9,7 +9,7 @@ from data_transforms import (
     df_aqi, df_fire, df_aqr_annual, df_county_aqr_annual, df_annual_stats,
     df_biggest_fire, ca_geojson,
     state_list, list_best_codes, list_worst_codes, POLLUTANT_COL_MAP,
-    get_fire_raw, get_event_data, compute_aqi_quantiles, compute_burnt_area_gdf,
+    get_event_data, compute_aqi_quantiles, compute_burnt_area_gdf,
 )
 from figures_aq import make_pollutant_distribution, make_aq_us_plot, compute_max_boxplot
 from figures_fire import make_cloropleth_fire_counties, make_bar_fire_event, make_fire_aqi_overlay
@@ -74,10 +74,6 @@ def update_figure_theme(dark_mode):
         fig.update_layout(template='plotly_dark' if dark_mode else 'ggplot2')
 
     # Behind the Data — these handle their own template via dark_mode
-    df_fire_raw = get_fire_raw()
-    # fig_scan_track   = make_scan_track_distribution(df_fire_raw, dark_mode)
-    # fig_data_entries = make_fire_data_entry_analysis(df_fire_raw, dark_mode)
-    # fig_category     = make_fire_category_repartition(df_fire_raw, df_fire, dark_mode)
     fig_sum_aqi      = make_barplot_sum_aqi(df_aqi, dark_mode)
     fig_pie          = make_pollutant_number_pie_chart(df_aqi, dark_mode)
     fig_wrong_guide  = make_wrong_guidance_plot(df_aqi, dark_mode)
