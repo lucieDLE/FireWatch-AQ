@@ -14,6 +14,7 @@ app = Dash(
     assets_folder=str(ROOT_DIR / "app/assets"),
     suppress_callback_exceptions=True,
     external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.FONT_AWESOME],
+    meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
 server = app.server
 app.layout = build_layout()

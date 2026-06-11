@@ -210,6 +210,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
   background-color: var(--bg-header);
   padding: 14px 24px;
   color: var(--text-header);
@@ -223,11 +225,20 @@ body {
    ============================================================ */
 /* Scoped under #page-wrapper so these win over Dash's `.tab` rules
    by specificity (id + class) instead of !important. */
+/* Let the row of tab buttons scroll sideways instead of wrapping/clipping
+   when the labels are wider than the screen (phones). */
+.tab-container {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
 #page-wrapper .tab {
   font-size: var(--fs-md);
   font-weight: 500;
   color: var(--text-tab);
   background-color: var(--bg-tab);
+  flex-shrink: 0;
+  white-space: nowrap;
   border: none;
   border-top: 3px solid transparent;
   border-bottom: none;
@@ -247,7 +258,7 @@ body {
 }
 
 .tab-content {
-  padding: 16px 150px;
+  padding: 16px clamp(12px, 6vw, 150px);
   background-color: var(--bg-page);
 }
 
@@ -457,7 +468,7 @@ body {
 }
 
 .hero-title {
-  font-size: var(--fs-hero);
+  font-size: clamp(2rem, 8vw, 3rem);
   font-weight: 800;
   line-height: 1.05;
   color: var(--text-main);
@@ -465,14 +476,14 @@ body {
 }
 
 .hero-stats {
-  font-size: var(--fs-3xl);
+  font-size: clamp(1.15rem, 5vw, 1.5rem);
   font-weight: 400;
   color: var(--text-main);
   margin-bottom: 20px;
 }
 
 .hero-stat {
-  font-size: var(--fs-4xl);
+  font-size: clamp(1.5rem, 6vw, 2rem);
   font-weight: 700;
   color: var(--accent);
 }
@@ -547,6 +558,11 @@ body {
 @media (max-width: 768px) {
   .sources-card .card-body {
     column-count: 1;
+  }
+  /* Hook cards stack to full width here; the badge is absolutely
+     positioned at left:25% for the 3-up desktop row, so re-center it. */
+  .hook-badge {
+    left: 50%;
   }
 }
 
