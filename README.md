@@ -6,9 +6,19 @@ colorTo: yellow
 sdk: docker
 app_port: 7860
 pinned: false
+tags:
+  - dash
+  - plotly
+  - air-quality
+  - wildfire
+  - california
+  - geospatial
+  - dashboard
 ---
 
 # FireWatch-AQ: Fire & Smoke Air Quality Assessment
+
+### **Live demo**: [huggingface.co/spaces/LLD9/firewatch-aq](https://huggingface.co/spaces/LLD9/firewatch-aq)
 
 ## Overview
 
@@ -22,10 +32,6 @@ The project addresses two core questions:
 
 **Target events:** Major Southern California fires: Madre, Garnet, Palisades...
 
-<br><br>
-
-### Example of the Fire Perimeter and Air quality Evolution during Garnet
-<video src="https://github.com/user-attachments/assets/e16b551f-08c4-4a16-934d-74ec791afc4f"></video>
 
 ---
 ## Tools
