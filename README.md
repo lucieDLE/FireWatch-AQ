@@ -1,3 +1,11 @@
+---
+title: FireWatch AQ
+colorFrom: red
+colorTo: orange
+sdk: docker
+app_port: 7860
+pinned: false
+---
 
 # FireWatch-AQ: Fire & Smoke Air Quality Assessment
 
