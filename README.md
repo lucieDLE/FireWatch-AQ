@@ -18,8 +18,6 @@ tags:
 
 # FireWatch-AQ: Fire & Smoke Air Quality Assessment
 
-### **Live demo**: [huggingface.co/spaces/LLD9/firewatch-aq](https://huggingface.co/spaces/LLD9/firewatch-aq)
-
 ## Overview
 
 An interactive dashboard for exploring the **air quality consequences of the 2025 California wildfire season**, combining satellite fire detection data with ground-level pollutant readings across the state.
