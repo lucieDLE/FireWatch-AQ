@@ -35,7 +35,7 @@ import analysis
 # ============================================================================
 def graph_card(fig_id, figure, height='400px'):
     return html.Div(
-        dcc.Graph(id=fig_id, figure=figure, style={'height': height}, responsive=True, 
+        dcc.Graph(id=fig_id, figure=figure, style={'height': height}, responsive=True,
         config={'displayModeBar': True, 'displaylogo': False, 'responsive': True}),
         className="chart-card"
     )
@@ -184,7 +184,7 @@ def misclass_example_card(group):
 
             html.Span("→", className="misclass-arrow"),
             html.Span(
-                f"sum AQI Exceedance: {group['sum_aqi_label']} ({int(group['sum_aqi_value'])})",
+                f"sum AQI: {group['sum_aqi_label']} ({int(group['sum_aqi_value'])})",
                 className="misclass-poll misclass-poll-composite",
                 style={"backgroundColor": sum_bg, "color": sum_fg},
                 ),

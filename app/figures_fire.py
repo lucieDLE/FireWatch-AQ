@@ -6,7 +6,7 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 
 from src.config import CENTER_LAT, CENTER_LON
-from src.display import green_colors, red_colors, line_greens, line_reds, MARGIN,TITLE_DICT
+from src.display import green_colors, red_colors, line_greens, line_reds, MARGIN, TITLE_DICT,LEGEND_BOTTOM
 
 
 def make_cloropleth_fire_counties(df, ca_geojson):
@@ -132,8 +132,8 @@ def make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire, pollutant_name='PM2.5
     fig.update_layout(
         template='plotly_dark',
         title = dict(text=f'{pollutant_name} AQI vs Fire Activity',**TITLE_DICT),
-        legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='left', x=0),
         barmode='overlay',
+        legend=LEGEND_BOTTOM,
         margin=MARGIN, 
     )
     fig.update_yaxes(title_text=f'{pollutant_name} AQI', secondary_y=False)

@@ -1,3 +1,11 @@
+MARGIN=dict(l=10, r=10, t=100, b=80)
+TITLE_DICT= dict(font=dict(size=15),xanchor='center', x=0.5)
+
+LEGEND_BOTTOM = dict(
+    orientation='h',
+     yanchor='top', xanchor='center', x=0.5,
+    font=dict(size=11),
+)
 STATE_NAME_TO_CODE = {
     'Alabama': 'AL', 'Alaska': 'AK', 'Arizona': 'AZ', 'Arkansas': 'AR',
     'California': 'CA', 'Colorado': 'CO', 'Connecticut': 'CT', 'Delaware': 'DE',

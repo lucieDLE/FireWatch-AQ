@@ -106,7 +106,7 @@ def update_responsive_figures(dark_mode, width):
     n_pollutants = df_annual_stats['Parameter Name'].nunique()
     n_rows = -(-n_pollutants // n_cols)  # ceil division
     # taller graph when stacked into more rows so each facet stays readable
-    box_height = max(500, 230 * n_rows)
+    box_height = max(500, 280 * n_rows)
 
     # Composite AQI: side by side normally, stacked (taller) on phone.
     fig_sum_aqi = make_barplot_sum_aqi(df_aqi, dark_mode, stack=is_phone)

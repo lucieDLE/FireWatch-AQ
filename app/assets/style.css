@@ -555,16 +555,6 @@ body {
   column-gap: var(--space-6);
 }
 
-@media (max-width: 768px) {
-  .sources-card .card-body {
-    column-count: 1;
-  }
-  /* Hook cards stack to full width here; the badge is absolutely
-     positioned at left:25% for the 3-up desktop row, so re-center it. */
-  .hook-badge {
-    left: 50%;
-  }
-}
 
 /* Themed reference / citation links (replace default browser blue) */
 .card a,
@@ -898,4 +888,64 @@ sup a:hover {
 
 ol, ul {
   padding-left: 1rem;
+}
+
+@media (max-width: 768px) {
+  .overview-tab {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+    
+  }
+  .app-header {
+    text-align: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px 16px;
+    font-size: 0.9rem;
+    justify-content: center;
+  }
+  .app-header h4 { font-size: 1.70rem; margin: 0; }
+
+  .sources-card .card-body {
+    column-count: 1;
+  }
+  .poll-card-top{
+    display: flex;
+    flex-direction: column;
+  }
+  .poll-symbol{padding-bottom: var(--space-4);}
+  .poll-desc{font-size: var(--fs-xs)}
+  .stat-top { font-size: var(--fs-3xl); }
+  .stat-card{
+    padding: 10px 10px;
+    aspect-ratio: 3/2;
+  }
+  /* compact, scrollable tab bar so the 5 tabs stay usable on phones */
+  #page-wrapper .tab {
+    font-size: var(--fs-sm);
+    padding: 8px 10px;
+  }
+}
+
+
+/* ── Responsive: tablet and below ───────────────────────────────── */
+@media (max-width: 991.98px) {
+  /* overview tab: reclaim the hardcoded 10% side padding */
+  .overview-tab {
+    padding-left: 4% !important;
+    padding-right: 4% !important;
+    text-align: justify;
+    
+  }
+  .tab-content { 
+    padding: 16px 12px;
+    margin-bottom: auto;
+    padding-top:auto;
+    
+  }
+  .app-header h4 { font-size: 1.50rem; margin: 0; }
+
+  .sources-card .card-body {
+    column-count: 2;
+  }
 }

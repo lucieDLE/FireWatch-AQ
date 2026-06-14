@@ -163,7 +163,7 @@ def make_pollutant_number_pie_chart(df_aqi, dark_mode=True):
         template='plotly_dark' if dark_mode else 'ggplot2',
         margin = MARGIN ,
         title=dict(text="How many pollutants does <br> each monitor actually measure?",**TITLE_DICT),
-        legend={**LEGEND_BOTTOM, 'title': 'Number of pollutants'},
+        legend={**LEGEND_BOTTOM, 'title': 'Number of <br> pollutants'},
         )
 
     return fig
@@ -171,10 +171,10 @@ def make_pollutant_number_pie_chart(df_aqi, dark_mode=True):
 
 def make_wrong_guidance_plot(df_aqi, dark_mode=True):
     indices = [
-        "Unhealthy -> Very Unhealthy",
-        "Unhealthy for SG -> Unhealthy" ,
-        "Moderate -> Unhealthy for SG", 
-        "Healthy -> Moderate", 
+        "Unhealthy →<br>Very Unhealthy",
+        "Unhealthy for SG →<br>Unhealthy",
+        "Moderate →<br>Unhealthy for SG",
+        "Healthy →<br>Moderate",
     ]
 
     values = []
@@ -192,12 +192,12 @@ def make_wrong_guidance_plot(df_aqi, dark_mode=True):
         ))
 
     fig.update_layout(
-        xaxis=dict( showgrid=False, 
-                    title='Days where sum_AQI pushes a site into <br> a higher EPA health category than max_AQI',
-                    ),
-        title=dict(text='How many days were people given <br> wrong health guidance?',**TITLE_DICT),
+        xaxis=dict(showgrid=False, title='Number of days', automargin=True),
+        yaxis=dict(automargin=True, tickfont=dict(size=11)),
+        title=dict(text='How many days were people given <br> wrong health guidance?', **TITLE_DICT),
         template='plotly_dark' if dark_mode else 'ggplot2',
-        legend=LEGEND_BOTTOM,
+        showlegend=False,
+        margin=MARGIN,
     )
 
     return fig
@@ -241,7 +241,7 @@ def make_barplot_sum_aqi(df_aqi, dark_mode=True, stack=False):
 
 
     title_2 = 'Composite (sum) AQI: <br>' + str(round(sum(list_values)))
-    title_1 = 'One day at one site: each pollutant\'s AQI <br> vs. the Good-air threshold'
+    title_1 = 'One day at one site: each pollutant\'s<br>  AQI vs. the Good-air threshold'
 
 
     # On phone (stack=True) the two panels sit on top of each other (2 rows, 1 col);
@@ -280,14 +280,14 @@ def make_barplot_sum_aqi(df_aqi, dark_mode=True, stack=False):
     fig.update_layout(
         xaxis=dict( showgrid=False, ),
         template='plotly_dark' if dark_mode else 'ggplot2',
-        legend=LEGEND_BOTTOM,
+        legend={**LEGEND_BOTTOM},
     )
     fig.add_vline(x=50,
                 line_width=2, line_dash='dash',
                 line_color=line_reds[-1],
                 name='guideline threshold',
                 annotation_text=f'Threshold for Good Air (AQI=50)',
-                annotation_position='top',row=r1, col=c1)
+                annotation_position='bottom',row=r1, col=c1)
 
 
 
@@ -313,7 +313,7 @@ def make_barplot_sum_aqi(df_aqi, dark_mode=True, stack=False):
         ), row=r2, col=c2)
 
     fig.update_layout(  barmode='stack',
-                        legend1=LEGEND_BOTTOM,
+                        legend1={**LEGEND_BOTTOM, "xanchor":'right'},
                         margin = MARGIN,
 
     )

@@ -16,10 +16,10 @@ def make_pollutant_distribution(df):
         barmode='stack',
         xaxis={'categoryorder': 'total descending'},
         title=dict(text='Pollutant Distribution across states',),
-        legend=LEGEND_BOTTOM,
+        legend={**LEGEND_BOTTOM, 'title_text': '', 'y':1.0},
         margin=MARGIN
     )
-    fig.update_xaxes(tickangle=45, automargin=True, tickfont=dict(size=10))
+    fig.update_xaxes(title_text='', tickangle=45, automargin=True, tickfont=dict(size=10))
     return fig
 
 
@@ -130,7 +130,6 @@ def make_aq_us_plot(df_county, list_best=['WA', 'ID', 'MS'], list_worst=['CA', '
         geo=dict(
             scope='usa',
             subunitcolor='rgb(100,100,100)',
-            domain=dict(x=[0, 0.78], y=[0, 1]),
         ),
         margin=MARGIN,
         xaxis=dict(visible=False),
@@ -146,11 +145,12 @@ def compute_max_boxplot(df_stats, states_list, n_cols=3):
 
     pollutants_list = df_stats['Parameter Name'].unique()
     n_rows = int(np.ceil(len(pollutants_list) / n_cols))
+    v_space = min(0.06, 0.15 / (n_rows - 1)) if n_rows > 1 else 0.0
 
     fig = make_subplots(
         rows=n_rows, cols=n_cols,
         subplot_titles=pollutants_list,
-        vertical_spacing=0.12 if n_rows > 1 else 0.0,
+        vertical_spacing=v_space,
         horizontal_spacing=0.05,
     )
 
