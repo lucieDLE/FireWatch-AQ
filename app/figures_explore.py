@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from src.display import green_colors, red_colors, line_greens, line_reds, FIRE_CAT_NAMES
+from src.display import green_colors, red_colors, line_greens, line_reds, FIRE_CAT_NAMES, MARGIN,TITLE_DICT
 
 
 def make_fire_category_repartition(df, df_cleaned, dark_mode=True):
@@ -59,7 +59,7 @@ def make_fire_category_repartition(df, df_cleaned, dark_mode=True):
         template='plotly_dark' if dark_mode else 'ggplot2',
         title_text='Fire intensity (FRP) by size category — raw vs cleaned pixels',
         height=500,
-        margin = dict(t=75, l=10, r=10, b=10) ,
+        margin = MARGIN ,
 
     )
     fig.update_yaxes(title_text='FRP (MW)', col=1)
@@ -107,8 +107,9 @@ def make_fire_data_entry_analysis(df, dark_mode=True):
 
     fig.update_layout(
         template='plotly_dark' if dark_mode else 'ggplot2',
-        title_text='Which pixels we keep vs. remove — by day/night, type and confidence',
-        margin = dict(t=40, l=0, r=10, b=40) ,
+        title=dict(text='Which pixels we keep vs. remove — by day/night, type and confidence',
+                    **TITLE_DICT),
+        margin = MARGIN,
         barmode='overlay',
         bargap=0.2,
         yaxis_title='Number of pixels',
@@ -134,7 +135,7 @@ def make_scan_track_distribution(df, dark_mode=True):
         template='plotly_dark' if dark_mode else 'ggplot2',
         title_text='Pixel footprint size (scan & track) — dropping oversized, low-resolution pixels',
         bargap=0.3, bargroupgap=0,
-        margin = dict(t=50, l=0, r=10, b=40) ,
+        margin = MARGIN ,
         legend =dict(orientation='v', x=.99, y=.99, xanchor='right', bgcolor='rgba(0,0,0,0)'),
     )
     fig.update_yaxes(title_text='Number of pixels')
@@ -160,8 +161,8 @@ def make_pollutant_number_pie_chart(df_aqi, dark_mode=True):
 
     fig.update_layout(
         template='plotly_dark' if dark_mode else 'ggplot2',
-        margin = dict(t=60, l=10, r=10, b=10) ,
-        title_text="How many pollutants does each monitor actually measure?",
+        margin = MARGIN ,
+        title=dict(text="How many pollutants does each monitor actually measure?",**TITLE_DICT),
         legend=dict(
                 xanchor='left', y=.5, x=0.7,
                 title='Number of pollutants'
@@ -197,7 +198,7 @@ def make_wrong_guidance_plot(df_aqi, dark_mode=True):
         xaxis=dict( showgrid=False, 
                     title='Days where sum_AQI pushes a site into a higher EPA health category than max_AQI',
                     ),
-        title='How many days were people given wrong health guidance?',
+        title=dict(text='How many days were people given wrong health guidance?',**TITLE_DICT),
         template='plotly_dark' if dark_mode else 'ggplot2',
         legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='left', x=0),
     )
@@ -306,7 +307,7 @@ def make_barplot_sum_aqi(df_aqi, dark_mode=True):
                             xanchor='left',   
                             y=.5, 
                             x=1.,),
-                        margin = dict(t=75, l=0, r=50, b=0) ,
+                        margin = MARGIN,
 
     )
     fig.layout.annotations[0].update(y=1.15)  # left title

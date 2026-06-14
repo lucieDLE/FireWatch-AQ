@@ -6,7 +6,7 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 
 from src.config import CENTER_LAT, CENTER_LON
-from src.display import green_colors, red_colors, line_greens, line_reds
+from src.display import green_colors, red_colors, line_greens, line_reds, MARGIN,TITLE_DICT
 
 
 def make_cloropleth_fire_counties(df, ca_geojson):
@@ -45,9 +45,12 @@ def make_cloropleth_fire_counties(df, ca_geojson):
         center={'lat': CENTER_LAT, 'lon': CENTER_LON},
         opacity=0.7,
         labels={'fire_score': 'Fire activity score'},
-        title='Fire activity score by county (weighted by fire category)',
+        title='Fire activity score by county <br> (weighted by fire category)',
     )
-    fig.update_layout(margin=dict(l=0, r=0, t=40, b=0))
+    fig.update_layout(
+        margin=MARGIN, 
+        # title=TITLE_DICT
+    )
     return fig
 
 
@@ -63,7 +66,8 @@ def make_bar_fire_event(df_biggest_fire, num=10):
         template='plotly_dark',
         coloraxis_showscale=False,
         xaxis_tickangle=-30,
-        margin=dict(l=10, r=10, t=50, b=10),
+        margin=MARGIN,
+        # **TITLE_DICT
     )
     return fig
 
@@ -127,10 +131,10 @@ def make_fire_aqi_overlay(df_aq_quantile, df_biggest_fire, pollutant_name='PM2.5
 
     fig.update_layout(
         template='plotly_dark',
-        title_text=f'{pollutant_name} AQI vs Fire Activity — California 2025',
+        title = dict(text=f'{pollutant_name} AQI vs Fire Activity',**TITLE_DICT),
         legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='left', x=0),
         barmode='overlay',
-        margin=dict(t=100),
+        margin=MARGIN, 
     )
     fig.update_yaxes(title_text=f'{pollutant_name} AQI', secondary_y=False)
     fig.update_yaxes(title_text='Acres Burnt', secondary_y=True, showgrid=False)

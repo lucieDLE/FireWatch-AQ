@@ -12,7 +12,7 @@ _FIRE_CENTER_LON = (FIRE_LON[0] + FIRE_LON[1]) / 2
 from src.display import (
     green_colors, red_colors, line_greens, line_reds,
     AQI_CMAP, AQI_BANDS_COLOR, AQI_HOVER_TEMPLATE, AQI_REPORT_COLS,
-    FIRE_REPORT_COLS, FIRE_HOVER_TEMPLATE, COLORS_MAP,
+    FIRE_REPORT_COLS, FIRE_HOVER_TEMPLATE, COLORS_MAP, MARGIN, TITLE_DICT
 )
 
 
@@ -31,7 +31,7 @@ def _geoms_to_lines(gdf_wgs84):
 def make_aq_hotspot_trace(df_day, site_name, show_colorbar=True, show_legend=True):
     df_day = df_day[df_day['max_AQI'] != 'N/A'].copy()
     colorbar = dict(
-        title=dict(text='AQI', font=dict(size=11)),
+        title=dict(text='AQI'),
         thickness=14, len=0.5, x=.99, xanchor='right', y=0.5,
         tickvals=[0, 50, 100, 150, 200, 300, 400],
     ) if show_colorbar else {}
@@ -130,7 +130,7 @@ def make_aq_time_series(df, sites, site_name, colors, legend_entrywidth=0.33):
         fig.add_hrect(y0=y0, y1=y1, fillcolor=color, line_width=0, layer='below')
 
     fig.update_layout(
-        title=dict(text=f'AQI at selected sites near: {site_name}', yanchor='top', y=0.95),
+        title=dict(text=f'AQI at selected sites near: <br> {site_name}',**TITLE_DICT),
         xaxis=dict(title_text='Date'),
         yaxis=dict(title_text='Air Quality Index (AQI)'),
         hovermode='x unified',
@@ -138,7 +138,7 @@ def make_aq_time_series(df, sites, site_name, colors, legend_entrywidth=0.33):
             orientation='h', yanchor='bottom', xanchor='left', y=1.02, x=0,
             maxheight=0.12, entrywidthmode='fraction', entrywidth=legend_entrywidth,
         ),
-        margin=dict(l=10, r=10, t=100, b=10),
+        margin=MARGIN,
     )
     return fig
 
@@ -159,11 +159,11 @@ def make_burning_area_plot(gdf, event_start=None, event_end=None):
                    name='Fire Perimeter (km)', line_color=COLORS_MAP['FIRE'][1]),
     ])
     fig.update_layout(
-        title=dict(text='Estimated Burning Area and Fire Perimeter', yanchor='top', y=0.95),
+        title=dict(text='Estimated Burning Area <br> and Fire Perimeter', **TITLE_DICT),
         hovermode='x unified',
         xaxis=dict(title_text='Date', range=[event_start, event_end] if event_start else None),
         legend=dict(orientation='v', yanchor='top', y=1.0, xanchor='right', x=0.99),
-        margin=dict(l=10, r=10, t=40, b=0),
+        margin=MARGIN,
     )
     return fig
 
@@ -187,8 +187,8 @@ def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fir
 
     fig.update_layout(
         title=dict(
-            text=f'Fire Perimeter & Air Quality — {selected_day}',
-            font=dict(size=15), x=0.5, xanchor='center',
+            text=f'Fire Perimeter & Air Quality <br> {selected_day}',
+            **TITLE_DICT,
         ),
         mapbox=dict(
             style='open-street-map',
@@ -202,7 +202,7 @@ def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fir
             center=dict(lat=map_center_lat, lon=map_center_lon),
             zoom=7,
         ),
-        margin=dict(l=10, r=10, t=50, b=10),
+        margin=MARGIN,
         legend=dict(
             bgcolor='rgba(255, 255, 255, 0.85)',
             bordercolor='rgba(180, 180, 180, 0.8)',

@@ -5,7 +5,7 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 
 from src.config import POLLUTANT_THRESHOLDS
-from src.display import green_colors, red_colors, line_greens, line_reds
+from src.display import green_colors, red_colors, line_greens, line_reds, MARGIN,TITLE_DICT
 import numpy as np
 
 
@@ -15,8 +15,8 @@ def make_pollutant_distribution(df):
         template='plotly_dark',
         barmode='stack',
         xaxis={'categoryorder': 'total descending'},
-        title_text='Pollutant Distribution across states',
-        legend=dict(yanchor='top', xanchor='right', title_text='', x=0.9),
+        title=dict(text='Pollutant Distribution across states',),
+        margin=MARGIN
     )
     fig.update_xaxes(tickangle=45)
     return fig
@@ -122,17 +122,17 @@ def make_aq_us_plot(df_county, list_best=['WA', 'ID', 'MS'], list_worst=['CA', '
         template='plotly_dark',
         title=dict(
             text='County-level Pollutant Exceedances<br>(Click legend to toggle traces)',
-            x=0.5,
-            xanchor='center',
+            **TITLE_DICT
         ),
         showlegend=True,
-        legend=dict(borderwidth=0, x=1, y=0.5, xanchor='right', yanchor='middle'),
+        # legend=dict(borderwidth=0, x=1, y=0.5, xanchor='right', yanchor='middle'),
+        legend=dict(orientation='h', yanchor='top', y=-0.05, xanchor='center', x=0.5),
         geo=dict(
             scope='usa',
             subunitcolor='rgb(100,100,100)',
             domain=dict(x=[0, 0.78], y=[0, 1]),
         ),
-        margin=dict(l=0, r=80, t=40, b=0),
+        margin=MARGIN,
         xaxis=dict(visible=False),
         yaxis=dict(visible=False),
         plot_bgcolor='rgba(0,0,0,0)',
@@ -199,7 +199,7 @@ def compute_max_boxplot(df_stats, states_list):
         template='plotly_dark',
         title_text='Pollutant distribution by state',
         legend=dict(orientation='h', yanchor='top', y=-0.12, xanchor='center', x=0.5),
-        margin=dict(r=5, l=5, b=80),
+        margin=MARGIN,
     )
     fig.update_xaxes(showticklabels=False)
     return fig

@@ -166,7 +166,7 @@ def update_event_map(slider_idx, dark_mode, fire_name):
             sourcetype='geojson', source=geojson_day,
             type='fill', color='rgba(255, 100, 0, 0.2)', below='traces',
         )]
-        patched['layout']['title']['text'] = f'Fire Perimeter & Air Quality — {selected_day}'
+        patched['layout']['title']['text'] = f'Fire Perimeter & Air Quality <br> {selected_day}'
         return patched
 
     # Fire change / theme switch / initial load: full rebuild
