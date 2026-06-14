@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from src.display import green_colors, red_colors, line_greens, line_reds, FIRE_CAT_NAMES, MARGIN,TITLE_DICT
+from src.display import green_colors, red_colors, line_greens, line_reds, FIRE_CAT_NAMES, MARGIN, TITLE_DICT, LEGEND_BOTTOM
 
 
 def make_fire_category_repartition(df, df_cleaned, dark_mode=True):
@@ -162,11 +162,8 @@ def make_pollutant_number_pie_chart(df_aqi, dark_mode=True):
     fig.update_layout(
         template='plotly_dark' if dark_mode else 'ggplot2',
         margin = MARGIN ,
-        title=dict(text="How many pollutants does each monitor actually measure?",**TITLE_DICT),
-        legend=dict(
-                xanchor='left', y=.5, x=0.7,
-                title='Number of pollutants'
-            ),
+        title=dict(text="How many pollutants does <br> each monitor actually measure?",**TITLE_DICT),
+        legend={**LEGEND_BOTTOM, 'title': 'Number of pollutants'},
         )
 
     return fig
@@ -196,11 +193,11 @@ def make_wrong_guidance_plot(df_aqi, dark_mode=True):
 
     fig.update_layout(
         xaxis=dict( showgrid=False, 
-                    title='Days where sum_AQI pushes a site into a higher EPA health category than max_AQI',
+                    title='Days where sum_AQI pushes a site into <br> a higher EPA health category than max_AQI',
                     ),
-        title=dict(text='How many days were people given wrong health guidance?',**TITLE_DICT),
+        title=dict(text='How many days were people given <br> wrong health guidance?',**TITLE_DICT),
         template='plotly_dark' if dark_mode else 'ggplot2',
-        legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='left', x=0),
+        legend=LEGEND_BOTTOM,
     )
 
     return fig
@@ -208,7 +205,7 @@ def make_wrong_guidance_plot(df_aqi, dark_mode=True):
 
 
 
-def make_barplot_sum_aqi(df_aqi, dark_mode=True):
+def make_barplot_sum_aqi(df_aqi, dark_mode=True, stack=False):
 
     AQI_BANDS_COLOR = [ (0,   50,  line_greens[-2]), (51,  100, '#FFBF00'), (101, 150, '#EB6F2B'),
                         (151, 200, line_reds[-2]), (201, 300, '#6C3082'), (301, 400, '#58111A'),]
@@ -243,15 +240,29 @@ def make_barplot_sum_aqi(df_aqi, dark_mode=True):
     list_values[0]+=50
 
 
-    title_2 = 'Composite (sum) AQI: ' + str(round(sum(list_values)))
-    title_1 = 'One day at one site: each pollutant\'s AQI vs. the Good-air threshold'
+    title_2 = 'Composite (sum) AQI: <br>' + str(round(sum(list_values)))
+    title_1 = 'One day at one site: each pollutant\'s AQI <br> vs. the Good-air threshold'
 
 
-    fig = make_subplots(
-        rows=1, cols=2,
-        column_widths=[0.7, 0.3],
-        subplot_titles=[title_1, title_2],
-    )
+    # On phone (stack=True) the two panels sit on top of each other (2 rows, 1 col);
+    # otherwise they sit side by side (1 row, 2 cols).
+    if stack:
+        fig = make_subplots(
+            rows=2, cols=1,
+            row_heights=[0.6, 0.4],
+            vertical_spacing=0.2,
+            subplot_titles=[title_1, title_2],
+        )
+        r1, c1 = 1, 1   # per-pollutant bars
+        r2, c2 = 2, 1   # composite stacked bar
+    else:
+        fig = make_subplots(
+            rows=1, cols=2,
+            column_widths=[0.7, 0.3],
+            subplot_titles=[title_1, title_2],
+        )
+        r1, c1 = 1, 1
+        r2, c2 = 1, 2
 
 
 
@@ -263,20 +274,20 @@ def make_barplot_sum_aqi(df_aqi, dark_mode=True):
         marker_color=small_df['color'],
         opacity=1,
         showlegend=False,
-        ), row=1, col=1
+        ), row=r1, col=c1
     )
 
     fig.update_layout(
         xaxis=dict( showgrid=False, ),
         template='plotly_dark' if dark_mode else 'ggplot2',
-        legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='left', x=0),
+        legend=LEGEND_BOTTOM,
     )
     fig.add_vline(x=50,
                 line_width=2, line_dash='dash',
                 line_color=line_reds[-1],
                 name='guideline threshold',
                 annotation_text=f'Threshold for Good Air (AQI=50)',
-                annotation_position='top',row=1, col=1)
+                annotation_position='top',row=r1, col=c1)
 
 
 
@@ -299,18 +310,16 @@ def make_barplot_sum_aqi(df_aqi, dark_mode=True):
             constraintext='none',
             cliponaxis=False,
             textfont=dict(color=text_color, size=12),
-        ), row=1, col=2)
+        ), row=r2, col=c2)
 
     fig.update_layout(  barmode='stack',
-                        legend1=dict(
-                            orientation='v',
-                            xanchor='left',   
-                            y=.5, 
-                            x=1.,),
+                        legend1=LEGEND_BOTTOM,
                         margin = MARGIN,
 
     )
-    fig.layout.annotations[0].update(y=1.15)  # left title
-    fig.layout.annotations[1].update(y=1.15)  # right title
+    if not stack:
+        # lift both subplot titles above the side-by-side panels
+        fig.layout.annotations[0].update(y=1.15)  # left title
+        fig.layout.annotations[1].update(y=1.15)  # right title
 
     return fig

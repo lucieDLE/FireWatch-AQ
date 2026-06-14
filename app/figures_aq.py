@@ -5,7 +5,7 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 
 from src.config import POLLUTANT_THRESHOLDS
-from src.display import green_colors, red_colors, line_greens, line_reds, MARGIN,TITLE_DICT
+from src.display import green_colors, red_colors, line_greens, line_reds, MARGIN, TITLE_DICT, LEGEND_BOTTOM
 import numpy as np
 
 
@@ -16,9 +16,10 @@ def make_pollutant_distribution(df):
         barmode='stack',
         xaxis={'categoryorder': 'total descending'},
         title=dict(text='Pollutant Distribution across states',),
+        legend=LEGEND_BOTTOM,
         margin=MARGIN
     )
-    fig.update_xaxes(tickangle=45)
+    fig.update_xaxes(tickangle=45, automargin=True, tickfont=dict(size=10))
     return fig
 
 
@@ -125,8 +126,7 @@ def make_aq_us_plot(df_county, list_best=['WA', 'ID', 'MS'], list_worst=['CA', '
             **TITLE_DICT
         ),
         showlegend=True,
-        # legend=dict(borderwidth=0, x=1, y=0.5, xanchor='right', yanchor='middle'),
-        legend=dict(orientation='h', yanchor='top', y=-0.05, xanchor='center', x=0.5),
+        legend=LEGEND_BOTTOM,
         geo=dict(
             scope='usa',
             subunitcolor='rgb(100,100,100)',
@@ -140,19 +140,24 @@ def make_aq_us_plot(df_county, list_best=['WA', 'ID', 'MS'], list_worst=['CA', '
     return fig
 
 
-def compute_max_boxplot(df_stats, states_list):
+def compute_max_boxplot(df_stats, states_list, n_cols=3):
     custom_colors = green_colors[0:3] + red_colors[0:3]
     custom_lines  = line_greens[0:3] + line_reds[0:3]
 
     pollutants_list = df_stats['Parameter Name'].unique()
+    n_rows = int(np.ceil(len(pollutants_list) / n_cols))
 
     fig = make_subplots(
-        rows=1, cols=len(pollutants_list),
-        column_widths=[0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+        rows=n_rows, cols=n_cols,
         subplot_titles=pollutants_list,
+        vertical_spacing=0.12 if n_rows > 1 else 0.0,
+        horizontal_spacing=0.05,
     )
 
-    for col_idx, pollutant in enumerate(pollutants_list):
+    for plot_idx, pollutant in enumerate(pollutants_list):
+        row = plot_idx // n_cols + 1
+        col = plot_idx % n_cols + 1
+        col_idx = plot_idx  # legend shown only for the first subplot
         for idx, state_name in enumerate(states_list):
             df_ca_pm = df_stats.loc[
                 (df_stats['State Name'] == state_name) &
@@ -170,7 +175,7 @@ def compute_max_boxplot(df_stats, states_list):
                     line=dict(color=custom_lines[idx]),
                     marker_size=3, line_width=1,
                     whiskerwidth=0.5,
-                ), row=1, col=col_idx + 1)
+                ), row=row, col=col)
             else:
                 fig.add_trace(go.Box(
                     y=np_maxes,
@@ -181,7 +186,7 @@ def compute_max_boxplot(df_stats, states_list):
                     line=dict(color='rgba(255,255,255,0)'),
                     marker_size=3, line_width=1,
                     marker=dict(color=custom_lines[idx]),
-                ), row=1, col=col_idx + 1)
+                ), row=row, col=col)
 
         fig.add_hline(
             y=POLLUTANT_THRESHOLDS[pollutant][0],
@@ -192,13 +197,13 @@ def compute_max_boxplot(df_stats, states_list):
             name='guideline threshold',
             annotation_text=f'{POLLUTANT_THRESHOLDS[pollutant][0]} {POLLUTANT_THRESHOLDS[pollutant][1]}',
             annotation_position='top left',
-            row=1, col=col_idx + 1,
+            row=row, col=col,
         )
 
     fig.update_layout(
         template='plotly_dark',
         title_text='Pollutant distribution by state',
-        legend=dict(orientation='h', yanchor='top', y=-0.12, xanchor='center', x=0.5),
+        legend=LEGEND_BOTTOM,
         margin=MARGIN,
     )
     fig.update_xaxes(showticklabels=False)

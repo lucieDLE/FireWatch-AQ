@@ -12,7 +12,7 @@ _FIRE_CENTER_LON = (FIRE_LON[0] + FIRE_LON[1]) / 2
 from src.display import (
     green_colors, red_colors, line_greens, line_reds,
     AQI_CMAP, AQI_BANDS_COLOR, AQI_HOVER_TEMPLATE, AQI_REPORT_COLS,
-    FIRE_REPORT_COLS, FIRE_HOVER_TEMPLATE, COLORS_MAP, MARGIN, TITLE_DICT
+    FIRE_REPORT_COLS, FIRE_HOVER_TEMPLATE, COLORS_MAP, MARGIN, TITLE_DICT, LEGEND_BOTTOM
 )
 
 
@@ -134,10 +134,8 @@ def make_aq_time_series(df, sites, site_name, colors, legend_entrywidth=0.33):
         xaxis=dict(title_text='Date'),
         yaxis=dict(title_text='Air Quality Index (AQI)'),
         hovermode='x unified',
-        legend=dict(
-            orientation='h', yanchor='bottom', xanchor='left', y=1.02, x=0,
-            maxheight=0.12, entrywidthmode='fraction', entrywidth=legend_entrywidth,
-        ),
+        legend={**LEGEND_BOTTOM, 'maxheight': 0.12,
+                'entrywidthmode': 'fraction', 'entrywidth': legend_entrywidth},
         margin=MARGIN,
     )
     return fig
@@ -162,7 +160,7 @@ def make_burning_area_plot(gdf, event_start=None, event_end=None):
         title=dict(text='Estimated Burning Area <br> and Fire Perimeter', **TITLE_DICT),
         hovermode='x unified',
         xaxis=dict(title_text='Date', range=[event_start, event_end] if event_start else None),
-        legend=dict(orientation='v', yanchor='top', y=1.0, xanchor='right', x=0.99),
+        legend=LEGEND_BOTTOM,
         margin=MARGIN,
     )
     return fig
