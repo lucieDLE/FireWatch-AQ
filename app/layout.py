@@ -753,7 +753,8 @@ def build_layout():
 
     layout = dbc.Container( fluid=True,
                                 id="page-wrapper",
-                                children=[ 
+                                children=[
+                                    dcc.Store(id="viewport-width", data=1200),
                                     html.Div([
                                         html.H4("FireWatch — Air Quality Assessment"),
                                         dark_mode_switch,

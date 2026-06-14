@@ -45,7 +45,6 @@ def change_theme(value):
     # Tab 1 — AQ Stats
     Output("annual-pollutant-graph",      "figure"),
     Output("pollutant-exceedances-graph",  "figure"),
-    Output("pollutant-distribution-graph", "figure"),
     # Tab 2 — Fire Data
     Output("top-counties-graph",          "figure"),
     Output("top-fire-graph",              "figure"),
@@ -53,7 +52,6 @@ def change_theme(value):
     # Output("explore-scan-track-graph",    "figure"),
     # Output("explore-data-entries-graph",  "figure"),
     # Output("explore-category-graph",      "figure"),
-    Output("explore-sum-aqi-graph",       "figure"),
     Output("explore-pie-graph",           "figure"),
     Output("explore-wrong-guide-graph",   "figure"),
     Input("switch-theme",                 "value"),
@@ -62,25 +60,61 @@ def update_figure_theme(dark_mode):
     # Tab 1
     fig_pollutant_dist = make_pollutant_distribution(df_aqr_annual)
     fig_us_map         = make_aq_us_plot(df_county_aqr_annual, list_best=list_best_codes, list_worst=list_worst_codes)
-    fig_boxplot        = compute_max_boxplot(df_annual_stats, state_list)
     # Tab 2
     fig_counties       = make_cloropleth_fire_counties(df_fire, ca_geojson)
     fig_top_fires      = make_bar_fire_event(df_biggest_fire)
 
-    all_figs = [fig_pollutant_dist, fig_us_map, fig_boxplot, fig_counties, fig_top_fires]
+    all_figs = [fig_pollutant_dist, fig_us_map, fig_counties, fig_top_fires]
     for fig in all_figs:
         apply_theme(fig, dark_mode)
     for fig in [fig_us_map, fig_counties]:
         fig.update_layout(template='plotly_dark' if dark_mode else 'ggplot2')
 
     # Behind the Data — these handle their own template via dark_mode
-    fig_sum_aqi      = make_barplot_sum_aqi(df_aqi, dark_mode)
     fig_pie          = make_pollutant_number_pie_chart(df_aqi, dark_mode)
     fig_wrong_guide  = make_wrong_guidance_plot(df_aqi, dark_mode)
 
     return (
-        fig_pollutant_dist, fig_us_map, fig_boxplot, fig_counties, fig_top_fires,
-        fig_sum_aqi, fig_pie, fig_wrong_guide,
+        fig_pollutant_dist, fig_us_map, fig_counties, fig_top_fires,
+        fig_pie, fig_wrong_guide,
+    )
+
+
+@callback(
+    Output("pollutant-distribution-graph", "figure"),
+    Output("pollutant-distribution-graph", "style"),
+    Output("explore-sum-aqi-graph",        "figure"),
+    Output("explore-sum-aqi-graph",        "style"),
+    Input("switch-theme",   "value"),
+    Input("viewport-width", "data"),
+)
+def update_responsive_figures(dark_mode, width):
+    # Viewport-driven layouts. Bootstrap breakpoints: lg=992, md=768; phone < 768.
+    width = width or 1200
+    is_phone = width < 768
+
+    # Box-plot facet grid: desktop 3 cols (2 rows), tablet 2 cols (3 rows), phone 1 col (6 rows).
+    if width >= 992:
+        n_cols = 3
+    elif width >= 768:
+        n_cols = 2
+    else:
+        n_cols = 1
+
+    fig_boxplot = compute_max_boxplot(df_annual_stats, state_list, n_cols=n_cols)
+    apply_theme(fig_boxplot, dark_mode)
+    n_pollutants = df_annual_stats['Parameter Name'].nunique()
+    n_rows = -(-n_pollutants // n_cols)  # ceil division
+    # taller graph when stacked into more rows so each facet stays readable
+    box_height = max(500, 230 * n_rows)
+
+    # Composite AQI: side by side normally, stacked (taller) on phone.
+    fig_sum_aqi = make_barplot_sum_aqi(df_aqi, dark_mode, stack=is_phone)
+    aqi_height = 650 if is_phone else 450
+
+    return (
+        fig_boxplot, {'height': f'{box_height}px'},
+        fig_sum_aqi, {'height': f'{aqi_height}px'},
     )
 
 
