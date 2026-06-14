@@ -35,7 +35,8 @@ import analysis
 # ============================================================================
 def graph_card(fig_id, figure, height='400px'):
     return html.Div(
-        dcc.Graph(id=fig_id, figure=figure, style={'height': height}),
+        dcc.Graph(id=fig_id, figure=figure, style={'height': height}, responsive=True, 
+        config={'displayModeBar': True, 'displaylogo': False, 'responsive': True}),
         className="chart-card"
     )
 
