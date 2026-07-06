@@ -57,6 +57,15 @@ def text_card(title="TITLE", text='some text', solid=False):
     ], className="flat-block")
 
 
+def empty_state(title, hint, icon="fa-hand-pointer-o"):
+    """Placeholder for a panel with nothing to show yet (no site/data selected"""
+    return html.Div([
+        html.I(className=f"fa {icon}"),
+        html.Div(title, className="empty-state-title"),
+        html.Div(hint, className="empty-state-hint"),
+    ], className="empty-state")
+
+
 def body_card(text):
     return html.Div(
         dbc.Card([

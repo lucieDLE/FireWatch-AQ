@@ -1,75 +1,69 @@
+/* Display face for headline numbers — Space Grotesk has distinctive,
+   characterful digits and a matching tabular set. Swap the family in
+   --font-display below (and the import) to change the app's identity. */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap');
+
 /* ============================================================
    M3 Color Tokens — Light (default)
    ============================================================ */
 :root {
-  --md-primary:                   rgb(0 7 27);
-  --md-surface-tint:              rgb(71 94 141);
-  --md-on-primary:                rgb(255 255 255);
-  --md-primary-container:         rgb(0 30 74);
-  --md-on-primary-container:      rgb(148 171 222);
-  --md-secondary:                 rgb(112 4 0);
-  --md-on-secondary:              rgb(255 255 255);
-  --md-secondary-container:       rgb(155 7 0);
-  --md-on-secondary-container:    rgb(255 226 221);
-  --md-tertiary:                  rgb(2, 2, 2);
-  --md-on-tertiary:               rgb(255 255 255);
-  --md-tertiary-container:        rgb(0 44 87);
-  --md-on-tertiary-container:     rgb(154 186 237);
-
-  --md-surface:                   rgb(250 248 253);
-  --md-on-surface:                rgb(16 17 20);
-  --md-surface-variant:           rgb(225 226 236);
-  --md-on-surface-variant:        rgb(51 54 62);
-  --md-outline:                   rgb(80 82 91);
-  --md-outline-variant:           rgb(106 109 118);
-
-  --md-surface-dim:               rgb(199 198 202);
-  --md-surface-bright:            rgb(250 248 253);
-  --md-surface-container-lowest:  rgb(255 255 255);
-  --md-surface-container-low:     rgb(244 243 247);
-  --md-surface-container:         rgb(233 231 236);
-  --md-surface-container-high:    rgb(221 220 225);
-  --md-surface-container-highest: rgb(210 209 213);
+    /* warm-neutral greys */
+    --md-surface:                   hsl(40 33% 97%);
+    --md-on-surface:                hsl(34 17% 12%);
+    --md-surface-variant:           hsl(36 26% 82%);
+    --md-on-surface-variant:        hsl(31 15% 37%);
+    --md-outline:                   hsl(32 13% 46%);
+    --md-outline-variant:           hsl(36 26% 82%);
+    --md-surface-container-lowest:  hsl(0 0% 100%);
+    --md-surface-container-low:     hsl(40 30% 94%);
+    --md-surface-container:         hsl(38 28% 90%);
+    --md-surface-container-high:    hsl(36 26% 82%);
+    --md-surface-container-highest: hsl(34 22% 73%);
   
-  --md-inverse-surface:           rgb(47 48 52);
-  --md-inverse-on-surface:        rgb(242 240 244);
-}
-/* ============================================================
-   M3 Color Tokens — Dark overrides
-   ============================================================ */
-.dark {
-  --md-primary:                  rgb(175 198 252);
-  --md-surface-tint:             rgb(175 198 252);
-  --md-on-primary:               rgb(22 47 91);
-  --md-primary-container:        rgb(0 30 74);
-  --md-on-primary-container:     rgb(113 135 185);
-  --md-secondary:                rgb(255 180 167);
-  --md-on-secondary:             rgb(104 3 0);
-  --md-secondary-container:      rgb(155 7 0);
-  --md-on-secondary-container:   rgb(255 165 149);
-  --md-surface:                  rgb(18 19 22);
-  --md-on-surface:               rgb(227 226 230);
-  --md-surface-variant:          rgb(68 71 79);
-  --md-on-surface-variant:       rgb(196 198 208);
-  --md-outline:                  rgb(142 144 154);
-  --md-outline-variant:          rgb(68 71 79);
-  --md-shadow:                   rgb(0 0 0);
-
-  --md-surface-container-lowest: rgb(13 14 17);
-  --md-surface-container-low:    rgb(27 27 31);
-  --md-surface-container:        rgb(31 31 35);
-  --md-surface-container-high:   rgb(41 42 45);
-  --md-surface-container-highest:rgb(52 53 56);
-  --md-inverse-surface:          rgb(227 226 230);
-  --md-inverse-on-surface:       rgb(47 48 52);
-  --md-inverse-primary:          rgb(71 94 141);
-
-  --md-secondary-fixed:          rgb(255 218 212);
-  --md-on-secondary-fixed:       rgb(64 1 0);
-
-}
-
-/* ============================================================
+    /* PRIMARY = ember */
+    --md-secondary:                   hsl(24 72% 45%);
+    --md-on-secondary:                hsl(0 0% 100%);
+    --md-secondary-container:         hsl(37 82% 90%);
+    --md-on-secondary-container:      hsl(16 78% 26%);
+  
+    /* ACCENT = petrol-slate (quiet) */
+    --md-primary:                 hsl(196 43% 33%);
+    --md-on-primary:              hsl(0 0% 100%);
+    --md-primary-container:       hsl(197 35% 88%);
+    --md-on-primary-container:    hsl(197 45% 22%);
+  
+    /* semantic, reserved */
+    --stat-problem-1:  hsl(6 63% 34%); --stat-problem-2:  hsl(6 60% 42%);
+    --stat-problem-3:  hsl(6 63% 46%); --stat-problem-4:  hsl(20 76% 45%);
+    --stat-progress-1: hsl(126 33% 28%); --stat-progress-2: hsl(125 30% 35%);
+    --stat-progress-3: hsl(124 28% 43%); --stat-progress-4: hsl(122 26% 55%);
+  
+    --bg-header: var(--md-surface);
+    --accent:    var(--md-secondary);
+  }
+  .dark {
+    --md-surface:                   hsl(34 17% 9%);
+    --md-on-surface:                hsl(42 33% 91%);
+    --md-surface-variant:           hsl(32 13% 17%);
+    --md-on-surface-variant:        hsl(35 13% 61%);
+    --md-outline:                   hsl(33 10% 46%);
+    --md-outline-variant:           hsl(32 13% 17%);
+    --md-surface-container-lowest:  hsl(34 17% 6%);
+    --md-surface-container-low:     hsl(34 15% 11%);
+    --md-surface-container:         hsl(33 14% 13%);
+    --md-surface-container-high:    hsl(32 13% 17%);
+    --md-surface-container-highest: hsl(31 12% 23%);
+  
+    --md-secondary:                   hsl(30 78% 62%);
+    --md-on-secondary:                hsl(16 78% 16%);
+    --md-secondary-container:         hsl(18 70% 24%);
+    --md-on-secondary-container:      hsl(37 82% 88%);
+  
+    --md-primary:                 hsl(196 44% 62%);
+    --md-primary-container:       hsl(197 40% 20%);
+    --md-on-primary-container:    hsl(197 45% 85%);
+  }
+  /* 
    Semantic App Variables — mapped from M3 tokens
    ============================================================ */
 :root {
@@ -125,20 +119,22 @@
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
                Helvetica, Arial, sans-serif;
 
+  /* Display face for the big numbers (falls back to the system stack) */
+  --font-display: "Space Grotesk", var(--font-sans);
+
   /* Type scale */
-  --fs-2xs:  0.65rem;
-  --fs-xs:   0.7rem;
-  --fs-sm:   0.75rem;
-  --fs-md:   0.8rem;
-  --fs-base: 0.9rem;
-  --fs-lg:   0.95rem;
-  --fs-xl:   1.05rem;
-  --fs-2xl:  1.25rem;
-  --fs-3xl:  1.5rem;
-  --fs-4xl:  2rem;
-  --fs-5xl:  2.5rem;
-  --fs-hero: 3rem;
-  /* --fs-hero: 3.6rem; */
+  --fs-xs:   0.75rem; 
+  --fs-sm:   0.875rem;
+  --fs-base: 1rem;    
+  --fs-lg:   1.125rem;
+  --fs-xl:   1.375rem;
+  --fs-2xl:  1.75rem; 
+  --fs-3xl:  2.5rem;  
+  --fs-hero: 3.75rem; 
+  --fs-2xs: var(--fs-xs);
+  --fs-md:  var(--fs-base);
+  --fs-4xl: var(--fs-3xl);
+  --fs-5xl: var(--fs-hero);
 
   /* Spacing scale (4px base) */
   --space-1: 2px;
@@ -148,7 +144,10 @@
   --space-5: 16px;
   --space-6: 24px;
   --space-7: 32px;
-  /* --space-7: 48px; */
+  --space-8: 48px;   /* major-block separation (between sections) */
+  --space-9: 64px;   /* top-of-section breathing room */
+
+  --elevation: 0 1px 3px var(--shadow), 0 6px 16px -10px var(--shadow);
 }
 
 .dark {
@@ -196,7 +195,8 @@ body {
   margin: 0;
 }
 
-.row{margin-bottom: var(--space-7);}
+.row{margin-bottom: var(--space-5);}
+.tab-content > .row{margin-bottom: var(--space-8);}
 
 #page-wrapper {
   color: var(--text-main);
@@ -218,6 +218,7 @@ body {
   font-size: var(--fs-xl);
   font-weight: 600;
   letter-spacing: 0.5px;
+  border-top: 3px solid var(--md-primary);
 }
 
 /* ============================================================
@@ -268,8 +269,8 @@ body {
 .chart-card {
   background-color: var(--bg-card);
   border-radius: 12px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 1px 4px var(--shadow);
+  /* No border: the chart sits on the page, lifted by a single soft shadow. */
+  box-shadow: var(--elevation);
   padding: var(--space-2);
   margin-bottom: var(--space-4);
 }
@@ -280,17 +281,47 @@ body {
   max-width: 440px;
   margin: 0 auto var(--space-4);
 }
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 220px;
+  padding: var(--space-7);
+  text-align: center;
+  color: var(--md-on-surface-variant);
+  background-color: var(--bg-card);
+  border-radius: 12px;
+}
+
+.empty-state .fa {
+  font-size: var(--fs-3xl);
+  opacity: 0.5;
+}
+
+.empty-state-title {
+  font-weight: 600;
+  font-size: var(--fs-lg);
+  color: var(--text-main);
+}
+
+.empty-state-hint {
+  font-size: var(--fs-sm);
+  max-width: 32ch;
+}
 
 /* ============================================================
    Text cards (dbc.Card)
    ============================================================ */
 .card {
   margin-bottom: var(--space-4);
-  /* margin-top: 16px; */
-  border: 1px solid var(--border-color) !important;
+  /* One separation method: the header fill + soft shadow carry the card,
+     so drop the border (was border + fill + header = hierarchy 3× over). */
+  border: none !important;
   border-radius: 12px;
+  box-shadow: var(--elevation);
   overflow: hidden;
-
 }
 
 .card-header {
@@ -318,6 +349,8 @@ body {
    ============================================================ */
 .flat-block {
   margin-bottom: var(--space-4);
+  margin-left: var(--space-5);
+  margin-right: var(--space-5);
 }
 
 .flat-block-title {
@@ -358,7 +391,7 @@ body {
     padding: var(--space-2) var(--space-4) var(--space-6);
     background-color: var(--bg-card);
     border-radius: 12px;
-    border: 1px solid var(--border-color);
+    box-shadow: var(--elevation);
     margin-bottom: var(--space-4);
   }
   
@@ -443,8 +476,7 @@ body {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-main);
-  margin-bottom: var(--space-4);
-  margin-top: var(--space-2);
+  margin-top: var(--space-9);
   padding-bottom: 6px;
   border-bottom: 2px solid var(--accent);
   display: inline-block;
@@ -468,9 +500,13 @@ body {
 }
 
 .hero-title {
+  font-family: var(--font-display);
   font-size: clamp(2rem, 8vw, 3rem);
-  font-weight: 800;
-  line-height: 1.05;
+  font-weight: 700;
+  /* Headline metrics: tight leading + slightly negative tracking. The global
+     line-height 1.55 / +0.5px are for body & labels, wrong for 3rem type. */
+  line-height: 1.0;
+  letter-spacing: -0.02em;
   color: var(--text-main);
   margin-bottom: var(--space-3);
 }
@@ -483,8 +519,11 @@ body {
 }
 
 .hero-stat {
+  font-family: var(--font-display);
   font-size: clamp(1.5rem, 6vw, 2rem);
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
   color: var(--accent);
 }
 
@@ -530,6 +569,15 @@ body {
   border-spacing: 0 4px;
   font-size: var(--fs-md);
   padding: var(--space-2);
+}
+
+/* Numbers that sit in columns get fixed-width (tabular) figures so they
+   line up and don't shift width as values change. */
+.aqi-table td,
+.naaqs-table td,
+.misclass-badge,
+.misclass-poll {
+  font-variant-numeric: tabular-nums;
 }
 
 .aqi-table-head th {
@@ -589,7 +637,7 @@ sup a:hover {
 
 .hook-badge {
   position: absolute;
-  top: 0;
+  top: -10%;
   left: 25%;
   transform: translateX(-50%);
   background-color: var(--accent);
@@ -644,8 +692,8 @@ sup a:hover {
 }
 
 .poll-card {
+  /* Fill alone separates it from the page — no border on top of the fill. */
   background-color: var(--bg-card-body);
-  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: var(--space-4);
   margin-bottom: 10px;
@@ -791,9 +839,12 @@ sup a:hover {
 }
 
 .stat-big {
+  font-family: var(--font-display);
   font-size: var(--fs-4xl);
   font-weight: 700;
-  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
   color: white;
 }
 
@@ -814,7 +865,6 @@ sup a:hover {
 /* ── Behind the Data: misclassified-day example cards ───────────────── */
 .misclass-card {
   background-color: var(--bg-card-body);
-  border: 1px solid var(--border-color);
   border-radius: 14px;
   padding: 4px 8px;
   margin-bottom: var(--space-3);
