@@ -204,7 +204,7 @@ def compute_max_boxplot(df_stats, states_list, n_cols=3):
         template='plotly_dark',
         title_text='Pollutant distribution by state',
         legend=LEGEND_BOTTOM,
-        margin=MARGIN,
+        margin=dict(l=10, r=10, t=55, b=60),
     )
     fig.update_xaxes(showticklabels=False)
     return fig

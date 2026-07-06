@@ -6,7 +6,7 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 
 from src.config import CENTER_LAT, CENTER_LON
-from src.display import green_colors, red_colors, line_greens, line_reds, MARGIN, TITLE_DICT,LEGEND_BOTTOM
+from src.display import green_colors, red_colors, line_greens, line_reds, MARGIN, MARGIN_MAP, TITLE_DICT,LEGEND_BOTTOM
 
 
 def make_cloropleth_fire_counties(df, ca_geojson):
@@ -45,11 +45,11 @@ def make_cloropleth_fire_counties(df, ca_geojson):
         center={'lat': CENTER_LAT, 'lon': CENTER_LON},
         opacity=0.7,
         labels={'fire_score': 'Fire activity score'},
-        title='Fire activity score by county <br> (weighted by fire category)',
+        title='Fire activity score by county (weighted by fire category)',
     )
     fig.update_layout(
-        margin=MARGIN, 
-        # title=TITLE_DICT
+        margin=MARGIN_MAP,
+        title=TITLE_DICT,
     )
     return fig
 

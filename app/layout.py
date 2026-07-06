@@ -561,7 +561,7 @@ def build_fire_data_tab():
             ]),
             dbc.Row([
                 dbc.Col(
-                    graph_card("top-counties-graph", top_counties, height='420px'),
+                    graph_card("top-counties-graph", top_counties, height='clamp(420px, 60vh, 700px)'),
                     xs=12, lg=9
                 ),
                 dbc.Col(
@@ -654,7 +654,7 @@ def build_time_serie_event():
             ],xs=12, lg=5),
 
             dbc.Col([
-                graph_card(fig_id="overlay-map-graph", figure=aq_fire_overlay, height='480px'),
+                graph_card(fig_id="overlay-map-graph", figure=aq_fire_overlay, height='clamp(460px, 65vh, 760px)'),
                 html.Div(
                     dcc.Slider(
                         id='date-slider',

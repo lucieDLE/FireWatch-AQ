@@ -1,4 +1,5 @@
 MARGIN=dict(l=10, r=10, t=100, b=80)
+MARGIN_MAP=dict(l=0, r=0, t=45, b=20)
 TITLE_DICT= dict(font=dict(size=15),xanchor='center', x=0.5)
 
 LEGEND_BOTTOM = dict(

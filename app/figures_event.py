@@ -12,7 +12,7 @@ _FIRE_CENTER_LON = (FIRE_LON[0] + FIRE_LON[1]) / 2
 from src.display import (
     green_colors, red_colors, line_greens, line_reds,
     AQI_CMAP, AQI_BANDS_COLOR, AQI_HOVER_TEMPLATE, AQI_REPORT_COLS,
-    FIRE_REPORT_COLS, FIRE_HOVER_TEMPLATE, COLORS_MAP, MARGIN, TITLE_DICT, LEGEND_BOTTOM
+    FIRE_REPORT_COLS, FIRE_HOVER_TEMPLATE, COLORS_MAP, MARGIN, MARGIN_MAP, TITLE_DICT, LEGEND_BOTTOM
 )
 
 
@@ -185,7 +185,7 @@ def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fir
 
     fig.update_layout(
         title=dict(
-            text=f'Fire Perimeter & Air Quality <br> {selected_day}',
+            text=f'Fire Perimeter & Air Quality — {selected_day}',
             **TITLE_DICT,
         ),
         mapbox=dict(
@@ -200,7 +200,7 @@ def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fir
             center=dict(lat=map_center_lat, lon=map_center_lon),
             zoom=7,
         ),
-        margin=MARGIN,
+        margin=MARGIN_MAP,
         legend=dict(
             bgcolor='rgba(255, 255, 255, 0.85)',
             bordercolor='rgba(180, 180, 180, 0.8)',
