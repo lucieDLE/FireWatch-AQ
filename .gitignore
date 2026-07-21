@@ -1,7 +1,8 @@
 data/raw/
 !data/raw/annual_conc_by_monitor_2025.csv
 data/unused/
-
+data/satellite/
+key.txt
 .DS_Store
 
 # Byte-compiled / optimized / DLL files
