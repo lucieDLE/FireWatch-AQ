@@ -112,6 +112,10 @@ The raw dataset is filtered through the following steps in order:
 Pre-computed fire perimeters from [NIFC WFIGS](https://data-nifc.opendata.arcgis.com/datasets/nifc::wfigs-interagency-fire-perimeters/about). Download as GeoJSON and place in `data/raw/WFIGS_Interagency_Perimeters_*.geojson`.
 
 
+### C. Satellite imagery
+
+Satellite imagery was downloaded from [worldview earth data](https://worldview.earthdata.nasa.gov) from Nasa, using the Corrected Reflectance (True color) Layer from Terra/MODIS satellite. A snapshot was saved for each day of interest in the area of the fire event with a resolution of 500m.
+
 
 
 ## Requirements
