@@ -212,3 +212,63 @@ def make_overlay_aq_fire(df_day_site_1, df_day_site_2, gdf_fire_day, geojson_fir
         ),
     )
     return fig
+
+def make_satellite_map(gdf_ca_cities, dict_satellite,
+                        center_lat=None, center_lon=None, selected_day=''):
+    map_center_lat = center_lat if center_lat is not None else _FIRE_CENTER_LAT
+    map_center_lon = center_lon if center_lon is not None else _FIRE_CENTER_LON
+
+    if dict_satellite is None:
+        return go.Figure()
+
+    fig = go.Figure(
+        go.Scattermapbox(
+            lat=gdf_ca_cities['lat'],
+            lon=gdf_ca_cities['lon'],
+            mode='markers+text',
+            text=gdf_ca_cities['City'],
+            textposition='top center',
+            marker=dict(size=6, color='fuchsia'),
+            name='Cities',
+        )
+    )
+
+    coords = dict_satellite['coordinates']
+
+    lon_min, lon_max = coords[0][0], coords[1][0]
+    lat_min, lat_max = coords[2][1], coords[1][1]
+
+    lon_span = abs(lon_max - lon_min)
+    lat_span = abs(lat_max - lat_min)
+    mid_lat = (lat_min + lat_max) / 2
+    mid_lon = (lon_min + lon_max) / 2
+
+    # 1 deg lon is narrower than 1 deg lat by cos(lat), so scale width to match
+    aspect = (lon_span * np.cos(np.radians(mid_lat))) / lat_span
+
+    base_height = 600
+    fig_width = base_height * aspect
+
+    # Web-Mercator: the world is 512 px wide at zoom 0 and doubles each level.
+    # Pick the zoom where lon_span exactly fills the figure width.
+    zoom = np.log2(fig_width * 360.0 / (512.0 * lon_span))
+
+    fig.update_layout(
+        title=dict(text=f'Satellite Imagery — {selected_day}', **TITLE_DICT),
+        mapbox=dict(
+            style='white-bg',
+            center=dict(lat=mid_lat, lon=mid_lon),
+            zoom=zoom,
+            layers=[dict(
+                sourcetype='image',
+                source=dict_satellite['source'],
+                coordinates=dict_satellite['coordinates'],
+                below='traces',
+            )],
+        ),
+        height=base_height,
+        width=fig_width,
+        margin=dict(l=0, r=0, t=40, b=0),
+    )
+
+    return fig

@@ -10,11 +10,13 @@ from data_transforms import (
     df_biggest_fire, ca_geojson,
     state_list, list_best_codes, list_worst_codes, POLLUTANT_COL_MAP,
     get_event_data, compute_aqi_quantiles, compute_burnt_area_gdf,
+    get_satellite_dates_for_fire,
 )
 from figures_aq import make_pollutant_distribution, make_aq_us_plot, compute_max_boxplot
 from figures_fire import make_cloropleth_fire_counties, make_bar_fire_event, make_fire_aqi_overlay
 from figures_event import (make_aq_time_series, make_burning_area_plot, make_overlay_aq_fire,
-                           make_aq_hotspot_trace, make_fire_perimeter_trace)
+                           make_aq_hotspot_trace, make_fire_perimeter_trace, make_satellite_map)
+from data_loaders import get_satellite_layer
 from figures_explore import (
     make_scan_track_distribution, make_fire_data_entry_analysis, make_fire_category_repartition,
     make_barplot_sum_aqi, make_pollutant_number_pie_chart, make_wrong_guidance_plot,
@@ -126,6 +128,10 @@ def update_responsive_figures(dark_mode, width):
     Output("date-slider",       "max"),
     Output("date-slider",       "marks"),
     Output("date-slider",       "value"),
+    Output("satellite-date-slider", "min"),
+    Output("satellite-date-slider", "max"),
+    Output("satellite-date-slider", "marks"),
+    Output("satellite-date-slider", "value"),
     Output("event-desc-header", "children"),
     Output("event-desc-body",   "children"),
     Output("event-site1-header","children"),
@@ -150,11 +156,16 @@ def update_event_tab(fire_name, dark_mode):
     marks = {i: {'label': dates[i][5:], 'style': {'fontSize': '11px'}}
              for i in range(0, len(dates), 3)}
 
+    sat_dates = get_satellite_dates_for_fire(fire_name)
+    sat_marks = {i: {'label': sat_dates[i][5:], 'style': {'fontSize': '11px'}}
+                 for i in range(len(sat_dates))}
+
     panel = analysis.FIRE_EVENT_PANEL_MAP[fire_name]
     desc, site1, site2 = panel
 
     return (fig_site1, fig_site2, fig_burning,
             0, max(len(dates) - 1, 0), marks, 0,
+            0, max(len(sat_dates) - 1, 0), sat_marks, 0,
             desc[0], desc[1], site1[0], site1[1], site2[0], site2[1])
 
 
@@ -234,3 +245,26 @@ def update_fire_aqi_overlay(pollutant_name, dark_mode):
     fig = apply_theme(fig, dark_mode)
     panel = analysis.POLLUTANT_PANEL_MAP[pollutant_name]
     return fig, panel[0], panel[1]
+
+
+@callback(
+    Output("satellite-map-graph", "figure"),
+    Input("satellite-date-slider", "value"),
+    Input("switch-theme",          "value"),
+    Input("fire-dropdown",         "value"),
+)
+def update_satellite_map(slider_idx, dark_mode, fire_name):
+    ev = get_event_data(fire_name)
+    sat_dates = get_satellite_dates_for_fire(fire_name)
+    triggered = callback_context.triggered_id
+    idx = 0 if (triggered == 'fire-dropdown' or not sat_dates) else min(slider_idx, len(sat_dates) - 1)
+    selected_day = sat_dates[idx] if sat_dates else ''
+
+    layer = get_satellite_layer(selected_day)
+    dict_satellite, gdf_cities = layer if layer is not None else (None, None)
+
+    fig = make_satellite_map(gdf_cities, dict_satellite,
+                              center_lat=ev['map_center_lat'], center_lon=ev['map_center_lon'],
+                              selected_day=selected_day)
+    apply_theme(fig, dark_mode)
+    return fig

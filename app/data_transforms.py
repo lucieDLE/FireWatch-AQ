@@ -15,7 +15,7 @@ from src.config import (
     FIRE_RAW_PATH,
 )
 from src.display import WATCH_SITES, FIRE_WATCH_SITES, STATE_NAME_TO_CODE
-from data_loaders import df_aqi, df_fire, df_aqr_annual, ca_geojson
+from data_loaders import df_aqi, df_fire, df_aqr_annual, ca_geojson, satellite_dates_in_range
 
 
 import numpy as np
@@ -340,6 +340,13 @@ def get_event_data(fire_name: str) -> dict:
     _event_cache[fire_name] = result
     return result
 
+
+def get_satellite_dates_for_fire(fire_name: str) -> list:
+    ev = get_event_data(fire_name)
+    start = str(pd.Timestamp(ev['EVENT_START']).date())
+    end = ev['EVENT_END']
+    return satellite_dates_in_range(start, end)
+
 # Expose initial event variables at module level for layout.py initial render
 _ev = get_event_data(DEFAULT_FIRE)
 site_1            = _ev['site_1']
@@ -363,3 +370,4 @@ map_center_lat    = _ev['map_center_lat']
 map_center_lon    = _ev['map_center_lon']
 df_day_site_1     = _ev['df_day_site_1']
 df_day_site_2     = _ev['df_day_site_2']
+satellite_dates   = get_satellite_dates_for_fire(DEFAULT_FIRE)
