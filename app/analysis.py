@@ -204,7 +204,7 @@ and sensitive indicator of wildfire smoke.
 
 PANEL_FIRE_CARD_COUNTY=[ """Most fire events are geographically concentrated""", 
 """ 
-The map shows fire activity score peaking sharply in Fresno, San Luis Obispo, and Santa Barbara counties. 
+The map shows fire activity score peaking sharply in Fresno, San Luis Obispo, and Santa Maria counties. 
 Los Angeles county's score is moderate despite hosting the Palisades and Eaton fires. 
 
 This reflects the fire category: large fires burning through wildland vegetation dominate
@@ -214,7 +214,7 @@ the score metric over the faster-moving but shorter-lived LA fires.
 
 PANEL_FIRE_CARD_TOP10=[ """The top 10 fires are distributed across four distinct county""", 
 f""" 
-At roughly 130,000 estimated burnt acres, Gifford (Santa Barbara) is nearly 60\% larger than
+At roughly 130,000 estimated burnt acres, Gifford (Santa Maria) is nearly 60\% larger than
 the Madre fire (San Luis Obispo, ~80,000 acres) and more than twice the size of Garnet 
 (Fresno, ~60,000 acres). The remaining fires cluster tightly in the 10,000–25,000 acre range. 
 
@@ -279,7 +279,7 @@ Reading the two zones together reveals the smoke transport direction:
 """
 
 PANEL_EVENT_OVERVIEW_FIRES = """Four fires are available :
-- Gifford (August, Santa Barbara)
+- Gifford (August, Santa Maria)
 - Madre (July, San Luis Obispo coast),
 - Garnet (September, Fresno) .
 - Palisades (January, Los Angeles basin)
@@ -288,7 +288,7 @@ PANEL_EVENT_OVERVIEW_FIRES = """Four fires are available :
 PANEL_EVENT_OVERVIEW_ABBREVIATIONS = """**Abbreviations:**
 - San Luis Obispo (SLO)
 - Los Angeles (LA)
-- Santa Barbara (SB)
+- Santa Maria (SM)
 """
 
 
@@ -299,7 +299,7 @@ PANEL_EVENT_PALISADES_DESCRIPTION=[ """ EVENT DESCRIPTION """,
 The Palisades fire ignited on January 7, 2025 in the Pacific Palisades neighborhood of Los Angeles, 
 driven by extreme wind conditions. It represents the first major air quality event of the 
 2025 fire season. Two monitoring zones are tracked: Los Angeles basin (primary impact zone) 
-and San Luis Obispo/Santa Barbara (reference zone).
+and San Luis Obispo/Santa Maria (reference zone).
 """
 ]
 
@@ -316,9 +316,9 @@ electronic equipment having lead paint.
 ]
 
 
-PANEL_EVENT_PALISADES_ANALYSIS_SITE_2=[ """ The SLO/SB reference zone shows near-zero response throughout the entire event. """, 
+PANEL_EVENT_PALISADES_ANALYSIS_SITE_2=[ """ The SLO/SM reference zone shows near-zero response throughout the entire event. """, 
 """ 
-All six SLO/SB monitors remained flat between 10-40 AQI across the full observation window, a clean
+All six SLO/SM monitors remained flat between 10-40 AQI across the full observation window, a clean
 confirmation that the Palisades smoke plume was carried into the LA basin."""
 ]
 
@@ -328,7 +328,7 @@ PANEL_EVENT_MADRE_DESCRIPTION=[ """ EVENT DESCRIPTION """,
 """ 
 The Madre fire burned in San Luis Obispo County in the first week of July. 
 It is geographically positioned between the two monitoring zones: 
-SLO/Santa Barbara to the northwest and Los Angeles to the southeast. 
+SLO/Santa Maria to the northwest and Los Angeles to the southeast. 
 
 The fire coincides with the July 4th
 national holiday, introducing a significant confounding source for one monitoring zone.
@@ -336,11 +336,11 @@ national holiday, introducing a significant confounding source for one monitorin
 ]
 
 
-PANEL_EVENT_MADRE_ANALYSIS_SITE_1=[ """The SLO/Santa Barbara monitors show a moderate, fire-consistent response""", 
+PANEL_EVENT_MADRE_ANALYSIS_SITE_1=[ """The SLO/Santa Maria monitors show a moderate, fire-consistent response""", 
 """ 
 Most sites saw gradual increase from july 2nd to a broad peak of ~55–65 AQI around July 4–5, then 
 declined steadily through July 7–8. This gradual increase/decrease is the expected signature of a 
-nearby fire burning at moderate intensity. No SLO/SB site 
+nearby fire burning at moderate intensity. No SLO/SM site 
 breached the "unhealthy for sensitive groups" which means the fire had little impact on the population (near monitoring sites).
 """
 ]
@@ -360,17 +360,17 @@ PM2.5 and PM10 elevation, the spike cannot be cleanly attributed to the Madre fi
 #  Gifford
 PANEL_EVENT_GIFFORD_DESCRIPTION=[ """ EVENT DESCRIPTION """,
 """
-The Gifford fire in Santa Barbara County was the largest fire of the 2025 by
+The Gifford fire in Santa Maria County was the largest fire of the 2025 by
 estimated burnt area (~130,000 acres). It burned two weeks after the
 Madre fire and in the same location but at a much larger scale. The panel covers July 31–August 22,
-with the same two monitoring zones as Madre: SLO/Santa Barbara and Los Angeles.
+with the same two monitoring zones as Madre: SLO/Santa Maria and Los Angeles.
 """
 ]
 
 
 PANEL_EVENT_GIFFORD_ANALYSIS_SITE_1=[ """Despite being the largest fire of the season, Gifford produced the least local AQI impact""",
 """
-SLO/SB monitors began at ~30–40 AQI rising to a broad peak of ~60–65 around August 3–6 without 
+SLO/SM monitors began at ~30–40 AQI rising to a broad peak of ~60–65 around August 3–6 without 
 breaking into the unhealthy for sensitive group category. This shows small smoke exposure (near monitoring sites)
 rather than sharp spikes seen in other events, highlighting a possible wind/geographic effect on smoke transport."""
 ]

@@ -26,7 +26,7 @@ STATE_NAME_TO_CODE = {
 
 WATCH_SITES =  {
     #TODO: investigates the two sites that fail
-    'San Luis Obispo/Santa Barbara': [
+    'San Luis Obispo/Santa Maria': [
         60798002,
         60792020,
         60792007,
@@ -71,10 +71,10 @@ WATCH_SITES =  {
 }
 
 FIRE_WATCH_SITES={
-    'Gifford': ['San Luis Obispo/Santa Barbara',"Los Angeles" ],
-    'Madre': ['San Luis Obispo/Santa Barbara', "Los Angeles"],
+    'Gifford': ['San Luis Obispo/Santa Maria',"Los Angeles" ],
+    'Madre': ['San Luis Obispo/Santa Maria', "Los Angeles"],
     'Garnet':['Fresno', 'Sierra National Forest'],
-    'PALISADES':['Los Angeles', 'San Luis Obispo/Santa Barbara']
+    'PALISADES':['Los Angeles', 'San Luis Obispo/Santa Maria']
 }
 
 
