@@ -138,6 +138,8 @@ def update_responsive_figures(dark_mode, width):
     Output("event-site1-body",  "children"),
     Output("event-site2-header","children"),
     Output("event-site2-body",  "children"),
+    Output("event-satellite-header","children"),
+    Output("event-satellite-body",  "children"),
     Input("fire-dropdown",      "value"),
     Input("switch-theme",       "value"),
 )
@@ -161,12 +163,13 @@ def update_event_tab(fire_name, dark_mode):
                  for i in range(len(sat_dates))}
 
     panel = analysis.FIRE_EVENT_PANEL_MAP[fire_name]
-    desc, site1, site2 = panel
+    desc, site1, site2, satellite_text = panel
 
     return (fig_site1, fig_site2, fig_burning,
             0, max(len(dates) - 1, 0), marks, 0,
             0, max(len(sat_dates) - 1, 0), sat_marks, 0,
-            desc[0], desc[1], site1[0], site1[1], site2[0], site2[1])
+            desc[0], desc[1], site1[0], site1[1], site2[0], site2[1], 
+            satellite_text[0], satellite_text[1])
 
 
 @callback(

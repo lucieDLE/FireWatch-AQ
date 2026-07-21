@@ -417,14 +417,56 @@ which are not the scope of this project.
 """
 ]
 
+
+PANEL_EVENT_PALISADES_SATELLITE=[""" Palisades Fire """, 
+"""
+The satellite imagery confirms the previous analysis and offers an explanation for the city's relatively rapid AQI recovery: 
+prevailing winds carried the smoke plume offshore over the Pacific Ocean, effectively ventilating the LA basin. 
+
+Without this favorable wind pattern, the dense smoke visible in the imagery would likely have stayed in LA far longer.
+"""
+]
+
+PANEL_EVENT_MADRE_SATELLITE=[""" Madre Fire """, 
+"""
+The satellite imagery confirm the previous analysis: the smoke plume remains concentrated over the SLO/Santa Maria
+corridor throughout the event. 
+
+The elevated AQI readings observed in Los Angeles during this period appear attributable
+to July 4th fireworks rather than wildfire smoke transport, as the imagery shows no smoke plume reaching the LA basin.
+"""
+]
+
+PANEL_EVENT_GIFFORD_SATELLITE=["""Gifford Fire """, 
+"""
+Gifford stands out as the most complex event in this study. Several observations emerge from the imagery:
+
+- The wind direction shifted repeatedly throughout the event, causing the smoke plume to change trajectory across multiple days. 
+Plume density varied significantly, with notably heavier smoke visible on August 3rd and during the August 10–12 period compared to other days.
+
+- Most intriguing, the plume visibly reaches the SLO/Santa Maria area on certain days, yet this does not show on the monitor readings.
+It does raise questions about whether the smoke was at higher altitudes, or whether the monitors missed the smoke.
+
+- Finally, the imagery suggests that a 3rd monitoring site positioned between the two existing stations could have captured smoke impacts around 
+    August 2nd.
+
+"""
+]
+
+PANEL_EVENT_GARNET_SATELLITE=[""" Garnet Fire """,
+"""
+The imagery reveals a remarkably dense smoke plume extending eastward well into Nevada, demonstrating that the 
+fire's air quality impact extended far beyond California. This event is an illustration of how wind patterns impact smoke transport.
+"""
+]
+
+
 FIRE_EVENT_PANEL_MAP = {
-    'PALISADES': (PANEL_EVENT_PALISADES_DESCRIPTION, PANEL_EVENT_PALISADES_ANALYSIS_SITE_1, PANEL_EVENT_PALISADES_ANALYSIS_SITE_2),
-    'Madre':     (PANEL_EVENT_MADRE_DESCRIPTION,     PANEL_EVENT_MADRE_ANALYSIS_SITE_1,     PANEL_EVENT_MADRE_ANALYSIS_SITE_2),
-    'Gifford':   (PANEL_EVENT_GIFFORD_DESCRIPTION,   PANEL_EVENT_GIFFORD_ANALYSIS_SITE_1,   PANEL_EVENT_GIFFORD_ANALYSIS_SITE_2),
-    'Garnet':    (PANEL_EVENT_GARNET_DESCRIPTION,    PANEL_EVENT_GARNET_ANALYSIS_SITE_1,    PANEL_EVENT_GARNET_ANALYSIS_SITE_2),
+    'PALISADES': (PANEL_EVENT_PALISADES_DESCRIPTION, PANEL_EVENT_PALISADES_ANALYSIS_SITE_1, PANEL_EVENT_PALISADES_ANALYSIS_SITE_2,  PANEL_EVENT_PALISADES_SATELLITE),
+    'Madre':     (PANEL_EVENT_MADRE_DESCRIPTION,     PANEL_EVENT_MADRE_ANALYSIS_SITE_1,     PANEL_EVENT_MADRE_ANALYSIS_SITE_2,  PANEL_EVENT_MADRE_SATELLITE),
+    'Gifford':   (PANEL_EVENT_GIFFORD_DESCRIPTION,   PANEL_EVENT_GIFFORD_ANALYSIS_SITE_1,   PANEL_EVENT_GIFFORD_ANALYSIS_SITE_2,  PANEL_EVENT_GIFFORD_SATELLITE),
+    'Garnet':    (PANEL_EVENT_GARNET_DESCRIPTION,    PANEL_EVENT_GARNET_ANALYSIS_SITE_1,    PANEL_EVENT_GARNET_ANALYSIS_SITE_2,  PANEL_EVENT_GARNET_SATELLITE),
 }
-
-
 
 
 # ============================================================================

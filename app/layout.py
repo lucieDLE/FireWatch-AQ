@@ -18,11 +18,12 @@ from data_transforms import (
     site_1, site_2, site_name_1, site_name_2,
     df_event_site_1, df_event_site_2, df_day_site_1, df_day_site_2,
     gdf, gdf_fire_day, gdf_burnt_area, geojson_fire_dict, geojson_burnt_dict,
-    map_center_lat, map_center_lon,
+    map_center_lat, map_center_lon, satellite_dates,
 )
 from figures_aq import make_pollutant_distribution, make_aq_us_plot, compute_max_boxplot
 from figures_fire import make_cloropleth_fire_counties, make_bar_fire_event, make_fire_aqi_overlay
-from figures_event import make_aq_time_series, make_burning_area_plot, make_overlay_aq_fire
+from figures_event import make_aq_time_series, make_burning_area_plot, make_overlay_aq_fire, make_satellite_map
+from data_loaders import get_satellite_layer
 from figures_explore import (
     make_scan_track_distribution, make_fire_data_entry_analysis, make_fire_category_repartition,
     make_barplot_sum_aqi, make_pollutant_number_pie_chart, make_wrong_guidance_plot,
@@ -33,10 +34,11 @@ import analysis
 # ============================================================================
 #  APP FUNCTIONS/ VARIABLES
 # ============================================================================
-def graph_card(fig_id, figure, height='400px'):
+def graph_card(fig_id, figure, height='400px', responsive=True):
+    style = {'height': height} if responsive else {}
     return html.Div(
-        dcc.Graph(id=fig_id, figure=figure, style={'height': height}, responsive=True,
-        config={'displayModeBar': True, 'displaylogo': False, 'responsive': True}),
+        dcc.Graph(id=fig_id, figure=figure, style=style, responsive=responsive,
+        config={'displayModeBar': True, 'displaylogo': False, 'responsive': responsive}),
         className="chart-card"
     )
 
@@ -626,6 +628,13 @@ def build_time_serie_event():
         center_lat=map_center_lat, center_lon=map_center_lon,
     )
 
+    satellite_selected_day = satellite_dates[0] if satellite_dates else SELECTED_DAY
+    satellite_layer = get_satellite_layer(satellite_selected_day)
+    dict_satellite, gdf_satellite_cities = satellite_layer if satellite_layer is not None else (None, None)
+    satellite_fig = make_satellite_map(gdf_satellite_cities, dict_satellite,
+                                        center_lat=map_center_lat, center_lon=map_center_lon,
+                                        selected_day=satellite_selected_day)
+
     time_serie_event = dcc.Tab(
     label='Event Time Series Visualization',
     children=[
@@ -704,7 +713,33 @@ def build_time_serie_event():
                     dcc.Markdown(id="event-site2-body", children=analysis.PANEL_EVENT_MADRE_ANALYSIS_SITE_2[1], className="flat-block-body"),
                 ], className="flat-block"),
             ],xs=12, md=6),
-        ])
+        ]),
+        dbc.Row([
+            dbc.Col([
+                graph_card(fig_id="satellite-map-graph", figure=satellite_fig, responsive=False),
+                html.Div(
+                    dcc.Slider(
+                        id='satellite-date-slider',
+                        min=0,
+                        max=max(len(satellite_dates) - 1, 0),
+                        step=1,
+                        value=0,
+                        marks={
+                            i: {'label': satellite_dates[i][5:], 'style': {'fontSize': '11px'}}
+                            for i in range(len(satellite_dates))
+                        },
+                        included=True,
+                    ),
+                ),
+            ], xs=12, md=6),
+            dbc.Col([
+                html.Div([
+                    html.Div(id="event-satellite-header", children=analysis.PANEL_EVENT_MADRE_SATELLITE[0], className="flat-block-title"),
+                    dcc.Markdown(id="event-satellite-body", children=analysis.PANEL_EVENT_MADRE_SATELLITE[1], className="flat-block-body"),
+                ], className="flat-block"),
+            ],xs=12, md=6),
+        ]),
+
     ])
     return time_serie_event
 
