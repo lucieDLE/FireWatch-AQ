@@ -9,6 +9,7 @@ SELECTED_DAY = '2025-09-08'
 
 CA_COUNTIES_GEOJSON_URL  = 'https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/california-counties.geojson'
 CA_COUNTIES_GEOJSON_PATH = ROOT / 'data/raw/california-counties.geojson'
+US_TOP_CITIES = "https://raw.githubusercontent.com/plotly/datasets/master/us-cities-top-1k.csv"
 
 # Raw data
 FIRE_RAW_PATH = ROOT / 'data/raw/fire_archive_J1V-C2_749152.csv'
@@ -22,6 +23,9 @@ PM10_PATH = ROOT / 'data/raw/ad_viz_plotval_data-pm10.csv'
 NITROGEN_DIOXIDE_PATH = ROOT / 'data/raw/ad_viz_plotval_data-NO2.csv'
 # CARBON_MONOXIDE_PATH = ROOT / 'data/raw/ad_viz_plotval_data-CO.csv'
 
+SATELLITE_ASSETS_PATH = ROOT / 'app/assets/satellite/'
+SATELLITE_BOUNDS_PATH = ROOT / 'app/assets/satellite_data.json'
+SATELLITE_URL_PREFIX  = '/assets/satellite'
 
 # Processed data (output of preprocess.py)
 FIRE_EVENTS_PATH           = ROOT / 'data/processed/fire_event_2025.csv'
