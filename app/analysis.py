@@ -5,32 +5,32 @@ INTRO_SECTION_1_HOOK_1 = """
 **California's wildfire season is lengthening.**
 
 Historically, the fire season occurs between May and October, however recent data show the
-season starting sooner and ending later each year[1](https://wfca.com/wildfire-articles/california-fire-season-in-depth-guide/).
+season starting sooner and ending later each year[[1]].
 """
 
 INTRO_SECTION_1_HOOK_2 ="""
 **The scale of destruction is accelerating.**
 
 According to the California Department of Forestry and Fire Protection, 14 of the 20
-most destructive wildfires occurred in the last decade[2](https://www.fire.ca.gov/-/media/calfire-website/our-impact/fire-statistics/top-20-destructive-ca-wildfires.pdf).
+most destructive wildfires occurred in the last decade[[2]].
 """
 
 INTRO_SECTION_1_HOOK_3 = """
 **The consequences extend far beyond the fire perimeter.**
 
 Wildfire smoke can travel hundreds to thousands of miles, and the health risk can persists for several days
-after a fire event[3](https://www.epa.gov/air-research/wildland-fire-research-human-health).
+after a fire event[[3]].
 """
 INTRO_DASHBOARD_PRESENTATION = """This dashboard examines the air quality consequences of the 2025
 California fire season, tracing the link between fire activity and pollutant exposure across the state.
 """
 
 INTRO_SECTION_2_CARD_1 = """ The U.S. Air Quality Index (AQI) is an index used for communicating outdoor
-air quality to the public . It translates complex pollutant concentrations into a single value to inform
+air quality to the public. It translates complex pollutant concentrations into a single value to inform
 the public. It translates complex pollutant concentration measurements into a single number on a 
 0–500 scale, divided into six color-coded categories, each corresponding to a specific level of health
 concern. When multiple pollutants are measured at a site, the highest individual AQI is used to report 
-the overall air quality for that day[4](https://www.airnow.gov/aqi/aqi-basics/).
+the overall air quality for that day[[4]].
 <br><br>
 The AQI is defined by the **[United States Environmental Protection Agency](https://www.epa.gov) (EPA)**
 under the authority of the Clean Air Act (1990), and is tied directly to the **National Ambient Air 
@@ -39,7 +39,7 @@ to review every five years.
 <br><br>
 It is worth noting that other countries operate their own indices under different rules and pollutant sets. 
 The **World Health Organization (WHO)** publishes separate guidelines that are stricter than NAAQS for several 
-pollutants.[5](https://www.who.int/publications/i/item/9789240034228),[6](https://en.wikipedia.org/wiki/Air_quality_index)
+pollutants[[5],[6]].
 
 """
 
@@ -47,7 +47,7 @@ pollutants.[5](https://www.who.int/publications/i/item/9789240034228),[6](https:
 INTRO_SECTION_3_PM = """
 * Inhalable particles suspended in the air, composed of complex mixtures with diverse chemical and physical characteristics.
 * Classified by diameter, with PM2.5 and PM10 the most relevant for health monitoring.
-* The smaller the particle, the deeper it penetrates the respiratory system[5](https://www.who.int/publications/i/item/9789240034228),[7](https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants)
+* The smaller the particle, the deeper it penetrates the respiratory system[[5],[7]].
 """
 
 
@@ -90,7 +90,7 @@ INTRO_SECTION_3_SO2 = """
 
 INTRO_SECTION_5_WHY = [
 """
-California presents one of the most complex and consequential air quality challenges in the United States[8-12]:
+California presents one of the most complex and consequential air quality challenges in the United States[[8-12]]:
 
 * The Central Valley (Fresno, Bakersfield) and South Coast (Los Angeles, San Diego) experience some of the highest air pollution levels in the entire United States.
 * 5 of the 10 US cities most polluted (has improved since 2015)
@@ -133,7 +133,7 @@ polluted states.
 PANEL_AIR_CARD_MONITORS_1 = [ """Monitoring density is highly uneven across the country""", 
 """
 California alone accounts for the largest share of daily monitoring records in 2025. This reflects two factors: 
-1) California is one of the most polluted states in the US[11](https://en.wikipedia.org/wiki/Pollution_in_California) 
+1) California is one of the most polluted states in the US[[11]]
 and 2) invested heavily in monitoring infrastructure to track and improve its air quality.
 """
 ]
@@ -142,7 +142,7 @@ and 2) invested heavily in monitoring infrastructure to track and improve its ai
 PANEL_AIR_CARD_MONITORS_2 = [ """Ozone and PM2.5 are the most monitored pollutant""", 
 """
 They are known to be the deadliest and most widespread air pollutants in the US, driving the majority
-of pollution-attributable disease and premature mortality[13](https://www.stateofglobalair.org/sites/default/files/documents/2024-06/soga-2024-report_0.pdf).
+of pollution-attributable disease and premature mortality[[13]].
 """
 ]
 
@@ -472,7 +472,6 @@ FIRE_EVENT_PANEL_MAP = {
 # ============================================================================
 #  Panel 5: BEHIND THE DATA (methodology / data cleaning)
 # ============================================================================
-# Placeholder #TODO: do the analysis
 
 PANEL_EXPLORE_OVERVIEW = """
 This tab is an optional but important part of the analysis. The first section examines the methodology
@@ -544,7 +543,7 @@ with 3 out of 4 pollutants simultaneously exceeding recommended thresholds.
 
 These cases highlight 
 the importance of revisiting the AQI methodology for high-pollution areas: Bakersfield is consistently
-ranked among the worst cities for ozone[9](https://www.lung.org/getmedia/3575a218-b54e-4dfe-8d91-892276870a14/california-sota-2025-fact-sheet.pdf),
+ranked among the worst cities for ozone[[9]],
 and Calexico appears in 3 of these 4 most severely misclassified days.
 """
 
@@ -559,7 +558,7 @@ PM2.5 is a major component of wildfire smoke and the primary driver of its healt
 These particles are small enough to penetrate deep into the lungs, and the smallest ultrafine 
 fraction can cross into the bloodstream, reaching the heart, brain, and other organs. Compared 
 to PM2.5 from other sources such as traffic or industrial emissions, wildfire smoke PM2.5 tends 
-to be smaller in size and richer in oxidative compounds, making it potentially more harmful[5].
+to be smaller in size and richer in oxidative compounds, making it potentially more harmful[[5]].
 """
 
 
@@ -567,15 +566,15 @@ PUBLIC_HEALTH_SHORT_TERM = """
 Short-term exposure to wildfire-related PM2.5 (days to weeks) has been strongly and consistently 
 linked to worsening respiratory conditions. Studies show increased severity of asthma and chronic 
 obstructive pulmonary disease, higher rates of inflammation and infections including bronchitis
-and pneumonia, and sharp rises in emergency department visits and hospital admissions[1,2,4].
+and pneumonia, and sharp rises in emergency department visits and hospital admissions[[1,2,4]].
 
 The cardiovascular system is also affected in the short term. Research has documented increases in 
 emergency department visits for heart attacks (myocardial infarction), strokes, and heart failure 
-during and shortly after wildfire smoke episodes[1,4].
+during and shortly after wildfire smoke episodes[[1,4]].
 
 Based on U.S. data from 2008 to 2012, Fann et al. estimated that short-term exposure to wildfire-related
 PM2.5 results in between 5,200 and 8,500 respiratory hospital admissions and between 1,500 and 2,500 
-premature deaths annually across the country[3]. These numbers are likely to increase as wildfires
+premature deaths annually across the country[[3]]. These numbers are likely to increase as wildfires
 become more frequent and intense.
 """
 
@@ -588,43 +587,43 @@ The EPA's 2019 Integrated Science Assessment for Particulate Matter concluded th
 causal relationship between long-term PM2.5 exposure and respiratory effects, specifically asthma 
 development in children and lung function decline in adults. Studies have also shown that respiratory 
 health improves when PM2.5 concentrations decline, reinforcing the link and highlighting the importance
-of reducing PM2.5 exposure [4].
+of reducing PM2.5 exposure[[4]].
 
 There is strong evidence associating long-term PM2.5 exposure with cardiovascular mortality, including 
-deaths from stroke and ischemic heart disease [4].
+deaths from stroke and ischemic heart disease[[4]].
 
 Evidence regarding the nervous system is more limited, primarily due to the small number of studies available, 
 but the existing research generally supports a positive association between long-term PM2.5 exposure and 
-neurological effects such as cognitive decline and depression [4].
+neurological effects such as cognitive decline and depression[[4]].
 
 Long-term exposure to wildfires that burn a mixture of natural vegetation and synthetic materials 
 (homes, vehicles, ...) may contribute to an elevated overall lifetime risk for heart disease, lung disease, 
-and cancer, in addition to releasing other pollutants like lead, cadmium, and asbestos [1].
+and cancer, in addition to releasing other pollutants like lead, cadmium, and asbestos[[1]].
 """
 
 
 PUBLIC_HEALTH_BEYOND = """
 The economic costs of wildfire have escalated dramatically in recent times. From 2014 to 2023, wildfires 
-globally caused approximately $106 billion in economic losses and $74 billion in insured losses [12]. 
+globally caused approximately $106 billion in economic losses and $74 billion in insured losses[[12]]. 
 The January 2025 Los Angeles wildfires, which destroyed over 12,000 structures in some of the most expensive 
-areas in the country, have produced preliminary cost estimates exceeding $250 billion[12].
+areas in the country, have produced preliminary cost estimates exceeding $250 billion[[12]].
 
 The level of suffering is not only limited to financial losses but also to the negative impact that wildfires
 impose on the physical and mental wellbeing of survivors. The mental health consequences of property loss 
-and displacement can trigger mental health disorders and illnesses. [5] Many wildfire survivors report 
+and displacement can trigger mental health disorders and illnesses[[5]]. Many wildfire survivors report 
 elevated levels of anxiety, depression, stress, sleep difficulties, and post-traumatic stress disorder (PTSD)
-symptoms [8,9], and these can last for years and decades, with children and teenagers having a higher risk of
+symptoms [[8,9]], and these can last for years and decades, with children and teenagers having a higher risk of
 contracting a trauma-related disorder.
 
 A lesser known but equally important impact of wildfires is on drinking-water systems. Fire damages water 
 distribution infrastructure, and heat can cause pipes to break and/or leak chemicals directly into the 
-water supply [11,10]. The 2018 Camp Fire affected 13 different water systems, and more than 40,000 people
-received a boil-water advisory [10]. More than 100 toxic compounds have been identified in post-fire 
-drinking water[11].
+water supply[[10,11]]. The 2018 Camp Fire affected 13 different water systems, and more than 40,000 people
+received a boil-water advisory[[10]]. More than 100 toxic compounds have been identified in post-fire 
+drinking water[[11]].
 
 In addition to being costly and hard to assess, it takes time to fix water distribution systems. 
 Seven months after the Camp Fire, some homes were still receiving contaminated water, and levels of 
-contaminants can be so high that it was not certain that boiling was sufficient[10,11].
+contaminants can be so high that it was not certain that boiling was sufficient[[10,11]].
 """
 
 
@@ -632,15 +631,15 @@ PUBLIC_HEALTH_CLIMATE = """
 Wildfires now burn at least twice as much tree cover as they did two decades ago, with fire accounting
 for roughly 33% of global tree cover loss in recent years. When forests burn, they release stored carbon, 
 further accelerating climate change. Extreme heat events are already five times more likely than 150 years ago, 
-creating drier landscapes and ideal conditions for larger, more frequent fires [12]. Research has shown that 
+creating drier landscapes and ideal conditions for larger, more frequent fires [[12]]. Research has shown that 
 limiting greenhouse gas emissions, and thereby constraining global temperature rise, could reduce wildfire 
-smoke exposure by up to 60% [6].
+smoke exposure by up to 60%[[6]].
 
 Furthermore, what has already been observed in California, a lengthening fire season and increasing fire 
 frequency is now part of a global pattern. Projections show that virtually no region of the world will 
 be spared from rising wildfire risk, including high-latitude areas previously considered low-risk. 
 Beyond direct health effects, increased wildfire activity also threatens agricultural systems through 
-crop heat stress affecting staple crops such as soybean, wheat, and maize[6,7].
+crop heat stress affecting staple crops such as soybean, wheat, and maize[[6,7]].
 """
 
 
