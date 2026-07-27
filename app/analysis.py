@@ -25,16 +25,16 @@ INTRO_DASHBOARD_PRESENTATION = """This dashboard examines the air quality conseq
 California fire season, tracing the link between fire activity and pollutant exposure across the state.
 """
 
-INTRO_SECTION_2_CARD_1 = """ The U.S. Air Quality Index (AQI) is an index used for communicating outdoor
+INTRO_SECTION_2_CARD_1 = """ The [U.S. Air Quality Index (AQI)] is an index used for communicating outdoor
 air quality to the public. It translates complex pollutant concentrations into a single value to inform
 the public. It translates complex pollutant concentration measurements into a single number on a 
 0–500 scale, divided into six color-coded categories, each corresponding to a specific level of health
 concern. When multiple pollutants are measured at a site, the highest individual AQI is used to report 
 the overall air quality for that day[[4]].
 <br><br>
-The AQI is defined by the **[United States Environmental Protection Agency](https://www.epa.gov) (EPA)**
-under the authority of the Clean Air Act (1990), and is tied directly to the **National Ambient Air 
-Quality Standards (NAAQS)**. NAAQS are concentration thresholds for each pollutant, which the EPA is required
+The AQI is defined by the **[United States Environmental Protection Agency (EPA)]**
+under the authority of the Clean Air Act (1990), and is tied directly to the [**National Ambient Air 
+Quality Standards (NAAQS)**]. NAAQS are concentration thresholds for each pollutant, which the EPA is required
 to review every five years.
 <br><br>
 It is worth noting that other countries operate their own indices under different rules and pollutant sets. 
@@ -485,12 +485,12 @@ PANEL_EXPLORE_EPA_CARD = """
 """
 
 PANEL_EXPLORE_EPA       = """
-The AQI used in public health reporting is fundamentally flawed. By definition, it reports only the maximum 
-AQI value across all pollutants. However, the air quality is significantly different when PM2.5 = 177 and 
+The AQI used in public health reporting is fundamentally flawed. By definition, it [reports only the maximum 
+AQI] value across all pollutants. However, the air quality is significantly different when PM2.5 = 177 and 
 O3 = 35 compared to PM2.5 = 177 and O3 = 140 (values from the Palisades event). The Ozone levels are 
 substantially higher with serious health consequences, but remain hidden behind the dominant PM2.5 reading.
 
-This is known as the **co-exposure effect**, and it is a well-documented limitation of the AQI.
+This is known as the [**co-exposure effect**], and it is a well-documented limitation of the AQI.
 A more complete approach would report all pollutants simultaneously, but this sacrifices the simplicity
 that makes the AQI useful to the general public.
 
@@ -501,7 +501,7 @@ In this project, we add to the maximum-pollutant AQI (primary exceedance) all se
 exceedances, (AQI values above 50). To avoid inflating the score,
 we subtract the baseline value of 50 from each secondary exceedance. 
 
-For most days and most locations, a single pollutant dominates and the maximum is a reasonable metric for air quality.
+[For most days and most locations, a single pollutant dominates] and the maximum is a reasonable metric for air quality.
 Co-exposure is relatively rare under normal conditions, which suggests the AQI is a good methodology
 overall. However, wildfires and other adverse events make co-exposure more frequent, and that is 
 precisely showing the importance of revising the AQI.
@@ -526,9 +526,9 @@ PANEL_EXPLORE_MISCLASS  = """
 These three plots investigate the differences between the two methods across the dataset.
 
 The bar chart shows that the sum AQI pushed readings into a higher category in a meaningful
-number of cases. The two most impactful reclassifications are **Moderate → Unhealthy for Sensitive Groups**
-and **Unhealthy for Sensitive Groups → Unhealthy for All**. These are cases where people were told conditions 
-were  safe to go outside when they should have stayed indoors. The **Unhealthy → Very Unhealthy** shift 
+number of cases. The two most impactful reclassifications are [Moderate → Unhealthy for Sensitive Groups]
+and [Unhealthy for Sensitive Groups → Unhealthy for All]. These are cases where people were told conditions 
+were  safe to go outside when they should have stayed indoors. The [Unhealthy → Very Unhealthy] shift 
 is less critical in practice, as both categories recommend remaining inside.
 
 It should be noted that these counts span all monitored locations in California over an entire year,
@@ -557,24 +557,24 @@ PUBLIC_HEALTH_WHY = """
 PM2.5 is a major component of wildfire smoke and the primary driver of its health effects. 
 These particles are small enough to penetrate deep into the lungs, and the smallest ultrafine 
 fraction can cross into the bloodstream, reaching the heart, brain, and other organs. Compared 
-to PM2.5 from other sources such as traffic or industrial emissions, wildfire smoke PM2.5 tends 
-to be smaller in size and richer in oxidative compounds, making it potentially more harmful[[5]].
+to PM2.5 from other sources such as traffic or industrial emissions, [wildfire smoke PM2.5 tends 
+to be smaller in size and richer in oxidative compounds], making it potentially more harmful[[5]].
 """
 
 
 PUBLIC_HEALTH_SHORT_TERM = """
 Short-term exposure to wildfire-related PM2.5 (days to weeks) has been strongly and consistently 
-linked to worsening respiratory conditions. Studies show increased severity of asthma and chronic 
+linked to [worsening respiratory conditions]. Studies show increased severity of asthma and chronic 
 obstructive pulmonary disease, higher rates of inflammation and infections including bronchitis
-and pneumonia, and sharp rises in emergency department visits and hospital admissions[[1,2,4]].
+and pneumonia, and sharp [rises in emergency department visits] and hospital admissions[[1,2,4]].
 
-The cardiovascular system is also affected in the short term. Research has documented increases in 
+The [cardiovascular system is also affected] in the short term. Research has documented increases in 
 emergency department visits for heart attacks (myocardial infarction), strokes, and heart failure 
 during and shortly after wildfire smoke episodes[[1,4]].
 
 Based on U.S. data from 2008 to 2012, Fann et al. estimated that short-term exposure to wildfire-related
-PM2.5 results in between 5,200 and 8,500 respiratory hospital admissions and between 1,500 and 2,500 
-premature deaths annually across the country[[3]]. These numbers are likely to increase as wildfires
+PM2.5 results in between 5,200 and 8,500 respiratory hospital admissions and between [1,500 and 2,500 
+premature deaths annually] across the country[[3]]. These numbers are likely to increase as wildfires
 become more frequent and intense.
 """
 
@@ -584,15 +584,15 @@ It is equally important to consider the long-term consequences of PM2.5 exposure
 exposures across multi-day events or multiple consecutive fire seasons.
 
 The EPA's 2019 Integrated Science Assessment for Particulate Matter concluded that there is a likely 
-causal relationship between long-term PM2.5 exposure and respiratory effects, specifically asthma 
-development in children and lung function decline in adults. Studies have also shown that respiratory 
+causal relationship between long-term PM2.5 exposure and respiratory effects, specifically [asthma 
+development in children and lung function decline in adults]. Studies have also shown that respiratory 
 health improves when PM2.5 concentrations decline, reinforcing the link and highlighting the importance
 of reducing PM2.5 exposure[[4]].
 
-There is strong evidence associating long-term PM2.5 exposure with cardiovascular mortality, including 
+There is strong evidence associating long-term PM2.5 exposure with cardiovascular mortality], including 
 deaths from stroke and ischemic heart disease[[4]].
 
-Evidence regarding the nervous system is more limited, primarily due to the small number of studies available, 
+[Evidence regarding the nervous system is more limited], primarily due to the small number of studies available, 
 but the existing research generally supports a positive association between long-term PM2.5 exposure and 
 neurological effects such as cognitive decline and depression[[4]].
 
@@ -603,40 +603,40 @@ and cancer, in addition to releasing other pollutants like lead, cadmium, and as
 
 
 PUBLIC_HEALTH_BEYOND = """
-The economic costs of wildfire have escalated dramatically in recent times. From 2014 to 2023, wildfires 
-globally caused approximately $106 billion in economic losses and $74 billion in insured losses[[12]]. 
+The economic costs of wildfire have escalated dramatically in recent times. [From 2014 to 2023, wildfires 
+globally caused approximately $106 billion in economic losses] and $74 billion in insured losses[[12]]. 
 The January 2025 Los Angeles wildfires, which destroyed over 12,000 structures in some of the most expensive 
 areas in the country, have produced preliminary cost estimates exceeding $250 billion[[12]].
 
 The level of suffering is not only limited to financial losses but also to the negative impact that wildfires
-impose on the physical and mental wellbeing of survivors. The mental health consequences of property loss 
-and displacement can trigger mental health disorders and illnesses[[5]]. Many wildfire survivors report 
+impose on the physical and mental wellbeing of survivors. [The mental health consequences of property loss 
+and displacement can trigger mental health disorders] and illnesses[[5]]. Many wildfire survivors report 
 elevated levels of anxiety, depression, stress, sleep difficulties, and post-traumatic stress disorder (PTSD)
 symptoms [[8,9]], and these can last for years and decades, with children and teenagers having a higher risk of
 contracting a trauma-related disorder.
 
 A lesser known but equally important impact of wildfires is on drinking-water systems. Fire damages water 
 distribution infrastructure, and heat can cause pipes to break and/or leak chemicals directly into the 
-water supply[[10,11]]. The 2018 Camp Fire affected 13 different water systems, and more than 40,000 people
-received a boil-water advisory[[10]]. More than 100 toxic compounds have been identified in post-fire 
+water supply[[10,11]]. [The 2018 Camp Fire affected 13 different water systems,] and more than 40,000 people
+received a boil-water advisory[[10]]. [More than 100 toxic compounds ]have been identified in post-fire 
 drinking water[[11]].
 
 In addition to being costly and hard to assess, it takes time to fix water distribution systems. 
 Seven months after the Camp Fire, some homes were still receiving contaminated water, and levels of 
-contaminants can be so high that it was not certain that boiling was sufficient[[10,11]].
+contaminants were so high that it was not certain that boiling was sufficient[[10,11]].
 """
 
 
 PUBLIC_HEALTH_CLIMATE = """
-Wildfires now burn at least twice as much tree cover as they did two decades ago, with fire accounting
-for roughly 33% of global tree cover loss in recent years. When forests burn, they release stored carbon, 
+Wildfires now burn at least twice as much tree cover as they did two decades ago, with [fire accounting
+for roughly 33% of global tree cover loss] in recent years. When forests burn, they release stored carbon, 
 further accelerating climate change. Extreme heat events are already five times more likely than 150 years ago, 
 creating drier landscapes and ideal conditions for larger, more frequent fires [[12]]. Research has shown that 
 limiting greenhouse gas emissions, and thereby constraining global temperature rise, could reduce wildfire 
 smoke exposure by up to 60%[[6]].
 
-Furthermore, what has already been observed in California, a lengthening fire season and increasing fire 
-frequency is now part of a global pattern. Projections show that virtually no region of the world will 
+Furthermore, what has already been observed in California, a [lengthening fire season and increasing fire 
+frequency is now part of a global pattern]. Projections show that virtually no region of the world will 
 be spared from rising wildfire risk, including high-latitude areas previously considered low-risk. 
 Beyond direct health effects, increased wildfire activity also threatens agricultural systems through 
 crop heat stress affecting staple crops such as soybean, wheat, and maize[[6,7]].
