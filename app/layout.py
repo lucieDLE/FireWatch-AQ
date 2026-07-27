@@ -77,14 +77,7 @@ def body_card(text):
 
 
 def _fmt_refs(text):
-    """Convert [N](url) → superscript link and [N-M] standalone → superscript."""
-    text = re.sub(
-        r'\[(\d+)\]\((https?://[^)]+)\)',
-        r'<sup><a href="\2" target="_blank">[\1]</a></sup>',
-        text
-    )
-    text = re.sub(r'\[(\d+-\d+)\](?!\()', r'<sup>[\1]</sup>', text)
-    return text
+    return re.sub(r'\[(\d+)\]\((https?://[^)]+)\)', r'[\1]', text)
 
 
 def intro_mark_down(text):
@@ -222,7 +215,7 @@ def intro_body_card(text):
 
 def section_title(text, align='left'):
     return html.Div(
-        html.H5(text, className="section-title"),
+        html.H5(text, className="ph-section-title"),
         style={"textAlign": align}
     )
 
@@ -296,12 +289,26 @@ def naaqs_table():
     )
 
 
-def sources_card():
-    sources_md = analysis.SOURCES_MD
-    return dbc.Card([
-        dbc.CardHeader("Sources"),
-        dbc.CardBody(dcc.Markdown(sources_md)),
-    ], className="sources-card intro-card")
+def sources_section(sources, id_prefix="src"):
+    rows = [
+        html.Div([
+            html.Div(f"[{i}]", className="ph-src-num"),
+            dcc.Markdown(src, className="ph-src-text"),
+        ], className="ph-src-row", id=f"{id_prefix}-{i}")
+        for i, src in enumerate(sources, start=1)
+    ]
+    return html.Div([
+        html.Div("Sources", className="ph-sources-label"),
+        html.Div(rows, className="ph-src-list"),
+    ], className="ph-sources")
+
+
+def health_section(title, text):
+    return html.Div([
+        html.H2(title, className="ph-section-title"),
+        dcc.Markdown(_fmt_refs(text), dangerously_allow_html=True,
+                     className="ph-body"),
+    ], className="ph-section")
 
 
 # ============================================================================
@@ -491,11 +498,30 @@ def build_intro_tab():
             ]),
 
             # ── Sources ────────────────────────────────────────
-            dbc.Row([dbc.Col(sources_card(), width=12)]),
+            dbc.Row([dbc.Col(sources_section(analysis.SOURCES), width=12)]),
         ])
 
     return intro_tab
 
+
+def build_public_health_tab():
+    return dcc.Tab(
+        label="Public Health Impact",
+        children=[
+            html.Div([
+                html.Div([
+                    html.H1("Public Health Effects of Wildfire Smoke", className="ph-title"),
+                    html.P(analysis.PUBLIC_HEALTH_SUBTITLE, className="ph-subtitle"),
+                ], className="ph-hero"),
+                health_section("Why Does Wildfire Smoke Matter?", analysis.PUBLIC_HEALTH_WHY),
+                health_section("Short-Term Health Effects", analysis.PUBLIC_HEALTH_SHORT_TERM),
+                health_section("Long-Term Health Effects", analysis.PUBLIC_HEALTH_LONG_TERM),
+                health_section("Beyond Smoke: Health and Economic Burden", analysis.PUBLIC_HEALTH_BEYOND),
+                health_section("Climate Change and Future Projections", analysis.PUBLIC_HEALTH_CLIMATE),
+                sources_section(analysis.PUBLIC_HEALTH_SOURCES, id_prefix="ph-src"),
+            ], className="ph-tab"),
+        ],
+    )
 
 def build_air_quality_tab():
     annual_pollutant_distribution = make_pollutant_distribution(df_aqr_annual)
@@ -806,6 +832,7 @@ def build_layout():
                                     ),
                                     dcc.Tabs([
                                         build_intro_tab(),
+                                        build_public_health_tab(),
                                         build_air_quality_tab(),
                                         build_fire_data_tab(),
                                         build_time_serie_event(),
