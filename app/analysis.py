@@ -39,7 +39,7 @@ to review every five years.
 <br><br>
 It is worth noting that other countries operate their own indices under different rules and pollutant sets. 
 The **World Health Organization (WHO)** publishes separate guidelines that are stricter than NAAQS for several 
-pollutants.[5](https://www.who.int/publications/i/item/9789240034228)[6](https://en.wikipedia.org/wiki/Air_quality_index)
+pollutants.[5](https://www.who.int/publications/i/item/9789240034228),[6](https://en.wikipedia.org/wiki/Air_quality_index)
 
 """
 
@@ -47,7 +47,7 @@ pollutants.[5](https://www.who.int/publications/i/item/9789240034228)[6](https:/
 INTRO_SECTION_3_PM = """
 * Inhalable particles suspended in the air, composed of complex mixtures with diverse chemical and physical characteristics.
 * Classified by diameter, with PM2.5 and PM10 the most relevant for health monitoring.
-* The smaller the particle, the deeper it penetrates the respiratory system[5](https://www.who.int/publications/i/item/9789240034228)[7](https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants)
+* The smaller the particle, the deeper it penetrates the respiratory system[5](https://www.who.int/publications/i/item/9789240034228),[7](https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants)
 """
 
 
@@ -551,35 +551,139 @@ and Calexico appears in 3 of these 4 most severely misclassified days.
 
 
 # ============================================================================
+#  Public Health Impact tab
+# ============================================================================
+
+PUBLIC_HEALTH_WHY = """
+PM2.5 is a major component of wildfire smoke and the primary driver of its health effects. 
+These particles are small enough to penetrate deep into the lungs, and the smallest ultrafine 
+fraction can cross into the bloodstream, reaching the heart, brain, and other organs. Compared 
+to PM2.5 from other sources such as traffic or industrial emissions, wildfire smoke PM2.5 tends 
+to be smaller in size and richer in oxidative compounds, making it potentially more harmful[5].
+"""
+
+
+PUBLIC_HEALTH_SHORT_TERM = """
+Short-term exposure to wildfire-related PM2.5 (days to weeks) has been strongly and consistently 
+linked to worsening respiratory conditions. Studies show increased severity of asthma and chronic 
+obstructive pulmonary disease, higher rates of inflammation and infections including bronchitis
+and pneumonia, and sharp rises in emergency department visits and hospital admissions[1,2,4].
+
+The cardiovascular system is also affected in the short term. Research has documented increases in 
+emergency department visits for heart attacks (myocardial infarction), strokes, and heart failure 
+during and shortly after wildfire smoke episodes[1,4].
+
+Based on U.S. data from 2008 to 2012, Fann et al. estimated that short-term exposure to wildfire-related
+PM2.5 results in between 5,200 and 8,500 respiratory hospital admissions and between 1,500 and 2,500 
+premature deaths annually across the country[3]. These numbers are likely to increase as wildfires
+become more frequent and intense.
+"""
+
+
+PUBLIC_HEALTH_LONG_TERM = """
+It is equally important to consider the long-term consequences of PM2.5 exposure, including cumulative 
+exposures across multi-day events or multiple consecutive fire seasons.
+
+The EPA's 2019 Integrated Science Assessment for Particulate Matter concluded that there is a likely 
+causal relationship between long-term PM2.5 exposure and respiratory effects, specifically asthma 
+development in children and lung function decline in adults. Studies have also shown that respiratory 
+health improves when PM2.5 concentrations decline, reinforcing the link and highlighting the importance
+of reducing PM2.5 exposure [4].
+
+There is strong evidence associating long-term PM2.5 exposure with cardiovascular mortality, including 
+deaths from stroke and ischemic heart disease [4].
+
+Evidence regarding the nervous system is more limited, primarily due to the small number of studies available, 
+but the existing research generally supports a positive association between long-term PM2.5 exposure and 
+neurological effects such as cognitive decline and depression [4].
+
+Long-term exposure to wildfires that burn a mixture of natural vegetation and synthetic materials 
+(homes, vehicles, ...) may contribute to an elevated overall lifetime risk for heart disease, lung disease, 
+and cancer, in addition to releasing other pollutants like lead, cadmium, and asbestos [1].
+"""
+
+
+PUBLIC_HEALTH_BEYOND = """
+The economic costs of wildfire have escalated dramatically in recent times. From 2014 to 2023, wildfires 
+globally caused approximately $106 billion in economic losses and $74 billion in insured losses [12]. 
+The January 2025 Los Angeles wildfires, which destroyed over 12,000 structures in some of the most expensive 
+areas in the country, have produced preliminary cost estimates exceeding $250 billion[12].
+
+The level of suffering is not only limited to financial losses but also to the negative impact that wildfires
+impose on the physical and mental wellbeing of survivors. The mental health consequences of property loss 
+and displacement can trigger mental health disorders and illnesses. [5] Many wildfire survivors report 
+elevated levels of anxiety, depression, stress, sleep difficulties, and post-traumatic stress disorder (PTSD)
+symptoms [8,9], and these can last for years and decades, with children and teenagers having a higher risk of
+contracting a trauma-related disorder.
+
+A lesser known but equally important impact of wildfires is on drinking-water systems. Fire damages water 
+distribution infrastructure, and heat can cause pipes to break and/or leak chemicals directly into the 
+water supply [11,10]. The 2018 Camp Fire affected 13 different water systems, and more than 40,000 people
+received a boil-water advisory [10]. More than 100 toxic compounds have been identified in post-fire 
+drinking water[11].
+
+In addition to being costly and hard to assess, it takes time to fix water distribution systems. 
+Seven months after the Camp Fire, some homes were still receiving contaminated water, and levels of 
+contaminants can be so high that it was not certain that boiling was sufficient[10,11].
+"""
+
+
+PUBLIC_HEALTH_CLIMATE = """
+Wildfires now burn at least twice as much tree cover as they did two decades ago, with fire accounting
+for roughly 33% of global tree cover loss in recent years. When forests burn, they release stored carbon, 
+further accelerating climate change. Extreme heat events are already five times more likely than 150 years ago, 
+creating drier landscapes and ideal conditions for larger, more frequent fires [12]. Research has shown that 
+limiting greenhouse gas emissions, and thereby constraining global temperature rise, could reduce wildfire 
+smoke exposure by up to 60% [6].
+
+Furthermore, what has already been observed in California, a lengthening fire season and increasing fire 
+frequency is now part of a global pattern. Projections show that virtually no region of the world will 
+be spared from rising wildfire risk, including high-latitude areas previously considered low-risk. 
+Beyond direct health effects, increased wildfire activity also threatens agricultural systems through 
+crop heat stress affecting staple crops such as soybean, wheat, and maize[6,7].
+"""
+
+
+PUBLIC_HEALTH_SUBTITLE = (
+    "How wildfire-driven PM2.5 exposure affects respiratory, cardiovascular, and "
+    "neurological health and what climate projections mean for future risk."
+)
+
+# ============================================================================
 #  Sources
 # ============================================================================
 
-SOURCES_MD = """
-**[1]** California fire season guide — [wfca.com](https://wfca.com/wildfire-articles/california-fire-season-in-depth-guide/)
+# Each entry is the markdown body for a numbered reference; the list index + 1
+# gives the citation number and its anchor id (src-1, src-2, ...).
+SOURCES = [
+    "California fire season guide — [wfca.com](https://wfca.com/wildfire-articles/california-fire-season-in-depth-guide/)",
+    "CalFire — Top 20 Most Destructive California Wildfires — [fire.ca.gov](https://www.fire.ca.gov/-/media/calfire-website/our-impact/fire-statistics/top-20-destructive-ca-wildfires.pdf)",
+    "EPA — Wildland Fire Research: Human Health — [epa.gov](https://www.epa.gov/air-research/wildland-fire-research-human-health)",
+    "AirNow — AQI Basics — [airnow.gov](https://www.airnow.gov/aqi/aqi-basics/)",
+    "WHO — Air Quality Guidelines 2021 — [who.int](https://www.who.int/publications/i/item/9789240034228)",
+    "Wikipedia — Air Quality Index — [wikipedia.org](https://en.wikipedia.org/wiki/Air_quality_index)",
+    "WHO — Types of Pollutants — [who.int](https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants)",
+    "EPA — California Air & Transportation Initiative (CATI) — [epa.gov](https://www.epa.gov/cati/about)",
+    "American Lung Association — California State of the Air 2025 — [lung.org](https://www.lung.org/getmedia/3575a218-b54e-4dfe-8d91-892276870a14/california-sota-2025-fact-sheet.pdf)",
+    "Earth.org — Air Pollution in California — [earth.org](https://earth.org/air-pollution-in-california)",
+    "Wikipedia — Pollution in California — [wikipedia.org](https://en.wikipedia.org/wiki/Pollution_in_California)",
+    "Wikipedia — San Joaquin Valley — [wikipedia.org](https://en.wikipedia.org/wiki/San_Joaquin_Valley)",
+    "Health Effects Institute — State of Global Air 2024 — [stateofglobalair.org](https://www.stateofglobalair.org/sites/default/files/documents/2024-06/soga-2024-report_0.pdf)",
+    "CDC MMWR — Lead exposure during the 2025 Los Angeles wildfires — [cdc.gov](https://www.cdc.gov/mmwr/volumes/74/wr/mm7405a4.htm?s_cid=mm7405a4_w)",
+]
 
-**[2]** CalFire — Top 20 Most Destructive California Wildfires — [fire.ca.gov](https://www.fire.ca.gov/-/media/calfire-website/our-impact/fire-statistics/top-20-destructive-ca-wildfires.pdf)
 
-**[3]** EPA — Wildland Fire Research: Human Health — [epa.gov](https://www.epa.gov/air-research/wildland-fire-research-human-health)
-
-**[4]** AirNow — AQI Basics — [airnow.gov](https://www.airnow.gov/aqi/aqi-basics/)
-
-**[5]** WHO — Air Quality Guidelines 2021 — [who.int](https://www.who.int/publications/i/item/9789240034228)
-
-**[6]** Wikipedia — Air Quality Index — [wikipedia.org](https://en.wikipedia.org/wiki/Air_quality_index)
-
-**[7]** WHO — Types of Pollutants — [who.int](https://www.who.int/teams/environment-climate-change-and-health/air-quality-and-health/health-impacts/types-of-pollutants)
-
-**[8]** EPA — California Air & Transportation Initiative (CATI) — [epa.gov](https://www.epa.gov/cati/about)
-
-**[9]** American Lung Association — California State of the Air 2025 — [lung.org](https://www.lung.org/getmedia/3575a218-b54e-4dfe-8d91-892276870a14/california-sota-2025-fact-sheet.pdf)
-
-**[10]** Earth.org — Air Pollution in California — [earth.org](https://earth.org/air-pollution-in-california)
-
-**[11]** Wikipedia — Pollution in California — [wikipedia.org](https://en.wikipedia.org/wiki/Pollution_in_California)
-
-**[12]** Wikipedia — San Joaquin Valley — [wikipedia.org](https://en.wikipedia.org/wiki/San_Joaquin_Valley)
-
-**[13]** Health Effects Institute — State of Global Air 2024 — [stateofglobalair.org](https://www.stateofglobalair.org/sites/default/files/documents/2024-06/soga-2024-report_0.pdf)
-
-**[14]** CDC MMWR — Lead exposure during the 2025 Los Angeles wildfires — [cdc.gov](https://www.cdc.gov/mmwr/volumes/74/wr/mm7405a4.htm?s_cid=mm7405a4_w)
-"""
+PUBLIC_HEALTH_SOURCES = [
+    "CARB, *Camp Fire Air Quality Data Analysis*, July 2021 - [Camp_Fire_report_July2021](https://ww2.arb.ca.gov/sites/default/files/2021-07/Camp_Fire_report_July2021.pdf)",
+    "Delfino, R. J. et al. \"The relationship of respiratory and cardiovascular hospital admissions to the southern California wildfires of 2003.\" *Occupational and Environmental Medicine* vol. 66,3 (2009) - [pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC4176821/)",
+    "Fann, Neal et al. \"The health impacts and economic value of wildland fire episodes in the U.S.: 2008-2012.\" *The Science of the Total Environment* vol. 610-611 (2018) - [pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC6117838/)",
+    "U.S. EPA, *Integrated Science Assessment for Particulate Matter* - [www.epa.gov/isa](https://www.epa.gov/isa/integrated-science-assessment-isa-particulate-matter)",
+    "Xu, Rongbin et al. \"Wildfires, Global Climate Change, and Human Health.\" *The New England Journal of Medicine* vol. 383,22 (2020) - [nejm.org](https://www.nejm.org/doi/10.1056/NEJMsr2028985?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200pubmed)",
+    "Sun, Qiaohong, et al. \"Global heat stress on health, wildfires, and agricultural crops under different levels of climate warming.\" *Environment International* 128 (2019) - [sciencedirect.com](https://www.sciencedirect.com/science/article/pii/S0160412018328654?via%3Dihub)",
+    "Jiao, Anqi, et al. \"Associations between short-term exposure to wildfire particulate matter and respiratory outcomes: a systematic review.\" *Science of the Total Environment* 907 (2024) - [sciencedirect.com](https://www.sciencedirect.com/science/article/pii/S004896972306761X)",
+    "Isaac, Fadia, et al. \"Differences in anxiety, insomnia, and trauma symptoms in wildfire survivors from Australia, Canada, and the United States of America.\" *International Journal of Environmental Research and Public Health* 21.1 (2023) - [pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC10815777/)",
+    "To, Patricia, Ejemai Eboreime, and Vincent I. O. Agyapong. \"The impact of wildfires on mental health: a scoping review.\" *Behavioral Sciences* 11.9 (2021) - [pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC8466569/)",
+    "Olson, Steve, ed. *Implications of the California Wildfires for Health, Communities, and Preparedness: Proceedings of a Workshop*. National Academies Press, 2020 - [nationalacademies.org](https://www.nationalacademies.org/read/25622/chapter/5#45)",
+    "Proctor, Caitlin R., et al. \"Wildfire caused widespread drinking water distribution network contamination.\" *AWWA Water Science* 2.4 (2020) - [awwa.onlinelibrary.wiley.com](https://awwa.onlinelibrary.wiley.com/doi/full/10.1002/aws2.1183)",
+    "UNDRR, *Global Assessment Report on Disaster Risk Reduction 2025: Resilience Pays*, United Nations, 2025 - [undrr.org](https://www.undrr.org/gar/gar2025)",
+]
