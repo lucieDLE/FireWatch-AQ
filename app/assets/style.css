@@ -100,15 +100,14 @@
   --stat-progress-3:  #3A7D40;
   --stat-progress-4:  #4E9455;
 
-  --Dash-Text-Strong:          var(--md-on-surface);
-  --Dash-Text-Disabled:           var(--md-inverse-primary);
+  --Dash-Text-Strong:               var(--md-on-surface);
+  --Dash-Text-Disabled:             var(--md-inverse-primary);
 
-  --Dash-Fill-Interactive-Strong:  var(--md-secondary-container);
-  --Dash-Fill-Interactive-Weak:    var(--md-on-secondary-container);
+  --Dash-Fill-Interactive-Strong:   var(--md-secondary-container);
+  --Dash-Fill-Interactive-Weak:     var(--md-on-secondary-container);
 
   --Dash-Fill-Inverse-Strong:       var(--md-surface-container-high);
-  --Dash-Fill-Inverse-Weak:       var(--md-on-secondary-container);
-
+  --Dash-Fill-Inverse-Weak:         var(--md-on-secondary-container);
 }
 
 /* ============================================================
@@ -604,26 +603,106 @@ body {
 }
 
 
-/* Themed reference / citation links (replace default browser blue) */
-.card a,
-.intro-card a,
-.sources-card a,
-.hero-block a,
-.flat-block a,
-sup a {
+/* ============================================================
+   Public Health Impact tab — editorial, flat-on-page layout
+   ============================================================ */
+.ph-tab {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-3) var(--space-9);
+}
+
+.ph-hero {
+  margin-bottom: var(--space-9);
+}
+
+.ph-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+  margin-bottom: var(--space-4);
+}
+
+.ph-subtitle {
+  font-size: var(--fs-xl);
+  line-height: 1.5;
+  color: var(--md-on-surface-variant);
+  max-width: 820px;
+  margin-bottom: 0;
+  text-align: justify;
+}
+
+.ph-section {
+  margin-bottom: var(--space-8);
+}
+
+.ph-section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+  margin-bottom: var(--space-4);
+}
+
+.ph-body {
+  font-size: var(--fs-lg);
+  line-height: 1.7;
+  color: var(--md-on-surface-variant);
+  max-width: 820px;
+  text-align: justify;
+}
+
+.ph-body p {
+  margin-bottom: var(--space-4);
+}
+
+/* ── Sources ── */
+.ph-sources {
+  margin-top: var(--space-9);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-color);
+}
+
+.ph-sources-label {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--md-on-surface-variant);
+  margin-bottom: var(--space-5);
+}
+
+.ph-src-row {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: var(--space-3);
+  align-items: baseline;
+  margin-bottom: var(--space-4);
+}
+
+.ph-src-num {
+  color: var(--accent);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ph-src-text,
+.ph-src-text p {
+  color: var(--md-on-surface-variant);
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+
+a {
   color: var(--accent);
   text-decoration: none;
 }
-
-.card a:hover,
-.intro-card a:hover,
-.sources-card a:hover,
-.hero-block a:hover,
-.flat-block a:hover,
-sup a:hover {
-  text-decoration: underline;
-}
-
 /* ============================================================
    Hook cards (floating badge design)
    ============================================================ */
